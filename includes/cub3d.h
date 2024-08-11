@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/11 15:26:35 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/11 16:00:03 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "libft.h"
 # include "../mlx/include/MLX42/MLX42.h"
 #define PI 3.14159265358979323846
+#define NUM_RAYS 320
 int parser(int ac, char **av);
 
 # endif
