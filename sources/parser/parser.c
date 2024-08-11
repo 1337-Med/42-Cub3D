@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:07 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/11 22:02:55 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/11 22:47:48 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void save_walls(char **arr, t_game_env **game_env)
 			free_print("invalid data. symbol is duplicated\n");
 		if (ft_strncmp(arr[1] + (ft_strlen(arr[1]) - 4), ".png", 4))
 			free_print("invalid format. shoude be end with .png\n");
-		(*game_env)->wall->north = mlx_load_png(arr[1]);
+		(*game_env)->wall->south = mlx_load_png(arr[1]);
 		if (!(*game_env)->wall->south)
 			free_print("2error while loading.\n");
 		
