@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/11 21:37:03 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/12 11:42:17 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "stdio.h"
 # include "fcntl.h"
 # include "../MLX42/include/MLX42/MLX42.h"
+# include "../mlx/include/MLX42/MLX42.h"
 
 typedef struct s_wall
 {
@@ -35,6 +36,8 @@ typedef struct s_game_env
 
 }	t_game_env;
 
+#define PI 3.14159265358979323846
+#define NUM_RAYS 320
 int parser(int ac, char **av);
 
 

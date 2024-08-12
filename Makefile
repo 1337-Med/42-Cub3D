@@ -1,6 +1,7 @@
 
 SRC =	./sources/parser/parser.c \
 		./sources/cub3d.c \
+		./sources/raycasting/utils.c
 
 OBJ = $(SRC:.c=.o)
 
