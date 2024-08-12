@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/12 12:32:08 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/12 15:53:26 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ typedef struct s_game_env
 
 }	t_game_env;
 
+t_game_env *parser(int ac, char **av);
 #define PI 3.14159265358979323846
 #define NUM_RAYS 320
-int parser(int ac, char **av);
 
 
 # endif
