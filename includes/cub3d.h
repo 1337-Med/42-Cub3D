@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/12 21:42:25 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/12 21:45:43 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void save_earth_sky(char **arr, t_game_env **game_env);
 void save_walls(char **arr, t_game_env **game_env);
 void free_print(char *s);
 void check_map(char **map);
+char **spliter(char *line);
+void save_tools(char **arr, t_game_env **game_env);
 
 #define PI 3.14159265358979323846
 #define NUM_RAYS 320

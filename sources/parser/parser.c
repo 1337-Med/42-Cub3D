@@ -6,58 +6,11 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:07 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/12 21:42:03 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/12 21:55:24 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-
-char **spliter(char *line)
-{
-	char **arr;
-	char *str;
-	int i;
-
-	arr = NULL;
-	str = NULL;
-	i = 0;
-	while (line[i] && line[i] != ' ')
-		i++;
-	str = ft_substr(line, 0, i);
-	arr = ft_arradd_back(arr, str);
-	ft_alloc(0, str, FREE_PTR);
-	while (line[i] && line[i] == ' ')
-		i++;
-	str = ft_substr(line, i, ft_strlen(line) - i - 1);
-	arr = ft_arradd_back(arr, str);
-	ft_alloc(0, str, FREE_PTR);
-	return (arr);
-}
-
-void save_tools(char **arr, t_game_env **game_env)
-{
-	if (ft_arrsize(arr) != 2)
-	{
-		ft_alloc(0, NULL, FREE_ALL);
-		print_err(1, "invalid data. split  and ther value by space\n");
-	}
-	if (ft_strlen(arr[0]) == 2 && \
-		(!ft_strncmp(arr[0], "NO", ft_strlen(arr[0])) \
-		|| !ft_strncmp(arr[0], "SO", ft_strlen(arr[0])) \
-		|| !ft_strncmp(arr[0], "WE", ft_strlen(arr[0])) \
-		|| !ft_strncmp(arr[0], "EA", ft_strlen(arr[0]))))
-		save_walls(arr, game_env);
-	else if (ft_strlen(arr[0]) == 1 && \
-		(!ft_strncmp(arr[0], "F", ft_strlen(arr[0])) \
-		|| !ft_strncmp(arr[0], "C", ft_strlen(arr[0]))))
-		save_earth_sky(arr, game_env);
-	else
-	{
-		ft_alloc(0, NULL, FREE_ALL);
-		print_err(1, "invalid or missing data\n");
-	}
-}
 
 void check_map_line(char *line, int *player_nb)
 {
@@ -144,50 +97,6 @@ void read_file(int fd, t_game_env **game_env)
 	}
 }
 
-// int *player_position(char **map)
-// {
-// 	int j;
-// 	int i;
-
-// 	i = 0;
-// 	while (map[i])
-// 	{
-// 		j = 0;
-// 		while (map[i][j])
-// 		{
-// 			if (ft_strchr("NSEW", map[i][j]))
-// 				return ((int[2]){i, j});
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// 	return ((int[2]){0, 0});
-// }
-// void flod_fill_checker(char **map, int *xy)
-// {
-// 	if (map[xy[0]][xy[1]] == ' ' || map[xy[0]][xy[1]] == '\0')
-// 		free_print("invalid map. The map must be closed/surrounded by walls\n");
-// 	else if (map[xy[0]][xy[1]] == '0')
-// 	{
-// 		map[xy[0]][xy[1]] = '1';
-// 		flod_fill_checker(map, (int[2]){xy[0] + 1, xy[1]});
-// 		flod_fill_checker(map, (int[2]){xy[0] - 1, xy[1]});
-// 		flod_fill_checker(map, (int[2]){xy[0], xy[1] + 1});
-// 		flod_fill_checker(map, (int[2]){xy[0], xy[1] - 1});
-// 	}
-// 	else
-// 		return ;
-// }
-// void check_map(char **map)
-// {
-// 	char **temp_map;
-// 	int *xy;
-
-// 	temp_map = map;
-// 	xy = player_position(temp_map);
-// 	temp_map[xy[0]][xy[1]] = '0';
-// 	flod_fill_checker(map, xy);
-// }
 
 t_game_env *parser(int ac ,char **av)
 {
