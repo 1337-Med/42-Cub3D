@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 15:25:01 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/12 17:59:59 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/12 21:30:22 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ t_p_pos get_player_pos(char **map)
         while (map[pos.y][pos.x])
         {
             if (map[pos.y][pos.x] == 'N')
+            {
+                printf (" %d %d\n", pos.y , pos.x);
                 return (pos);
+            }
             if (map[pos.y][pos.x] == 'W')
                 return (pos);
             if (map[pos.y][pos.x] == 'E')
@@ -44,5 +47,6 @@ t_p_pos get_player_pos(char **map)
         }
         pos.y++;
     }
+    printf ("hihii\n");
     return pos;
 }

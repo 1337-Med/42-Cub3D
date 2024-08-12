@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/12 18:00:24 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/12 21:01:29 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_shared_data
 	mlx_t *mlx;
 	mlx_image_t* image;
 	t_p_pos p_pos;
+	t_p_pos real_pos;
 } t_shared_data;
 t_p_pos get_player_pos(char **map);
 # endif
