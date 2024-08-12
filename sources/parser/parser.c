@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:07 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/12 21:55:24 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/12 22:07:05 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void check_map_line(char *line, int *player_nb)
 		i++;
 	}
 }
+
+
 
 char **save_map(int fd, char *first_line)
 {
@@ -70,7 +72,6 @@ void read_file(int fd, t_game_env **game_env)
 {
 	char *line;
 	char **temp_arr;
-	char **map;
 	
 	while (1)
 	{
@@ -89,8 +90,7 @@ void read_file(int fd, t_game_env **game_env)
 			save_tools(temp_arr, game_env);
 		else
 		{
-			map = save_map(fd, line);
-			(*game_env)->map = map;
+			(*game_env)->map = save_map(fd, line);
 			break;
 		}
 		ft_alloc(0, temp_arr, FREE_PTR);
