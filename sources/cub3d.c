@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:07:11 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/10 16:09:12 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/12 15:57:10 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int main(int ac, char **av)
 	(void)ac;
 	(void)av;
 
-	parser(ac, av);
+	// parser(ac, av);
+	raycaster(parser(ac, av));
 	return (0);
 }

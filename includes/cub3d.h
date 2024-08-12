@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/12 15:53:26 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/12 18:00:24 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,23 @@ typedef struct s_game_env
 	int		ceiling;
 
 }	t_game_env;
-
 t_game_env *parser(int ac, char **av);
+int raycaster(t_game_env *game_env);
 #define PI 3.14159265358979323846
 #define NUM_RAYS 320
 
+typedef struct s_p_pos
+{
+	int x;
+	int y;
+} t_p_pos;
 
+typedef struct s_shared_data
+{
+	t_game_env *game_env;
+	mlx_t *mlx;
+	mlx_image_t* image;
+	t_p_pos p_pos;
+} t_shared_data;
+t_p_pos get_player_pos(char **map);
 # endif

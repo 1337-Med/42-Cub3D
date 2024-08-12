@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 15:25:01 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/11 16:01:43 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/12 17:59:59 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,28 @@ int ray_angle()
 {
     int fov = degree_to_raidian(60);
     return (fov / NUM_RAYS);
+}
+
+t_p_pos get_player_pos(char **map)
+{
+    t_p_pos pos;
+    pos.y = 0;
+    while (map[pos.y])
+    {
+        pos.x = 0;
+        while (map[pos.y][pos.x])
+        {
+            if (map[pos.y][pos.x] == 'N')
+                return (pos);
+            if (map[pos.y][pos.x] == 'W')
+                return (pos);
+            if (map[pos.y][pos.x] == 'E')
+                return (pos);
+            if (map[pos.y][pos.x] == 'S')
+                return (pos);
+            pos.x++;
+        }
+        pos.y++;
+    }
+    return pos;
 }
