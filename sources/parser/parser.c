@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:07 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/12 13:08:28 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/12 21:17:58 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,55 +47,78 @@ char **spliter(char *line)
 	return (arr);
 }
 
-void save_walls(char **arr, t_game_env **game_env)
+
+void setup_wall(mlx_texture_t** wall, char *s)
 {
 	char *trimed;
 
+	if (*wall)
+		free_print("invalid data. symbol is duplicated\n");
+	if (ft_strncmp(s + (ft_strlen(s) - 4), ".png", 4))
+		free_print("invalid format. shoude be end with .png\n");
+	trimed = ft_strtrim(s, " \n\t\v");
+	*wall = mlx_load_png(trimed);
+	if (!*wall)
+		free_print("error while loading.\n");
+	ft_alloc(0, trimed, FREE_PTR);
+}
+
+void save_walls(char **arr, t_game_env **game_env)
+{
+	// char *trimed;
+
 	if (ft_strlen(arr[0]) == 2 && !ft_strncmp(arr[0], "NO", ft_strlen(arr[0])))
-	{
-		if ((*game_env)->wall->north)
-			free_print("invalid data. symbol is duplicated\n");
-		if (ft_strncmp(arr[1] + (ft_strlen(arr[1]) - 4), ".png", 4))
-			free_print("invalid format. shoude be end with .png\n");
-		trimed = ft_strtrim(arr[1], " \n\t\v");
-		(*game_env)->wall->north = mlx_load_png(trimed);
-		if (!(*game_env)->wall->north)
-			free_print("1error while loading.\n");
-	}
+		setup_wall(&(*game_env)->wall->north, arr[1]);
+	// {
+	// 	if ((*game_env)->wall->north)
+	// 		free_print("invalid data. symbol is duplicated\n");
+	// 	if (ft_strncmp(arr[1] + (ft_strlen(arr[1]) - 4), ".png", 4))
+	// 		free_print("invalid format. shoude be end with .png\n");
+	// 	trimed = ft_strtrim(arr[1], " \n\t\v");
+	// 	(*game_env)->wall->north = mlx_load_png(trimed);
+	// 	if (!(*game_env)->wall->north)
+	// 		free_print("error while loading.\n");
+	// 	ft_alloc(0, trimed, FREE_PTR);
+	// }
 	else if (ft_strlen(arr[0]) == 2 && !ft_strncmp(arr[0], "SO", ft_strlen(arr[0])))
-	{
-		if ((*game_env)->wall->south)
-			free_print("invalid data. symbol is duplicated\n");
-		if (ft_strncmp(arr[1] + (ft_strlen(arr[1]) - 4), ".png", 4))
-			free_print("invalid format. shoude be end with .png\n");
-		trimed = ft_strtrim(arr[1], " \n\t\v");
-		(*game_env)->wall->south = mlx_load_png(trimed);
-		if (!(*game_env)->wall->south)
-			free_print("2error while loading.\n");
-		
-	}
+		setup_wall(&(*game_env)->wall->south, arr[1]);
+	// {
+	// 	if ((*game_env)->wall->south)
+	// 		free_print("invalid data. symbol is duplicated\n");
+	// 	if (ft_strncmp(arr[1] + (ft_strlen(arr[1]) - 4), ".png", 4))
+	// 		free_print("invalid format. shoude be end with .png\n");
+	// 	trimed = ft_strtrim(arr[1], " \n\t\v");
+	// 	(*game_env)->wall->south = mlx_load_png(trimed);
+	// 	if (!(*game_env)->wall->south)
+	// 		free_print("error while loading.\n");
+	// 	ft_alloc(0, trimed, FREE_PTR);
+	// }
 	else if (ft_strlen(arr[0]) == 2 && !ft_strncmp(arr[0], "WE", ft_strlen(arr[0])))
-	{
-		if ((*game_env)->wall->west)
-			free_print("invalid data. symbol is duplicated\n");
-		if (ft_strncmp(arr[1] + (ft_strlen(arr[1]) - 4), ".png", 4))
-			free_print("invalid format. shoude be end with .png\n");
-		trimed = ft_strtrim(arr[1], " \n\t\v");
-		(*game_env)->wall->west = mlx_load_png(trimed);
-		if (!(*game_env)->wall->west)
-			free_print("3error while loading.\n");
-	}
+		setup_wall(&(*game_env)->wall->west, arr[1]);
+	// {
+	// 	if ((*game_env)->wall->west)
+	// 		free_print("invalid data. symbol is duplicated\n");
+	// 	if (ft_strncmp(arr[1] + (ft_strlen(arr[1]) - 4), ".png", 4))
+	// 		free_print("invalid format. shoude be end with .png\n");
+	// 	trimed = ft_strtrim(arr[1], " \n\t\v");
+	// 	(*game_env)->wall->west = mlx_load_png(trimed);
+	// 	if (!(*game_env)->wall->west)
+	// 		free_print("error while loading.\n");
+	// 	ft_alloc(0, trimed, FREE_PTR);
+	// }
 	else if (ft_strlen(arr[0]) == 2 && !ft_strncmp(arr[0], "EA", ft_strlen(arr[0])))
-	{
-		if ((*game_env)->wall->east)
-			free_print("invalid data. symbol is duplicated\n");
-		if (ft_strncmp(arr[1] + (ft_strlen(arr[1]) - 4), ".png", 4))
-			free_print("invalid format. shoude be end with .png\n");
-		trimed = ft_strtrim(arr[1], " \n\t\v");
-		(*game_env)->wall->east = mlx_load_png(trimed);
-		if (!(*game_env)->wall->east)
-			free_print("4error while loading.\n");
-	}
+		setup_wall(&(*game_env)->wall->east, arr[1]);
+	// {
+	// 	if ((*game_env)->wall->east)
+	// 		free_print("invalid data. symbol is duplicated\n");
+	// 	if (ft_strncmp(arr[1] + (ft_strlen(arr[1]) - 4), ".png", 4))
+	// 		free_print("invalid format. shoude be end with .png\n");
+	// 	trimed = ft_strtrim(arr[1], " \n\t\v");
+	// 	(*game_env)->wall->east = mlx_load_png(trimed);
+	// 	if (!(*game_env)->wall->east)
+	// 		free_print("error while loading.\n");
+	// 	ft_alloc(0, trimed, FREE_PTR);
+	// }
 }
 
 int calculate_colors(char *s)
@@ -193,7 +216,7 @@ void save_tools(char **arr, t_game_env **game_env)
 	}
 }
 
-void check_map_line(char *line)
+void check_map_line(char *line, int *player_nb)
 {
 	int i;
 
@@ -205,6 +228,8 @@ void check_map_line(char *line)
 			ft_alloc(0, NULL, FREE_ALL);
 			free_print("invalid map\n");
 		}
+		if (ft_strchr("NSWE", line[i]))
+			*player_nb += 1;
 		i++;
 	}
 }
@@ -214,10 +239,12 @@ char **save_map(int fd, char *first_line)
 	char **map;
 	char *line;
 	char *tmp;
-	map = NULL;
+	int	player_nb;
 
+	player_nb = 0;
+	map = NULL;
 	tmp = ft_strtrim(first_line, "\n");
-	check_map_line(tmp);
+	check_map_line(tmp, &player_nb);
 	map = ft_arradd_back(map, tmp);
 	ft_alloc(0, tmp, FREE_PTR);
 	while (1)
@@ -232,10 +259,14 @@ char **save_map(int fd, char *first_line)
 		}
 		tmp = ft_strtrim(line, "\n");
 		ft_alloc(0, line, FREE_PTR);
-		check_map_line(tmp);
+		check_map_line(tmp, &player_nb);
 		map = ft_arradd_back(map, tmp);
 		ft_alloc(0, tmp, FREE_PTR);
 	}
+	if (player_nb == 0)
+		free_print("there is no player on the map\n");
+	if (player_nb > 1)
+		free_print("there is more then one player\n");
 	return (map);
 }
 
@@ -270,6 +301,51 @@ void read_file(int fd, t_game_env **game_env)
 	}
 }
 
+int *player_position(char **map)
+{
+	int j;
+	int i;
+
+	i = 0;
+	while (map[i])
+	{
+		j = 0;
+		while (map[i][j])
+		{
+			if (ft_strchr("NSEW", map[i][j]))
+				return ((int[2]){i, j});
+			j++;
+		}
+		i++;
+	}
+	return ((int[2]){0, 0});
+}
+void flod_fill_checker(char **map, int *xy)
+{
+	if (map[xy[0]][xy[1]] == ' ' || map[xy[0]][xy[1]] == '\0')
+		free_print("invalid map. The map must be closed/surrounded by walls\n");
+	else if (map[xy[0]][xy[1]] == '0')
+	{
+		map[xy[0]][xy[1]] = '1';
+		flod_fill_checker(map, (int[2]){xy[0] + 1, xy[1]});
+		flod_fill_checker(map, (int[2]){xy[0] - 1, xy[1]});
+		flod_fill_checker(map, (int[2]){xy[0], xy[1] + 1});
+		flod_fill_checker(map, (int[2]){xy[0], xy[1] - 1});
+	}
+	else
+		return ;
+}
+void check_map(char **map)
+{
+	char **temp_map;
+	int *xy;
+
+	temp_map = map;
+	xy = player_position(temp_map);
+	temp_map[xy[0]][xy[1]] = '0';
+	flod_fill_checker(map, xy);
+}
+
 t_game_env *parser(int ac ,char **av)
 {
 	t_game_env *game_env;
@@ -293,5 +369,6 @@ t_game_env *parser(int ac ,char **av)
 	game_env->floor = -1;
 	game_env->wall = ft_alloc(sizeof(t_wall), game_env->wall, CALLOC);
 	read_file(fd, &game_env);
+	check_map(game_env->map);
 	return (game_env);
 }

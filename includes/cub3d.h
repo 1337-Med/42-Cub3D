@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/12 13:10:44 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/12 13:20:01 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include "stdio.h"
 # include "fcntl.h"
 # include "../MLX42/include/MLX42/MLX42.h"
-# include "../mlx/include/MLX42/MLX42.h"
 
 typedef struct s_wall
 {
