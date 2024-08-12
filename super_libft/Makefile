@@ -7,7 +7,8 @@ SRC = ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c ft_isascii.c ft
 		ft_printf.c ft_putchar.c ft_putnbr.c ft_putstr.c ft_puthexa.c\
 		get_next_line_bonus.c get_next_line_utils_bonus.c\
 		ft_alloc_util.c ft_alloc.c \
-		ft_free_join.c print_err.c
+		ft_free_join.c print_err.c \
+		ft_arradd_back.c ft_arrclear.c ft_arrsize.c
 
 OBJ = $(SRC:.c=.o)
 

@@ -5,7 +5,7 @@ SRC =	./sources/parser/parser.c \
 
 OBJ = $(SRC:.c=.o)
 
-CFLAGS = -Wall -Wextra -I ./includes -I ./super_libft
+CFLAGS = -Wall -Wextra -I ./includes -I ./super_libft -fsanitize=address -g 
 
 NAME = cub3d
 
@@ -15,7 +15,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	make -C ./super_libft
-	$(CC) $(CFLAGS) ./super_libft/libft.a ./mlx/build/libglfw3.a ./mlx/build/libmlx42.a -o $(NAME) $(OBJ)
+	$(CC) $(CFLAGS) ./super_libft/libft.a ./MLX42/build/libmlx42.a -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/" -o $(NAME) $(OBJ)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@

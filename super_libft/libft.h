@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 12:41:28 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/10 16:19:04 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/11 15:08:22 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,8 @@ void					*ft_alloc(size_t size, void *ptr, char c);
 
 char	*ft_freed_join(char *s1, char *s2);
 void	print_err(int count, ...);
-
+void	ft_arrclean(char **str);
+char	**ft_arradd_back(char **arr, char *new_str);
+size_t	ft_arrsize(char **arr);
 
 #endif
