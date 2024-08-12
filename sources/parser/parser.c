@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:07 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/11 22:47:48 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/12 13:08:28 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void free_print(char *s)
 
 int get_rgba(int r, int g, int b, int a)
 {
+	if (r < 0  || r > 255 || g < 0  || g > 255 || b < 0  || b > 255)
+		free_print("invalid numbers for rgb values\n");
     return (r << 24 | g << 16 | b << 8 | a);
 }
 
@@ -47,13 +49,16 @@ char **spliter(char *line)
 
 void save_walls(char **arr, t_game_env **game_env)
 {
+	char *trimed;
+
 	if (ft_strlen(arr[0]) == 2 && !ft_strncmp(arr[0], "NO", ft_strlen(arr[0])))
 	{
 		if ((*game_env)->wall->north)
 			free_print("invalid data. symbol is duplicated\n");
 		if (ft_strncmp(arr[1] + (ft_strlen(arr[1]) - 4), ".png", 4))
 			free_print("invalid format. shoude be end with .png\n");
-		(*game_env)->wall->north = mlx_load_png(arr[1]);
+		trimed = ft_strtrim(arr[1], " \n\t\v");
+		(*game_env)->wall->north = mlx_load_png(trimed);
 		if (!(*game_env)->wall->north)
 			free_print("1error while loading.\n");
 	}
@@ -63,7 +68,8 @@ void save_walls(char **arr, t_game_env **game_env)
 			free_print("invalid data. symbol is duplicated\n");
 		if (ft_strncmp(arr[1] + (ft_strlen(arr[1]) - 4), ".png", 4))
 			free_print("invalid format. shoude be end with .png\n");
-		(*game_env)->wall->south = mlx_load_png(arr[1]);
+		trimed = ft_strtrim(arr[1], " \n\t\v");
+		(*game_env)->wall->south = mlx_load_png(trimed);
 		if (!(*game_env)->wall->south)
 			free_print("2error while loading.\n");
 		
@@ -74,7 +80,8 @@ void save_walls(char **arr, t_game_env **game_env)
 			free_print("invalid data. symbol is duplicated\n");
 		if (ft_strncmp(arr[1] + (ft_strlen(arr[1]) - 4), ".png", 4))
 			free_print("invalid format. shoude be end with .png\n");
-		(*game_env)->wall->west = mlx_load_png(arr[1]);
+		trimed = ft_strtrim(arr[1], " \n\t\v");
+		(*game_env)->wall->west = mlx_load_png(trimed);
 		if (!(*game_env)->wall->west)
 			free_print("3error while loading.\n");
 	}
@@ -84,7 +91,8 @@ void save_walls(char **arr, t_game_env **game_env)
 			free_print("invalid data. symbol is duplicated\n");
 		if (ft_strncmp(arr[1] + (ft_strlen(arr[1]) - 4), ".png", 4))
 			free_print("invalid format. shoude be end with .png\n");
-		(*game_env)->wall->east = mlx_load_png(arr[1]);
+		trimed = ft_strtrim(arr[1], " \n\t\v");
+		(*game_env)->wall->east = mlx_load_png(trimed);
 		if (!(*game_env)->wall->east)
 			free_print("4error while loading.\n");
 	}
@@ -98,10 +106,7 @@ int calculate_colors(char *s)
 	rgba = ft_split(s, ',');
 	color = 0;
 	if (ft_arrsize(rgba) != 3 && ft_arrsize(rgba) != 4)
-	{
-		ft_alloc(0, NULL, FREE_ALL);
-		print_err(3, "invalid rgba colors\n");
-	}
+		free_print("invalid rgba colors\n");
 	if (ft_arrsize(rgba) == 3)
 		color = get_rgba(ft_atoi(rgba[0]), ft_atoi(rgba[1]), ft_atoi(rgba[2]), 1);
 	else if (ft_arrsize(rgba) == 4)
@@ -110,19 +115,56 @@ int calculate_colors(char *s)
 	return (color);
 }
 
+bool check_rgb_format(char *s)
+{
+	int	i = 0;
+	int j = 0;
+
+	while (j < 2)
+	{
+		if (s[i] == '+')
+			i++;
+		while (s[i] && ft_isdigit(s[i]))
+			i++;
+		if (!s[i] || s[i] != ',')
+			return (false);
+		i++;
+		while (s[i] && s[i] == ' ')
+			i++;
+		if (!s[i] || (!ft_isdigit(s[i]) && s[i] != '-' && s[i] != '+'))
+			return (false);
+		j++;
+	}
+	if (s[i] == '+')
+		i++;
+	while (s[i] && ft_isdigit(s[i]))
+		i++;
+	if (s[i])
+		return (false);
+	return (true);
+}
+
 void save_earth_sky(char **arr, t_game_env **game_env)
 {
+	char *trimed;
+
 	if (ft_strlen(arr[0]) == 1 && !ft_strncmp(arr[0], "F", ft_strlen(arr[0])))
 	{
 		if ((*game_env)->floor != -1)
 			free_print("invalid data. symbol is duplicated\n");
-		(*game_env)->floor = calculate_colors(arr[1]);
+		trimed = ft_strtrim(arr[1], " \n\t\v");
+		if (!check_rgb_format(trimed))
+			free_print("invalid rgb format. soulde be like 255,255,255 \n");
+		(*game_env)->floor = calculate_colors(trimed);
 	}
 	if (ft_strlen(arr[0]) == 1 && !ft_strncmp(arr[0], "C", ft_strlen(arr[0])))
 	{
 		if ((*game_env)->ceiling != -1)
 			free_print("invalid data. symbol is duplicated\n");
-		(*game_env)->ceiling = calculate_colors(arr[1]);
+		trimed = ft_strtrim(arr[1], " \n\t\v");
+		if (!check_rgb_format(trimed))
+			free_print("invalid rgb format. soulde be like 255,255,255 \n");
+		(*game_env)->ceiling = calculate_colors(trimed);
 		
 	}
 }
@@ -228,7 +270,7 @@ void read_file(int fd, t_game_env **game_env)
 	}
 }
 
-int parser(int ac ,char **av)
+t_game_env *parser(int ac ,char **av)
 {
 	t_game_env *game_env;
 	char **arr;
@@ -251,5 +293,5 @@ int parser(int ac ,char **av)
 	game_env->floor = -1;
 	game_env->wall = ft_alloc(sizeof(t_wall), game_env->wall, CALLOC);
 	read_file(fd, &game_env);
-	return (1);
+	return (game_env);
 }

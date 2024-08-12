@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/11 21:37:03 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/12 13:08:42 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef struct s_game_env
 
 }	t_game_env;
 
-int parser(int ac, char **av);
+t_game_env *parser(int ac, char **av);
 
 
 # endif
