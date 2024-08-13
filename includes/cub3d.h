@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/12 21:01:29 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/13 11:46:11 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define CUB3D_H
 
 # include "libft.h"
+#include "math.h"
 # include "stdio.h"
 # include "fcntl.h"
 # include "../MLX42/include/MLX42/MLX42.h"
@@ -46,6 +47,17 @@ typedef struct s_p_pos
 	int y;
 } t_p_pos;
 
+typedef struct s_player
+{
+	t_p_pos pos;
+	int raduis;
+	int turn_dir;
+	int walk_dir;
+	float rota_angle;
+	float move_speed;
+	float rotate_speed;
+} t_player;
+
 typedef struct s_shared_data
 {
 	t_game_env *game_env;
@@ -53,6 +65,7 @@ typedef struct s_shared_data
 	mlx_image_t* image;
 	t_p_pos p_pos;
 	t_p_pos real_pos;
+	t_player player;
 } t_shared_data;
 t_p_pos get_player_pos(char **map);
 # endif
