@@ -3,279 +3,101 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:07 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/13 12:27:05 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/13 19:57:07 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void free_print(char *s)
+void	check_map_line(char *line, int *player_nb, t_wall *wall)
 {
-	ft_alloc(0, NULL, FREE_ALL);
-	print_err(1, s);
-}
-
-int get_rgba(int r, int g, int b, int a)
-{
-	if (r < 0  || r > 255 || g < 0  || g > 255 || b < 0  || b > 255)
-		free_print("invalid numbers for rgb values\n");
-    return (r << 24 | g << 16 | b << 8 | a);
-}
-
-char **spliter(char *line)
-{
-	char **arr;
-	char *str;
-	int i;
-
-	arr = NULL;
-	str = NULL;
-	i = 0;
-	while (line[i] && line[i] != ' ')
-		i++;
-	str = ft_substr(line, 0, i);
-	arr = ft_arradd_back(arr, str);
-	ft_alloc(0, str, FREE_PTR);
-	while (line[i] && line[i] == ' ')
-		i++;
-	str = ft_substr(line, i, ft_strlen(line) - i - 1);
-	arr = ft_arradd_back(arr, str);
-	ft_alloc(0, str, FREE_PTR);
-	return (arr);
-}
-
-void save_walls(char **arr, t_game_env **game_env)
-{
-	char *trimed;
-
-	if (ft_strlen(arr[0]) == 2 && !ft_strncmp(arr[0], "NO", ft_strlen(arr[0])))
-	{
-		if ((*game_env)->wall->north)
-			free_print("invalid data. symbol is duplicated\n");
-		if (ft_strncmp(arr[1] + (ft_strlen(arr[1]) - 4), ".png", 4))
-			free_print("invalid format. shoude be end with .png\n");
-		trimed = ft_strtrim(arr[1], " \n\t\v");
-		(*game_env)->wall->north = mlx_load_png(trimed);
-		if (!(*game_env)->wall->north)
-			free_print("1error while loading.\n");
-	}
-	else if (ft_strlen(arr[0]) == 2 && !ft_strncmp(arr[0], "SO", ft_strlen(arr[0])))
-	{
-		if ((*game_env)->wall->south)
-			free_print("invalid data. symbol is duplicated\n");
-		if (ft_strncmp(arr[1] + (ft_strlen(arr[1]) - 4), ".png", 4))
-			free_print("invalid format. shoude be end with .png\n");
-		trimed = ft_strtrim(arr[1], " \n\t\v");
-		(*game_env)->wall->south = mlx_load_png(trimed);
-		if (!(*game_env)->wall->south)
-			free_print("2error while loading.\n");
-		
-	}
-	else if (ft_strlen(arr[0]) == 2 && !ft_strncmp(arr[0], "WE", ft_strlen(arr[0])))
-	{
-		if ((*game_env)->wall->west)
-			free_print("invalid data. symbol is duplicated\n");
-		if (ft_strncmp(arr[1] + (ft_strlen(arr[1]) - 4), ".png", 4))
-			free_print("invalid format. shoude be end with .png\n");
-		trimed = ft_strtrim(arr[1], " \n\t\v");
-		(*game_env)->wall->west = mlx_load_png(trimed);
-		if (!(*game_env)->wall->west)
-			free_print("3error while loading.\n");
-	}
-	else if (ft_strlen(arr[0]) == 2 && !ft_strncmp(arr[0], "EA", ft_strlen(arr[0])))
-	{
-		if ((*game_env)->wall->east)
-			free_print("invalid data. symbol is duplicated\n");
-		if (ft_strncmp(arr[1] + (ft_strlen(arr[1]) - 4), ".png", 4))
-			free_print("invalid format. shoude be end with .png\n");
-		trimed = ft_strtrim(arr[1], " \n\t\v");
-		(*game_env)->wall->east = mlx_load_png(trimed);
-		if (!(*game_env)->wall->east)
-			free_print("4error while loading.\n");
-	}
-}
-
-int calculate_colors(char *s)
-{
-	char **rgba;
-	int	color;
-	
-	rgba = ft_split(s, ',');
-	color = 0;
-	if (ft_arrsize(rgba) != 3 && ft_arrsize(rgba) != 4)
-		free_print("invalid rgba colors\n");
-	if (ft_arrsize(rgba) == 3)
-		color = get_rgba(ft_atoi(rgba[0]), ft_atoi(rgba[1]), ft_atoi(rgba[2]), 1);
-	else if (ft_arrsize(rgba) == 4)
-		color = get_rgba(ft_atoi(rgba[0]), ft_atoi(rgba[1]), ft_atoi(rgba[2]), ft_atoi(rgba[3]));
-	ft_alloc(0, rgba, FREE_PTR);
-	return (color);
-}
-
-bool check_rgb_format(char *s)
-{
-	int	i = 0;
-	int j = 0;
-
-	while (j < 2)
-	{
-		if (s[i] == '+')
-			i++;
-		while (s[i] && ft_isdigit(s[i]))
-			i++;
-		if (!s[i] || s[i] != ',')
-			return (false);
-		i++;
-		while (s[i] && s[i] == ' ')
-			i++;
-		if (!s[i] || (!ft_isdigit(s[i]) && s[i] != '-' && s[i] != '+'))
-			return (false);
-		j++;
-	}
-	if (s[i] == '+')
-		i++;
-	while (s[i] && ft_isdigit(s[i]))
-		i++;
-	if (s[i])
-		return (false);
-	return (true);
-}
-
-void save_earth_sky(char **arr, t_game_env **game_env)
-{
-	char *trimed;
-
-	if (ft_strlen(arr[0]) == 1 && !ft_strncmp(arr[0], "F", ft_strlen(arr[0])))
-	{
-		if ((*game_env)->floor != -1)
-			free_print("invalid data. symbol is duplicated\n");
-		trimed = ft_strtrim(arr[1], " \n\t\v");
-		if (!check_rgb_format(trimed))
-			free_print("invalid rgb format. soulde be like 255,255,255 \n");
-		(*game_env)->floor = calculate_colors(trimed);
-	}
-	if (ft_strlen(arr[0]) == 1 && !ft_strncmp(arr[0], "C", ft_strlen(arr[0])))
-	{
-		if ((*game_env)->ceiling != -1)
-			free_print("invalid data. symbol is duplicated\n");
-		trimed = ft_strtrim(arr[1], " \n\t\v");
-		if (!check_rgb_format(trimed))
-			free_print("invalid rgb format. soulde be like 255,255,255 \n");
-		(*game_env)->ceiling = calculate_colors(trimed);
-		
-	}
-}
-
-void save_tools(char **arr, t_game_env **game_env)
-{
-	if (ft_arrsize(arr) != 2)
-	{
-		ft_alloc(0, NULL, FREE_ALL);
-		print_err(1, "invalid data. split  and ther value by space\n");
-	}
-	if (ft_strlen(arr[0]) == 2 && \
-		(!ft_strncmp(arr[0], "NO", ft_strlen(arr[0])) \
-		|| !ft_strncmp(arr[0], "SO", ft_strlen(arr[0])) \
-		|| !ft_strncmp(arr[0], "WE", ft_strlen(arr[0])) \
-		|| !ft_strncmp(arr[0], "EA", ft_strlen(arr[0]))))
-		save_walls(arr, game_env);
-	else if (ft_strlen(arr[0]) == 1 && \
-		(!ft_strncmp(arr[0], "F", ft_strlen(arr[0])) \
-		|| !ft_strncmp(arr[0], "C", ft_strlen(arr[0]))))
-		save_earth_sky(arr, game_env);
-	else
-	{
-		ft_alloc(0, NULL, FREE_ALL);
-		print_err(1, "invalid or missing data\n");
-	}
-}
-
-void check_map_line(char *line)
-{
-	int i;
+	int	i;
 
 	i = 0;
 	while (line[i])
 	{
 		if (!ft_strchr("01NSEW ", line[i]))
-		{
-			ft_alloc(0, NULL, FREE_ALL);
-			free_print("invalid map\n");
-		}
+			free_print("invalid character in map\n", wall);
+		if (ft_strchr("NSWE", line[i]))
+			*player_nb += 1;
 		i++;
 	}
 }
 
-char **save_map(int fd, char *first_line)
+void	check_nb_of_players(int player_nb, t_wall *wall)
 {
-	char **map;
-	char *line;
-	char *tmp;
-	map = NULL;
+	if (player_nb == 0)
+		free_print("there is no player on the map\n", wall);
+	if (player_nb > 1)
+		free_print("there is more then one player\n", wall);
+}
 
+char	**save_map(int fd, char *first_line, t_wall *wall)
+{
+	char	**map;
+	char	*line;
+	char	*tmp;
+	int		player_nb;
+
+	player_nb = 0;
+	map = NULL;
 	tmp = ft_strtrim(first_line, "\n");
-	check_map_line(tmp);
+	check_map_line(tmp, &player_nb, wall);
 	map = ft_arradd_back(map, tmp);
 	ft_alloc(0, tmp, FREE_PTR);
 	while (1)
 	{
 		line = get_next_line(fd);
 		if (line == NULL)
-			break;
+			break ;
 		if (ft_strlen(line) == 1 && !strncmp(line, "\n", ft_strlen(line)))
-		{
-			ft_alloc(0, NULL, FREE_ALL);
-			free_print("invalid map\n");
-		}
+			free_print("invalid map\n", wall);
 		tmp = ft_strtrim(line, "\n");
 		ft_alloc(0, line, FREE_PTR);
-		check_map_line(tmp);
+		check_map_line(tmp, &player_nb, wall);
 		map = ft_arradd_back(map, tmp);
 		ft_alloc(0, tmp, FREE_PTR);
 	}
-	return (map);
+	return (check_nb_of_players(player_nb, wall), map);
 }
 
-void read_file(int fd, t_game_env **game_env)
+void	read_file(int fd, t_game_env **game_env)
 {
-	char *line;
-	char **temp_arr;
-	char **map;
-	
-	map = NULL;
+	char	*line;
+	char	**temp_arr;
+
 	while (1)
 	{
 		line = get_next_line(fd);
 		if (line == NULL)
-			break;
+			break ;
 		if (ft_strlen(line) == 1 && !ft_strncmp(line, "\n", ft_strlen(line)))
 		{
-			ft_alloc(0, line, FREE_PTR);	
-			continue;
+			ft_alloc(0, line, FREE_PTR);
+			continue ;
 		}
 		temp_arr = spliter(line);
-		if ((*game_env)->ceiling == -1 || (*game_env)->floor == -1 \
-			|| !(*game_env)->wall->east || !(*game_env)->wall->west \
+		if ((*game_env)->ceiling == -1 || (*game_env)->floor == -1
+			|| !(*game_env)->wall->east || !(*game_env)->wall->west
 			|| !(*game_env)->wall->north || !(*game_env)->wall->south)
 			save_tools(temp_arr, game_env);
 		else
 		{
-			map = save_map(fd, line);
-			(*game_env)->map = map;
-			break;
+			(*game_env)->map = save_map(fd, line, (*game_env)->wall);
+			break ;
 		}
 		ft_alloc(0, temp_arr, FREE_PTR);
 	}
 }
 
-t_game_env *parser(int ac ,char **av)
+t_game_env	*parser(int ac, char **av)
 {
-	t_game_env *game_env;
-	char **arr;
-	int fd;
+	t_game_env	*game_env;
+	char		**arr;
+	int			fd;
 
 	fd = 0;
 	arr = NULL;
@@ -294,5 +116,6 @@ t_game_env *parser(int ac ,char **av)
 	game_env->floor = -1;
 	game_env->wall = ft_alloc(sizeof(t_wall), game_env->wall, CALLOC);
 	read_file(fd, &game_env);
+	check_map(game_env->map, game_env->wall);
 	return (game_env);
 }

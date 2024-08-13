@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/13 11:46:11 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/13 19:54:20 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include "stdio.h"
 # include "fcntl.h"
 # include "../MLX42/include/MLX42/MLX42.h"
-// # include "../mlx/include/MLX42/MLX42.h"
 
 typedef struct s_wall
 {
@@ -36,8 +35,22 @@ typedef struct s_game_env
 	int		ceiling;
 
 }	t_game_env;
+
+// parsing functions
+t_game_env *parser(int ac, char **av);
+int get_rgba(int r, int g, int b, t_wall *wall);
+void save_earth_sky(char **arr, t_game_env **game_env);
+void save_walls(char **arr, t_game_env **game_env);
+void free_print(char *s, t_wall *wall);
+void check_map(char **map, t_wall *wall);
+char **spliter(char *line);
+void save_tools(char **arr, t_game_env **game_env);
+void free_texture(t_wall *wall);
+
+//general functions
 t_game_env *parser(int ac, char **av);
 int raycaster(t_game_env *game_env);
+
 #define PI 3.14159265358979323846
 #define NUM_RAYS 320
 
