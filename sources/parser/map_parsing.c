@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 21:34:36 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/12 21:42:10 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/13 15:54:59 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,24 @@ int *player_position(char **map)
 	return ((int[2]){0, 0});
 }
 
-void flod_fill_checker(char **map, int *xy)
+void flod_fill_checker(char **map, int *xy, t_wall *wall)
 {
+	if ((map[xy[0]][xy[1]] == '0' || map[xy[0]][xy[1]] == '\0') && (xy[0] <= 0 || xy[1] <= 0 || xy[0] >= (int)ft_arrsize(map) - 1 || xy[1] >= (int)ft_strlen(map[xy[0]]) - 1))
+		free_print("invalid map. The map must be closed/surrounded by walls\n", wall);
 	if (map[xy[0]][xy[1]] == ' ' || map[xy[0]][xy[1]] == '\0')
-		free_print("invalid map. The map must be closed/surrounded by walls\n");
+		free_print("invalid map. The map must be closed/surrounded by walls\n", wall);
 	else if (map[xy[0]][xy[1]] == '0')
 	{
 		map[xy[0]][xy[1]] = '1';
-		flod_fill_checker(map, (int[2]){xy[0] + 1, xy[1]});
-		flod_fill_checker(map, (int[2]){xy[0] - 1, xy[1]});
-		flod_fill_checker(map, (int[2]){xy[0], xy[1] + 1});
-		flod_fill_checker(map, (int[2]){xy[0], xy[1] - 1});
+		flod_fill_checker(map, (int[2]){xy[0] + 1, xy[1]}, wall);
+		flod_fill_checker(map, (int[2]){xy[0] - 1, xy[1]}, wall);
+		flod_fill_checker(map, (int[2]){xy[0], xy[1] + 1}, wall);
+		flod_fill_checker(map, (int[2]){xy[0], xy[1] - 1}, wall);
 	}
 	else
 		return ;
 }
-void check_map(char **map)
+void check_map(char **map, t_wall *wall)
 {
 	char **temp_map;
 	int *xy;
@@ -55,5 +57,5 @@ void check_map(char **map)
 	temp_map = map;
 	xy = player_position(temp_map);
 	temp_map[xy[0]][xy[1]] = '0';
-	flod_fill_checker(map, xy);
+	flod_fill_checker(map, xy, wall);
 }

@@ -6,13 +6,13 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:07 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/12 22:07:05 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/13 15:03:51 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void check_map_line(char *line, int *player_nb)
+void check_map_line(char *line, int *player_nb, t_wall *wall)
 {
 	int i;
 
@@ -20,10 +20,7 @@ void check_map_line(char *line, int *player_nb)
 	while (line[i])
 	{
 		if (!ft_strchr("01NSEW ", line[i]))
-		{
-			ft_alloc(0, NULL, FREE_ALL);
-			free_print("invalid map\n");
-		}
+			free_print("invalid character in map\n", wall);
 		if (ft_strchr("NSWE", line[i]))
 			*player_nb += 1;
 		i++;
@@ -32,7 +29,7 @@ void check_map_line(char *line, int *player_nb)
 
 
 
-char **save_map(int fd, char *first_line)
+char **save_map(int fd, char *first_line, t_wall *wall)
 {
 	char **map;
 	char *line;
@@ -42,7 +39,7 @@ char **save_map(int fd, char *first_line)
 	player_nb = 0;
 	map = NULL;
 	tmp = ft_strtrim(first_line, "\n");
-	check_map_line(tmp, &player_nb);
+	check_map_line(tmp, &player_nb, wall);
 	map = ft_arradd_back(map, tmp);
 	ft_alloc(0, tmp, FREE_PTR);
 	while (1)
@@ -51,20 +48,17 @@ char **save_map(int fd, char *first_line)
 		if (line == NULL)
 			break;
 		if (ft_strlen(line) == 1 && !strncmp(line, "\n", ft_strlen(line)))
-		{
-			ft_alloc(0, NULL, FREE_ALL);
-			free_print("invalid map\n");
-		}
+			free_print("invalid map\n", wall);
 		tmp = ft_strtrim(line, "\n");
 		ft_alloc(0, line, FREE_PTR);
-		check_map_line(tmp, &player_nb);
+		check_map_line(tmp, &player_nb, wall);
 		map = ft_arradd_back(map, tmp);
 		ft_alloc(0, tmp, FREE_PTR);
 	}
 	if (player_nb == 0)
-		free_print("there is no player on the map\n");
+		free_print("there is no player on the map\n", wall);
 	if (player_nb > 1)
-		free_print("there is more then one player\n");
+		free_print("there is more then one player\n", wall);
 	return (map);
 }
 
@@ -90,7 +84,7 @@ void read_file(int fd, t_game_env **game_env)
 			save_tools(temp_arr, game_env);
 		else
 		{
-			(*game_env)->map = save_map(fd, line);
+			(*game_env)->map = save_map(fd, line, (*game_env)->wall);
 			break;
 		}
 		ft_alloc(0, temp_arr, FREE_PTR);
@@ -121,6 +115,6 @@ t_game_env *parser(int ac ,char **av)
 	game_env->floor = -1;
 	game_env->wall = ft_alloc(sizeof(t_wall), game_env->wall, CALLOC);
 	read_file(fd, &game_env);
-	check_map(game_env->map);
+	check_map(game_env->map, game_env->wall);
 	return (game_env);
 }

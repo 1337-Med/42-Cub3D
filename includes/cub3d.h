@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/12 21:45:43 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/13 15:06:33 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,14 @@ typedef struct s_game_env
 
 // parsing functions
 t_game_env *parser(int ac, char **av);
-int get_rgba(int r, int g, int b, int a);
+int get_rgba(int r, int g, int b, t_wall *wall);
 void save_earth_sky(char **arr, t_game_env **game_env);
 void save_walls(char **arr, t_game_env **game_env);
-void free_print(char *s);
-void check_map(char **map);
+void free_print(char *s, t_wall *wall);
+void check_map(char **map, t_wall *wall);
 char **spliter(char *line);
 void save_tools(char **arr, t_game_env **game_env);
+void free_texture(t_wall *wall);
 
 #define PI 3.14159265358979323846
 #define NUM_RAYS 320

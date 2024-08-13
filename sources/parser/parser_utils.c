@@ -6,23 +6,37 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 21:22:31 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/12 21:45:16 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/13 15:06:26 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void free_print(char *s)
+void free_texture(t_wall *wall)
 {
+	if (wall->east)
+		mlx_delete_texture(wall->east);
+	if (wall->west)
+		mlx_delete_texture(wall->west);
+	if (wall->north)
+		mlx_delete_texture(wall->north);
+	if (wall->south)
+		mlx_delete_texture(wall->south);
+}
+
+void free_print(char *s, t_wall *wall)
+{
+	// if (wall)
+		free_texture(wall);
 	ft_alloc(0, NULL, FREE_ALL);
 	print_err(1, s);
 }
 
-int get_rgba(int r, int g, int b, int a)
+int get_rgba(int r, int g, int b, t_wall *wall)
 {
-	if (r < 0  || r > 255 || g < 0  || g > 255 || b < 0  || b > 255)
-		free_print("invalid numbers for rgb values\n");
-    return (r << 24 | g << 16 | b << 8 | a);
+	if (r < 0  || r > 255 || r < 0  || g < 0  || g > 255 || b < 0  || b > 255)
+		free_print("invalid numbers for rgb values\n", wall);
+    return (r << 24 | g << 16 | b << 8 | 1);
 }
 char **spliter(char *line)
 {
@@ -48,10 +62,8 @@ char **spliter(char *line)
 void save_tools(char **arr, t_game_env **game_env)
 {
 	if (ft_arrsize(arr) != 2)
-	{
-		ft_alloc(0, NULL, FREE_ALL);
-		print_err(1, "invalid data. split  and ther value by space\n");
-	}
+		free_print("invalid data. split  and ther value by space\n", (*game_env)->wall);
+
 	if (ft_strlen(arr[0]) == 2 && \
 		(!ft_strncmp(arr[0], "NO", ft_strlen(arr[0])) \
 		|| !ft_strncmp(arr[0], "SO", ft_strlen(arr[0])) \
@@ -63,8 +75,5 @@ void save_tools(char **arr, t_game_env **game_env)
 		|| !ft_strncmp(arr[0], "C", ft_strlen(arr[0]))))
 		save_earth_sky(arr, game_env);
 	else
-	{
-		ft_alloc(0, NULL, FREE_ALL);
-		print_err(1, "invalid or missing data\n");
-	}
+		free_print("invalid or missing data\n", (*game_env)->wall);
 }
