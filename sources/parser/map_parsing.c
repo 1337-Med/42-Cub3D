@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 21:34:36 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/13 15:54:59 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/13 16:23:53 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int *player_position(char **map)
 
 void flod_fill_checker(char **map, int *xy, t_wall *wall)
 {
-	if ((map[xy[0]][xy[1]] == '0' || map[xy[0]][xy[1]] == '\0') && (xy[0] <= 0 || xy[1] <= 0 || xy[0] >= (int)ft_arrsize(map) - 1 || xy[1] >= (int)ft_strlen(map[xy[0]]) - 1))
+	if ((xy[0] <= 0 || xy[1] <= 0 || xy[0] >= (int)ft_arrsize(map) - 1 || xy[1] >= (int)ft_strlen(map[xy[0]]) - 1) && map[xy[0]][xy[1]] != '1')
 		free_print("invalid map. The map must be closed/surrounded by walls\n", wall);
 	if (map[xy[0]][xy[1]] == ' ' || map[xy[0]][xy[1]] == '\0')
 		free_print("invalid map. The map must be closed/surrounded by walls\n", wall);
