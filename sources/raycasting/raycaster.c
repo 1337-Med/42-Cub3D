@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/14 13:19:14 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/14 15:06:36 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,13 +108,14 @@ while (i <= 5)
     //     i++;
     // }
 }
-int pix_checker(float y, float x, int angle, char **map)
+int pix_checker(float y, float x, t_shared_data *data)
 {
-    float n_x = x + cos(angle);
-    float n_y = y + sin(angle);
+     int move_step = data->player.walk_dir * data->player.move_speed;
+    float n_x = x + cos(data->player.rota_angle) * move_step;
+    float n_y = y + sin(data->player.rota_angle)* move_step;
     int m_x = (int )floor(n_x / 32.0);
     int m_y = (int )floor(n_y / 32.0);
-    if (map[m_y][m_x] != '1')
+    if (data->game_env->map[m_y][m_x] != '1')
         return (1);
     return (0);
 }
@@ -182,13 +183,16 @@ void ft_hook(mlx_key_data_t key,void* param)
     int move_step = data->player.walk_dir * data->player.move_speed;
     float new_x =  data->real_pos.x + cos(data->player.rota_angle) * move_step; 
     float new_y = data->real_pos.y + sin(data->player.rota_angle) * move_step;
-    printf("the news %f %f\n", new_x, new_y);
     int r_x = floor(new_x / 32.0);
     int r_y = floor(new_y / 32.0);
-    printf("the r_y %d the r_x %d map %c\n", r_y, r_x, data->game_env->map[r_y][r_x]);
-    
+    // printf("the r_y %d the r_x %d map %c\n", r_y, r_x, data->game_env->map[r_y][r_x]);
+    int test_x = data->real_pos.x / 32;
+    int test_y = data->real_pos.y / 32;
+    printf("the news %d %d %c %c\n", test_x, test_y, data->game_env->map[r_y][test_x], data->game_env->map[test_y][r_x]);
+    // printf ("t")
+    // if (data->game_env->map && data->game_env->map[r_y] && data->game_env->map[r_y][r_x] != '1' && pix_checker(new_y, new_x, data))
     // if (data->game_env->map && data->game_env->map[ft_round((new_y / 32.0))] && data->game_env->map[ft_round(new_y / 32.0)][ft_round(new_x / 32.0)] != '1')
-    if (data->game_env->map && data->game_env->map[r_y] && data->game_env->map[r_y][r_x] != '1' && pix_checker(new_y, new_x, data->player.rota_angle, data->game_env->map))
+    if ((data->game_env->map[r_y][test_x] != '1' || data->game_env->map[test_y][r_x] != '1') && data->game_env->map[r_y][r_x] != '1')
     {
         printf("YES\n");
         data->real_pos.x = new_x;
@@ -222,7 +226,7 @@ int raycaster(t_game_env *game_env)
     player.walk_dir = 0;
     player.turn_dir = 0;
     player.rota_angle = PI / 2;
-    player.move_speed = 2;
+    player.move_speed = 4;
     player.rotate_speed = 2 * (PI / 180);
     data.player = player;
     // printf ("y is %d x is %d\n", data.real_pos.y, data.real_pos.x);
