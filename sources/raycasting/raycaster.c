@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/14 11:20:31 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/14 15:06:36 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,15 @@ void render_rec(int y, int x, mlx_image_t* image, char c)
     }
 }
 
+int ft_round(float a)
+{   
+    // float fractional_part = a - (int)a;
+    // if (fractional_part >= 0.5)
+        return ((int)a + 1);
+    // else
+        // return ((int)a);
+}
+
 void render_player(t_shared_data *data)
 {
     int color = 0xFFFFFFFF;
@@ -99,7 +108,17 @@ while (i <= 5)
     //     i++;
     // }
 }
-
+int pix_checker(float y, float x, t_shared_data *data)
+{
+     int move_step = data->player.walk_dir * data->player.move_speed;
+    float n_x = x + cos(data->player.rota_angle) * move_step;
+    float n_y = y + sin(data->player.rota_angle)* move_step;
+    int m_x = (int )floor(n_x / 32.0);
+    int m_y = (int )floor(n_y / 32.0);
+    if (data->game_env->map[m_y][m_x] != '1')
+        return (1);
+    return (0);
+}
 void rander_map (t_shared_data *data)
 {
     int x = 0;
@@ -162,44 +181,27 @@ void ft_hook(mlx_key_data_t key,void* param)
         data->player.walk_dir = -1;
     }
     int move_step = data->player.walk_dir * data->player.move_speed;
-    int new_x =  data->real_pos.x + cos(data->player.rota_angle) * move_step; 
-    int new_y = data->real_pos.y + sin(data->player.rota_angle) * move_step;
-    if (data->game_env->map && data->game_env->map[new_y / 32] && data->game_env->map[new_y / 32][new_x / 32] != '1')
+    float new_x =  data->real_pos.x + cos(data->player.rota_angle) * move_step; 
+    float new_y = data->real_pos.y + sin(data->player.rota_angle) * move_step;
+    int r_x = floor(new_x / 32.0);
+    int r_y = floor(new_y / 32.0);
+    // printf("the r_y %d the r_x %d map %c\n", r_y, r_x, data->game_env->map[r_y][r_x]);
+    int test_x = data->real_pos.x / 32;
+    int test_y = data->real_pos.y / 32;
+    printf("the news %d %d %c %c\n", test_x, test_y, data->game_env->map[r_y][test_x], data->game_env->map[test_y][r_x]);
+    // printf ("t")
+    // if (data->game_env->map && data->game_env->map[r_y] && data->game_env->map[r_y][r_x] != '1' && pix_checker(new_y, new_x, data))
+    // if (data->game_env->map && data->game_env->map[ft_round((new_y / 32.0))] && data->game_env->map[ft_round(new_y / 32.0)][ft_round(new_x / 32.0)] != '1')
+    if ((data->game_env->map[r_y][test_x] != '1' || data->game_env->map[test_y][r_x] != '1') && data->game_env->map[r_y][r_x] != '1')
     {
+        printf("YES\n");
         data->real_pos.x = new_x;
         data->real_pos.y = new_y;
         
     }
-    printf("the walk dir is %d the turn dir is %d\n", data->player.walk_dir, data->player.turn_dir);
-    printf("ROTATION ANGLE IS %.2f\n", data->player.rota_angle);
+    // printf("the walk dir is %d the turn dir is %d\n", data->player.walk_dir, data->player.turn_dir);
+    // printf("ROTATION ANGLE IS %.2f\n", data->player.rota_angle);
     data->player.rota_angle += data->player.turn_dir * data->player.rotate_speed;
-    // if (key.key == MLX_KEY_D && key.action == MLX_PRESS)
-    // {
-    //     if (data->game_env->map && data->game_env->map[pos.y] && data->game_env->map[pos.y][pos.x + 1] != '1')
-    //     {
-    //         printf ("right\n");
-    //         data->game_env->map[pos.y][pos.x] = '0';
-    //         data->game_env->map[pos.y][pos.x + 1] = 'N';
-    //         data->p_pos = get_player_pos(data->game_env->map);
-    //         data->real_pos = get_player_pos(data->game_env->map);
-    //         data->real_pos.x = (data->real_pos.x * 32) + 16;
-    //         data->real_pos.y = (data->real_pos.y * 32) + 16;
-    //         // rander_map(data);
-    //     }
-    // }
-    // if (key.key == MLX_KEY_A && key.action == MLX_PRESS)
-    // {
-    //     if (data->game_env->map && data->game_env->map[pos.y] && data->game_env->map[pos.y][pos.x - 1] != '1')
-    //     {
-    //         printf ("left\n");
-    //         data->game_env->map[pos.y][pos.x] = '0';
-    //         data->game_env->map[pos.y][pos.x - 1] = 'N';
-    //         data->p_pos = get_player_pos(data->game_env->map);
-    //         data->real_pos = get_player_pos(data->game_env->map);
-    //         data->real_pos.x = (data->real_pos.x * 32) + 16;
-    //         data->real_pos.y = (data->real_pos.y * 32) + 16;
-    //     }
-    // }
     rander_map(data);
 }
 
@@ -225,7 +227,7 @@ int raycaster(t_game_env *game_env)
     player.turn_dir = 0;
     player.rota_angle = PI / 2;
     player.move_speed = 4;
-    player.rotate_speed = 4 * (PI / 180);
+    player.rotate_speed = 2 * (PI / 180);
     data.player = player;
     // printf ("y is %d x is %d\n", data.real_pos.y, data.real_pos.x);
     // printf ("PREEEEV y is %d x is %d\n", (data.p_pos.y * 32) + 16, (data.p_pos.x * 32) + 16);

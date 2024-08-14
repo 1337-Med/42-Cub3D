@@ -6,7 +6,11 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 21:34:36 by nbenyahy          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/08/14 12:28:10 by nbenyahy         ###   ########.fr       */
+=======
+/*   Updated: 2024/08/14 12:11:50 by amejdoub         ###   ########.fr       */
+>>>>>>> raycasting
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +75,7 @@ void	check_map(char **map, t_wall *wall)
 		i++;
 	}
 	temp_map[i] = NULL;
-	xy = player_position(temp_map);
+	xy = player_position(map); // hayda kanet
 	temp_map[xy[0]][xy[1]] = '0';
 	flod_fill_checker(temp_map, xy, wall);
 }
