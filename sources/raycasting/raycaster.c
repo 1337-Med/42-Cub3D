@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/13 16:46:53 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/14 10:56:19 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,17 +162,8 @@ void ft_hook(mlx_key_data_t key,void* param)
         data->player.walk_dir = -1;
     }
     int move_step = data->player.walk_dir * data->player.move_speed;
-    // int new_x, new_y;
     int new_x =  data->real_pos.x + cos(data->player.rota_angle) * move_step; 
     int new_y = data->real_pos.y + sin(data->player.rota_angle) * move_step;
-//     if (data->player.walk_dir == 1) {
-//     new_x = data->real_pos.x + cos(data->player.rota_angle) * move_step;
-//     new_y = data->real_pos.y + sin(data->player.rota_angle) * move_step;
-// }
-// if (data->player.walk_dir == -1) {
-//     new_x = data->real_pos.x - cos(data->player.rota_angle) * move_step;
-//     new_y = data->real_pos.y - sin(data->player.rota_angle) * move_step;
-// }
     if (data->game_env->map && data->game_env->map[new_y / 32] && data->game_env->map[new_y / 32][new_x / 32] != '1')
     {
         data->real_pos.x = new_x;
