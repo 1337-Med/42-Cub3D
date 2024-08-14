@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 21:34:36 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/14 11:19:25 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/14 12:11:50 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,22 +53,14 @@ void	flod_fill_checker(char **map, int *xy, t_wall *wall)
 	else
 		return ;
 }
-int  get_map_lines(char **map)
-{
-	int i = 0;
-	while (map[i])
-	{
-		i++;
-	}
-	return (i);
-}
+
 void	check_map(char **map, t_wall *wall)
 {
 	char	**temp_map = NULL;
 	int		*xy;
 
 	// temp_map = map;
-	int len = get_map_lines(map) + 1;
+	int len = ft_arrsize(map) + 1;
 	temp_map = ft_alloc(sizeof(char *) * len, temp_map, CALLOC);
 	int i = 0;
 	while (map[i])
@@ -77,7 +69,7 @@ void	check_map(char **map, t_wall *wall)
 		i++;
 	}
 	temp_map[i] = NULL;
-	xy = player_position(temp_map);
+	xy = player_position(map); // hayda kanet
 	temp_map[xy[0]][xy[1]] = '0';
 	flod_fill_checker(temp_map, xy, wall);
 }
