@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/14 10:56:19 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/14 11:20:31 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ while (i <= 5)
     //     i++;
     // }
     // mlx_put_pixel(data->image, data->real_pos.x, data->real_pos.y, color);
-    DDA(data->real_pos.x, data->real_pos.y, data->real_pos.x + cos(data->player.rota_angle) * 30, data->real_pos.y + sin(data->player.rota_angle) * 30, data->image);
+    DDA(data->real_pos.x, data->real_pos.y, data->real_pos.x + cos(data->player.rota_angle) * 20, data->real_pos.y + sin(data->player.rota_angle) * 20, data->image);
     // int i = 0;
     // while (i < 5)
     // {
@@ -205,6 +205,12 @@ void ft_hook(mlx_key_data_t key,void* param)
 
 int raycaster(t_game_env *game_env)
 {
+    int i = 0;
+    while (game_env->map[i])
+    {
+        printf("%s\n", game_env->map[i]);
+        i++;
+    }
     t_shared_data data;
     data.game_env = game_env;
     t_player player;
@@ -212,6 +218,7 @@ int raycaster(t_game_env *game_env)
     data.real_pos = get_player_pos(data.game_env->map);
     data.real_pos.x = (data.real_pos.x * 32) + 16;
     data.real_pos.y = (data.real_pos.y * 32) + 16;
+    // printf("the position is %d %d\n", data.p_pos.y, data.p_pos.x);
     player.pos = data.real_pos;
     player.raduis = 3;
     player.walk_dir = 0;
