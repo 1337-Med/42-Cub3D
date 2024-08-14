@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/13 19:54:20 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/14 16:55:10 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,16 @@ int raycaster(t_game_env *game_env);
 
 typedef struct s_p_pos
 {
-	int x;
-	int y;
+	float x;
+	float y;
 } t_p_pos;
 
 typedef struct s_player
 {
 	t_p_pos pos;
-	int raduis;
-	int turn_dir;
-	int walk_dir;
+	float raduis;
+	float turn_dir;
+	float walk_dir;
 	float rota_angle;
 	float move_speed;
 	float rotate_speed;
@@ -81,4 +81,5 @@ typedef struct s_shared_data
 	t_player player;
 } t_shared_data;
 t_p_pos get_player_pos(char **map);
+int degree_to_raidian(float dg);
 # endif

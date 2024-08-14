@@ -6,13 +6,13 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 15:25:01 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/12 21:30:22 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/14 16:53:59 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int degree_to_raidian(int dg)
+int degree_to_raidian(float dg)
 {
     return (dg * (PI / 180));
 }
@@ -27,21 +27,21 @@ t_p_pos get_player_pos(char **map)
 {
     t_p_pos pos;
     pos.y = 0;
-    while (map[pos.y])
+    while (map[(int)pos.y])
     {
         pos.x = 0;
-        while (map[pos.y][pos.x])
+        while (map[(int)pos.y][(int)pos.x])
         {
-            if (map[pos.y][pos.x] == 'N')
+            if (map[(int)pos.y][(int)pos.x] == 'N')
             {
-                printf (" %d %d\n", pos.y , pos.x);
+                // printf (" %d %d\n", pos.y , pos.x);
                 return (pos);
             }
-            if (map[pos.y][pos.x] == 'W')
+            if (map[(int)pos.y][(int)pos.x] == 'W')
                 return (pos);
-            if (map[pos.y][pos.x] == 'E')
+            if (map[(int)pos.y][(int)pos.x] == 'E')
                 return (pos);
-            if (map[pos.y][pos.x] == 'S')
+            if (map[(int)pos.y][(int)pos.x] == 'S')
                 return (pos);
             pos.x++;
         }
