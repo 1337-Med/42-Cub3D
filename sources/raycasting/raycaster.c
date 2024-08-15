@@ -6,272 +6,246 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/14 17:00:11 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/15 12:45:09 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-void DDA(int x1, int y1, int x2, int y2, mlx_image_t* image) {
-    // Calculate dx and dy
-    int dx = x2 - x1;
-    int dy = y2 - y1;
 
-    // Calculate the number of steps required for generating pixels
-    int steps = abs(dx) > abs(dy) ? abs(dx) : abs(dy);
-
-    // Calculate the increment in x & y for each step
-    float x_inc = dx / (float) steps;
-    float y_inc = dy / (float) steps;
-
-    // Initialize starting point
-    float x = x1;
-    float y = y1;
-
-    // Put pixel at starting point
-    mlx_put_pixel(image, round(x), round(y), 0xda000099);
-    // putpixel(round(x), round(y), WHITE);
-
-    // Generate points and plot them
-    for (int i = 0; i < steps; i++) {
-        x += x_inc;
-        y += y_inc;
-        mlx_put_pixel(image, round(x), round(y), 0xda000099);
-    }
-    printf("DDAAAAAAAAA!\n");
-}
-void render_rec(int y, int x, mlx_image_t* image, char c)
+int	create_trgb(unsigned char t, unsigned char r, unsigned char g, unsigned char b)
 {
-    int start_y = y * 32;
-    int start_x = x * 32;
-    int color;
-    if (c == 'W')
-        color = 0xFF0000FF ;
-    else if (c == 'F')
-        color = 0x02f7b2;
+	return (*(int *)(unsigned char [4]){b, g, r, t});
+}
+
+
+void	DDA(int x1, int y1, int x2, int y2, mlx_image_t *image)
+{
+	int		dx;
+	int		dy;
+	int		steps;
+	float	x_inc;
+	float	y_inc;
+	float	x;
+	float	y;
+
+	dx = x2 - x1;
+	dy = y2 - y1;
+	steps = abs(dx) > abs(dy) ? abs(dx) : abs(dy);
+	x_inc = dx / (float)steps;
+	y_inc = dy / (float)steps;
+	x = x1;
+	y = y1;
+	mlx_put_pixel(image, round(x), round(y), 0xFFFFFFFF);
+	for (int i = 0; i < steps; i++)
+	{
+		x += x_inc;
+		y += y_inc;
+		mlx_put_pixel(image, round(x), round(y), 0xFFFFFFFF);
+	}
+	// printf("DDAAAAAAAAA!\n");
+}
+void	render_rec(int y, int x, mlx_image_t *image, char c)
+{
+	int	start_y;
+	int	start_x;
+	int	color;
+	int	i;
+	int	j;
+
+	start_y = y * 32;
+	start_x = x * 32;
+	if (c == 'W')
+		color = 0xFF0000FF;
+	else if (c == 'F')
+		color = 0x02f7b2;
+	i = 0;
+	j = 0;
+	while (i < 32)
+	{
+		j = 0;
+		while (j < 32)
+		{
+			mlx_put_pixel(image, start_x + j, start_y + i, color);
+			j++;
+		}
+		i++;
+	}
+}
+void cast_rays(t_shared_data *data)
+{
+    int column_id = 0;
+    float ray_angle = data->player.rota_angle - (FOV / 2);
+    
     int i = 0;
-    int j = 0;
-    while (i < 32)
+    while (i < NUM_RAYS)
     {
-        j = 0;
-        while (j < 32)
-        {
-            mlx_put_pixel(image, start_x + j, start_y + i, color);
-            j++;
-        }
+        DDA(data->real_pos.x, data->real_pos.y, data->real_pos.x + cos(ray_angle) * 50, data->real_pos.y + sin(ray_angle) * 50, data->image);
+        ray_angle += FOV / NUM_RAYS;
         i++;
+        column_id++;
     }
 }
+void	render_player(t_shared_data *data)
+{
+	int	color;
+	int	i;
+	int	j;
 
-int ft_round(float a)
-{   
-    // float fractional_part = a - (int)a;
-    // if (fractional_part >= 0.5)
-        return ((int)a + 1);
-    // else
-        // return ((int)a);
+	color = 0xFFFFFFFF;
+	i = -5;
+	j = -5;
+	while (i <= 5)
+	{
+		j = -5;
+		while (j <= 5)
+		{
+			mlx_put_pixel(data->image, data->real_pos.x + j, data->real_pos.y
+				+ i, color);
+			j++;
+		}
+		i++;
+	}
+    cast_rays(data);
+	// DDA(data->real_pos.x, data->real_pos.y, data->real_pos.x
+	// 	+ cos((data->player.rota_angle)) * 20, data->real_pos.y
+	// 	+ sin((data->player.rota_angle)) * 20, data->image);
 }
 
-void render_player(t_shared_data *data)
+void	rander_map(t_shared_data *data)
 {
-    int color = 0xFFFFFFFF;
-//     // printf ("p pos %d %d\n", data->real_pos., x);
-    int i = -5;
-int j = -5;
+	int	x;
+	int	y;
 
-while (i <= 5)
-{
-    j = -5;
-    while (j <= 5)
-    {
-        mlx_put_pixel(data->image, data->real_pos.x + j, data->real_pos.y + i, color);
-        j++;
-    }
-    i++;
+	x = 0;
+	y = 0;
+	while (data->game_env->map[y])
+	{
+		x = 0;
+		while (data->game_env->map[y][x])
+		{
+			if (data->game_env->map[y][x] == '1')
+				render_rec(y, x, data->image, 'W');
+			if (data->game_env->map[y][x] == '0'
+				|| data->game_env->map[y][x] == 'N')
+			{
+				render_rec(y, x, data->image, 'F');
+			}
+			x++;
+		}
+		y++;
+	}
+	render_player(data);
 }
 
-    // i = 0;
-    // while (i < 5)
-    // {
-    //     j = 0;
-    //     while (j < 5)
-    //     {
-    //         mlx_put_pixel(data->image, data->real_pos.x + j, data->real_pos.y + i, color);
-    //         j++;
-    //     }
-    //     i++;
-    // }
-    
-    // mlx_put_pixel(data->image, data->real_pos.x, data->real_pos.y, color);
-    DDA(data->real_pos.x, data->real_pos.y, data->real_pos.x + cos((data->player.rota_angle)) * 20, data->real_pos.y + sin((data->player.rota_angle)) * 20, data->image);
-    // int i = 0;
-    // while (i < 5)
-    // {
-    //     mlx_put_pixel(image, x + i, y,  0xFF0000FF);
-    //     i++;
-    // }
-}
-// int pix_checker(float y, float x, t_shared_data *data)
-// {
-//      int move_step = data->player.walk_dir * data->player.move_speed;
-//     float n_x = x + cos(data->player.rota_angle) * move_step;
-//     float n_y = y + sin(data->player.rota_angle)* move_step;
-//     int m_x = (int )floor(n_x / 32.0);
-//     int m_y = (int )floor(n_y / 32.0);
-//     if (data->game_env->map[m_y][m_x] != '1')
-//         return (1);
-//     return (0);
-// }
-void rander_map (t_shared_data *data)
+void	ft_hook(mlx_key_data_t key, void *param)
 {
-    int x = 0;
-    int y = 0;
-    while (data->game_env->map[y])
-    {
-        x = 0;
-        while (data->game_env->map[y][x])
-        {
-            if (data->game_env->map[y][x] == '1')
-                render_rec(y, x, data->image, 'W');
-            if (data->game_env->map[y][x] == '0' || data->game_env->map[y][x] == 'N')
-            {
-                render_rec(y, x, data->image, 'F');
-            }
-            x++;
-        }
-        y++;
-    }
-    render_player(data);
-}
+	t_shared_data	*data;
+	float			move_step;
+	int				r_x;
+	int				r_y;
+	int				test_x;
+	int				test_y;
 
-void ft_hook(mlx_key_data_t key,void* param)
-{
-    float new_x ,new_y;
-    t_shared_data *data = param;
-    // t_p_pos pos = data->p_pos;
-    // int move_step = data->player.move_speed;
-    
+	float new_x, new_y;
+	data = param;
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(data->mlx);
-    if (key.key == MLX_KEY_RIGHT && key.action == MLX_RELEASE)
-    {
-        data->player.turn_dir = 0;
-    }
-    if (key.key == MLX_KEY_LEFT && key.action == MLX_RELEASE)
-    {
-        data->player.turn_dir = 0;
-    }
-    if (key.key == MLX_KEY_RIGHT && mlx_is_key_down(data->mlx, MLX_KEY_RIGHT))
-    {
-        data->player.turn_dir = 1;
-        // data->player.rota_angle += 2 * data->player.rotate_speed;
-        // // data->player.rota_angle *= data->player.rotate_speed;
-        // if (data->player.rota_angle >= 360)
-        // {
-        //     data->player.rota_angle = data->player.rota_angle - 360;
-        // }
-        // render_player(data);
-    }
-    if (key.key == MLX_KEY_LEFT && mlx_is_key_down(data->mlx, MLX_KEY_LEFT))
-    {
-        data->player.turn_dir = -1;
-        // data->player.rota_angle -= 2 * data->player.rotate_speed;
-        // // data->player.rota_angle *= data->player.rotate_speed;
-        // if (data->player.rota_angle <= 0)
-        // {
-        //     data->player.rota_angle += 360;
-        // }
-    }
-    if (key.key == MLX_KEY_S && key.action == MLX_RELEASE)
-    {
-        data->player.walk_dir = 0;
-    }
-    if (key.key == MLX_KEY_W && key.action == MLX_RELEASE)
-    {
-        data->player.walk_dir = 0;
-    }
-    // data->player.rota_angle += data->player.turn_dir * data->player.rotate_speed;
-    if (key.key == MLX_KEY_W && mlx_is_key_down(data->mlx, MLX_KEY_W))
-    {
-        // new_x =  data->real_pos.x + (cos(data->player.rota_angle) * move_step); 
-        // new_y = data->real_pos.y + (sin(data->player.rota_angle) * move_step);
-        data->player.walk_dir = 1;
-    }
-    if (key.key == MLX_KEY_S && mlx_is_key_down(data->mlx, MLX_KEY_S))
-    {
-        // printf ("DOWN\n");
-        // new_x =  data->real_pos.x - (cos(data->player.rota_angle) * move_step); 
-        // new_y = data->real_pos.y - (sin(data->player.rota_angle) * move_step);
-        data->player.walk_dir = -1;
-    }
-    data->player.rota_angle += (float)data->player.turn_dir * data->player.rotate_speed;
-    float move_step = (float)data->player.walk_dir * data->player.move_speed;
-    new_x =  (float)data->real_pos.x + cos((data->player.rota_angle)) * (float)move_step; 
-    new_y = (float)data->real_pos.y + sin((data->player.rota_angle)) * (float)move_step;
-    int r_x = floor(new_x / 32.0);
-    int r_y = floor(new_y / 32.0);
-    // printf("the r_y %d the r_x %d map %c\n", r_y, r_x, data->game_env->map[r_y][r_x]);
-    int test_x = data->real_pos.x / 32;
-    int test_y = data->real_pos.y / 32;
-    // printf("the news %d %d %c %c\n", test_x, test_y, data->game_env->map[r_y][test_x], data->game_env->map[test_y][r_x]);
-    // printf ("t")
-    // if (data->game_env->map && data->game_env->map[r_y] && data->game_env->map[r_y][r_x] != '1' && pix_checker(new_y, new_x, data))
-    // if (data->game_env->map && data->game_env->map[ft_round((new_y / 32.0))] && data->game_env->map[ft_round(new_y / 32.0)][ft_round(new_x / 32.0)] != '1')
-    if ((data->game_env->map[r_y][test_x] != '1' || data->game_env->map[test_y][r_x] != '1') && data->game_env->map[r_y][r_x] != '1')
-    {
-        // printf("YES\n");
-        printf("HEEEEELL YEAH\n");
-        data->real_pos.x = new_x;
-        data->real_pos.y = new_y;
-        
-    }
-    printf("angle is %.2f\n", data->player.rota_angle);
-    // printf("the walk dir is %d the turn dir is %d\n", data->player.walk_dir, data->player.turn_dir);
-    // printf("ROTATION ANGLE IS %.2f\n", data->player.rota_angle);
-    rander_map(data);
+	if (key.key == MLX_KEY_RIGHT && key.action == MLX_RELEASE)
+	{
+		data->player.turn_dir = 0;
+	}
+	if (key.key == MLX_KEY_LEFT && key.action == MLX_RELEASE)
+	{
+		data->player.turn_dir = 0;
+	}
+	if (key.key == MLX_KEY_RIGHT && mlx_is_key_down(data->mlx, MLX_KEY_RIGHT))
+	{
+		data->player.turn_dir = 1;
+	}
+	if (key.key == MLX_KEY_LEFT && mlx_is_key_down(data->mlx, MLX_KEY_LEFT))
+	{
+		data->player.turn_dir = -1;
+	}
+	if (key.key == MLX_KEY_S && key.action == MLX_RELEASE)
+	{
+		data->player.walk_dir = 0;
+	}
+	if (key.key == MLX_KEY_W && key.action == MLX_RELEASE)
+	{
+		data->player.walk_dir = 0;
+	}
+	if (key.key == MLX_KEY_W && mlx_is_key_down(data->mlx, MLX_KEY_W))
+	{
+		data->player.walk_dir = 1;
+	}
+	if (key.key == MLX_KEY_S && mlx_is_key_down(data->mlx, MLX_KEY_S))
+	{
+		data->player.walk_dir = -1;
+	}
+	data->player.rota_angle += (float)data->player.turn_dir
+		* data->player.rotate_speed;
+	move_step = (float)data->player.walk_dir * data->player.move_speed;
+	new_x = (float)data->real_pos.x + cos((data->player.rota_angle))
+		* (float)move_step;
+	new_y = (float)data->real_pos.y + sin((data->player.rota_angle))
+		* (float)move_step;
+	r_x = floor(new_x / 32.0);
+	r_y = floor(new_y / 32.0);
+	test_x = data->real_pos.x / 32;
+	test_y = data->real_pos.y / 32;
+	if ((data->game_env->map[r_y][test_x] != '1'
+			|| data->game_env->map[test_y][r_x] != '1')
+		&& data->game_env->map[r_y][r_x] != '1')
+	{
+		printf("HEEEEELL YEAH\n");
+		data->real_pos.x = new_x;
+		data->real_pos.y = new_y;
+	}
+	printf("angle is %.2f\n", data->player.rota_angle);
+	rander_map(data);
 }
 
-int raycaster(t_game_env *game_env)
+int	raycaster(t_game_env *game_env)
 {
-    t_shared_data data;
-    data.game_env = game_env;
-    t_player player;
-    data.p_pos =  get_player_pos(data.game_env->map);
-    data.real_pos = get_player_pos(data.game_env->map);
-    data.real_pos.x = (data.real_pos.x * 32) + 16;
-    data.real_pos.y = (data.real_pos.y * 32) + 16;
-    // printf("the position is %d %d\n", data.p_pos.y, data.p_pos.x);
-    player.pos = data.real_pos;
-    player.raduis = 3;
-    player.walk_dir = 0;
-    player.turn_dir = 0;
-    player.rota_angle = PI / 2;
-    player.move_speed = 4;
-    // player.rotate_speed = 2;
-    player.rotate_speed = 4 * (PI / 180);
-    data.player = player;
-    data.mlx = NULL;
-    data.image = NULL;
-    if (!(data.mlx = mlx_init(5120, 2880, "Cub3d", true)))
+	t_shared_data	data;
+	t_player		player;
+
+	data.game_env = game_env;
+	data.p_pos = get_player_pos(data.game_env->map);
+	data.real_pos = get_player_pos(data.game_env->map);
+	data.real_pos.x = (data.real_pos.x * 32) + 16;
+	data.real_pos.y = (data.real_pos.y * 32) + 16;
+	player.pos = data.real_pos;
+	player.raduis = 3;
+	player.walk_dir = 0;
+	player.turn_dir = 0;
+	player.rota_angle = PI / 2;
+	player.move_speed = 4;
+	player.rotate_speed = 4 * (PI / 180);
+	data.player = player;
+	data.mlx = NULL;
+	data.image = NULL;
+	if (!(data.mlx = mlx_init(WIDTH, HEIGHT, "Cub3d", true)))
 	{
 		puts(mlx_strerror(mlx_errno));
-		return(EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	}
-	if (!(data.image = mlx_new_image(data.mlx, 5120, 2880)))
+	if (!(data.image = mlx_new_image(data.mlx, WIDTH, HEIGHT)))
 	{
 		mlx_close_window(data.mlx);
 		puts(mlx_strerror(mlx_errno));
-		return(EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	}
 	if (mlx_image_to_window(data.mlx, data.image, 0, 0) == -1)
 	{
 		mlx_close_window(data.mlx);
 		puts(mlx_strerror(mlx_errno));
-		return(EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	}
-    rander_map(&data);
-    mlx_key_hook(data.mlx, ft_hook, &data);
-    mlx_loop(data.mlx);
+	rander_map(&data);
+	mlx_key_hook(data.mlx, ft_hook, &data);
+	mlx_loop(data.mlx);
 	mlx_terminate(data.mlx);
 	return (EXIT_SUCCESS);
-    return 0;
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/14 16:55:10 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/15 12:35:52 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,13 @@ typedef struct s_wall
 	mlx_texture_t* east;
 } t_wall;
 
+#define WALL_WIDTH 340
+#define PI 3.14159265358979323846
+// #define NUM_RAYS 320
+# define FOV (60 * (PI / 180))
+# define WIDTH 5120
+# define HEIGHT 2880
+# define NUM_RAYS (WIDTH / WALL_WIDTH)
 typedef struct s_game_env
 {
 	char	**map;
@@ -51,8 +58,6 @@ void free_texture(t_wall *wall);
 t_game_env *parser(int ac, char **av);
 int raycaster(t_game_env *game_env);
 
-#define PI 3.14159265358979323846
-#define NUM_RAYS 320
 
 typedef struct s_p_pos
 {
