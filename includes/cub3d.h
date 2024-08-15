@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/15 12:35:52 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/15 16:28:09 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,12 @@ typedef struct s_player
 	float rotate_speed;
 } t_player;
 
+typedef struct s_ray
+{
+	float intrsc;
+	float angle;
+	int columnd_id;
+} t_rays;
 typedef struct s_shared_data
 {
 	t_game_env *game_env;
@@ -84,6 +90,7 @@ typedef struct s_shared_data
 	t_p_pos p_pos;
 	t_p_pos real_pos;
 	t_player player;
+	t_rays *rays;
 } t_shared_data;
 t_p_pos get_player_pos(char **map);
 int degree_to_raidian(float dg);

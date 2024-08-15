@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/15 12:45:09 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/15 16:40:56 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	DDA(int x1, int y1, int x2, int y2, mlx_image_t *image)
 		y += y_inc;
 		mlx_put_pixel(image, round(x), round(y), 0xFFFFFFFF);
 	}
-	// printf("DDAAAAAAAAA!\n");
 }
 void	render_rec(int y, int x, mlx_image_t *image, char c)
 {
@@ -71,18 +70,30 @@ void	render_rec(int y, int x, mlx_image_t *image, char c)
 		i++;
 	}
 }
+
+void  create_rays(t_shared_data *data)
+{
+	int i = 0;
+	int column_id = 0;
+    float ray_angle = data->player.rota_angle - (FOV / 2);
+	data->rays = ft_alloc(sizeof(t_rays) * (NUM_RAYS + 1), data->rays, CALLOC);
+	while (i < NUM_RAYS)
+	{
+		data->rays[i].angle = ray_angle;
+		data->rays[i].columnd_id = column_id;
+		i++;
+		ray_angle += FOV / NUM_RAYS;
+		column_id++;
+	}
+}
+
 void cast_rays(t_shared_data *data)
 {
-    int column_id = 0;
-    float ray_angle = data->player.rota_angle - (FOV / 2);
-    
     int i = 0;
     while (i < NUM_RAYS)
     {
-        DDA(data->real_pos.x, data->real_pos.y, data->real_pos.x + cos(ray_angle) * 50, data->real_pos.y + sin(ray_angle) * 50, data->image);
-        ray_angle += FOV / NUM_RAYS;
+        DDA(data->real_pos.x, data->real_pos.y, data->real_pos.x + cos(data->rays[i].angle) * 32, data->real_pos.y + sin(data->rays[i].angle) * 32, data->image);
         i++;
-        column_id++;
     }
 }
 void	render_player(t_shared_data *data)
@@ -105,10 +116,11 @@ void	render_player(t_shared_data *data)
 		}
 		i++;
 	}
+	create_rays(data);
     cast_rays(data);
-	// DDA(data->real_pos.x, data->real_pos.y, data->real_pos.x
-	// 	+ cos((data->player.rota_angle)) * 20, data->real_pos.y
-	// 	+ sin((data->player.rota_angle)) * 20, data->image);
+	DDA(data->real_pos.x, data->real_pos.y, data->real_pos.x
+		+ cos((data->player.rota_angle)) * 32, data->real_pos.y
+		+ sin((data->player.rota_angle)) * 32, data->image);
 }
 
 void	rander_map(t_shared_data *data)
@@ -197,11 +209,9 @@ void	ft_hook(mlx_key_data_t key, void *param)
 			|| data->game_env->map[test_y][r_x] != '1')
 		&& data->game_env->map[r_y][r_x] != '1')
 	{
-		printf("HEEEEELL YEAH\n");
 		data->real_pos.x = new_x;
 		data->real_pos.y = new_y;
 	}
-	printf("angle is %.2f\n", data->player.rota_angle);
 	rander_map(data);
 }
 
@@ -210,6 +220,7 @@ int	raycaster(t_game_env *game_env)
 	t_shared_data	data;
 	t_player		player;
 
+	data.rays = NULL;
 	data.game_env = game_env;
 	data.p_pos = get_player_pos(data.game_env->map);
 	data.real_pos = get_player_pos(data.game_env->map);
