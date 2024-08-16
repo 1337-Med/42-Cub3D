@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/15 12:45:09 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/16 19:24:59 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,20 @@ int	create_trgb(unsigned char t, unsigned char r, unsigned char g, unsigned char
 {
 	return (*(int *)(unsigned char [4]){b, g, r, t});
 }
-
+float distance_two_p(float x1, float y1, float x2, float y2)
+{
+	return (sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
+}
+float norm_angle(float angle)
+{
+	
+	angle = fmod (angle, (2 * PI));
+	if (angle < 0)
+	{
+		angle = (PI * 2) + angle;
+	}
+	return (angle);
+}
 
 void	DDA(int x1, int y1, int x2, int y2, mlx_image_t *image)
 {
@@ -42,7 +55,6 @@ void	DDA(int x1, int y1, int x2, int y2, mlx_image_t *image)
 		y += y_inc;
 		mlx_put_pixel(image, round(x), round(y), 0xFFFFFFFF);
 	}
-	// printf("DDAAAAAAAAA!\n");
 }
 void	render_rec(int y, int x, mlx_image_t *image, char c)
 {
@@ -71,19 +83,183 @@ void	render_rec(int y, int x, mlx_image_t *image, char c)
 		i++;
 	}
 }
+
+void  create_rays(t_shared_data *data)
+{
+	int i = 0;
+	int column_id = 0;
+    float ray_angle = norm_angle(data->player.rota_angle) - (FOV / 2);
+	printf("the angle is %2.f\n", ray_angle);
+	// if (!data->rays)
+	data->rays = ft_alloc(sizeof(t_rays) * (NUM_RAYS + 1), data->rays, CALLOC);
+	while (i < 1)
+	{
+		data->rays[i].angle = ray_angle;
+		data->rays[i].wall_hit_x = 0;
+		data->rays[i].wall_hit_y = 0;
+		data->rays[i].distance = 0;
+		data->rays[i].columnd_id = column_id;
+		if (data->rays[i].angle > 0 && data->rays[i].angle < PI)
+		{
+			data->rays[i].ray_down = true;
+			printf ("DOWN RAY\n");
+		}
+		data->rays[i].ray_up = !data->rays[i].ray_down;
+		if (data->rays[i].angle < PI * 0.5 || data->rays[i].angle > 1.5 * PI)
+		{
+			printf("RIGHT\n");
+			data->rays[i].ray_right = true;
+		}
+		data->rays[i].ray_left = !data->rays[i].ray_right;
+		i++;
+		ray_angle += FOV / NUM_RAYS;
+		column_id++;
+	}
+		printf ("the new one is %f\n", data->rays[0].angle);
+}
+
+void render_rays(t_shared_data *data)
+{
+    int i = 0;
+    while (i < 1)
+    {
+        DDA(data->real_pos.x, data->real_pos.y, data->real_pos.x + cos(data->rays[i].angle) * 32, data->real_pos.y + sin(data->rays[i].angle) * 32, data->image);
+        i++;
+    }
+}
+void get_vertical_inter(t_shared_data *data, int i)
+{
+	printf("I IS _________________________________%d\n", i);
+	float inter_x;
+	float inter_y;
+	float step_x;
+	float step_y;
+	float old_x;
+	float old_y;
+	inter_x = floor(data->real_pos.y / 32) * 32;
+	if (data->rays[i].ray_right)
+		inter_x += 32;
+	inter_y = data->real_pos.y + (data->real_pos.x - inter_x) * tan(data->rays[i].angle);
+	step_x = 32;
+	if (data->rays[i].ray_left)
+		step_x = -step_x;
+	step_y = 32 * tan(data->rays[i].angle);
+	if (data->rays[i].ray_up && step_y > 0)
+	{
+
+		// printf("FIRST IF JUST ENTRED \n");
+		// exit (0);
+		step_y = -step_y;
+	}
+	 if (data->rays[i].ray_down && step_y < 0)
+	 {
+		printf("SECOND IF JUST ENTRED \n");
+		step_y = -step_y;
+	 }
+	if (data->rays[i].ray_left)
+		inter_x--;
+	
+	while (inter_y > 0 && inter_x > 0 && inter_y < HEIGHT && inter_x < WIDTH)
+	{
+		int map_y = (int)(inter_y / 32);
+        int map_x = (int)(inter_x / 32);
+
+        if (map_y < 0 || map_y >= (int )ft_arrsize(data->game_env->map) || map_x < 0 || map_x >= (int )ft_strlen(data->game_env->map[map_y]))
+		{
+			inter_y += step_y;
+			inter_x +=  step_x;
+            continue;
+		}
+        old_y = inter_y;
+        old_x = inter_x;
+        if (data->game_env->map[map_y] && data->game_env->map[map_y][map_x] == '1')
+        {
+			data->rays[i].vert_x = inter_x;
+			data->rays[i].vert_y = inter_y;
+            // DDA(data->real_pos.x, data->real_pos.y, inter_x, inter_y, data->image);
+            printf("Wall hit at: %f %f, angle: %.2f\n", inter_x, inter_y, data->rays[i].angle);
+            break;
+        }
+		inter_y += step_y;
+		inter_x +=  step_x;
+	}
+	printf("ended\n");
+}
+void get_horizontal_inter(t_shared_data *data, int i)
+{
+	printf("I IS _________________________________%d\n", i);
+
+	float inter_x;
+	float inter_y;
+	float step_x;
+	float step_y;
+	float horz_x;
+	float horz_y;
+	inter_y = floor(data->real_pos.y / 32) * 32;
+	if (data->rays[i].ray_down)
+		inter_y += 32;
+	inter_x = data->real_pos.x + (data->real_pos.y - inter_y) / tan(data->rays[i].angle);
+	printf ("inter x %f inter y %f\n", inter_x, inter_y);
+	step_y = 32;
+	if (data->rays[i].ray_up)
+	{
+		printf("STEP_Y\n");
+		step_y = -step_y;
+	}
+	step_x = 32 / tan(data->rays[i].angle);
+	if (data->rays[i].ray_left && step_x >= 0)
+	{
+		printf("FIRST IF JUST ENTRED \n");
+		// exit (0);
+		step_x = -step_x;
+	}
+	if (data->rays[i].ray_right && step_x < 0)
+	{
+		printf("SECOND IF JUST ENTRED \n");
+		step_x = -step_x;
+	}
+	if (data->rays[i].ray_up)
+		inter_y--;
+	printf("BEFORE THE WHILE  hit at: %f %f, angle: %.2f\n", inter_x, inter_y, data->rays[i].angle);
+	while (inter_y > 0 && inter_x > 0 && inter_y < HEIGHT && inter_x < WIDTH && data->game_env->map[(int)inter_y / 32])
+	{
+		int map_y = (int)(inter_y / 32);
+        int map_x = (int)(inter_x / 32);
+        if (map_y < 0 || map_y >= (int )ft_arrsize(data->game_env->map) || map_x < 0 || map_x > (int )ft_strlen(data->game_env->map[map_y]))
+		{
+			inter_y += step_y;
+			inter_x +=  step_x;
+            continue;
+		}
+        if (data->game_env->map[map_y] && data->game_env->map[map_y][map_x] == '1')
+        {
+			data->rays[i].horiz_x = inter_x;
+			data->rays[i].horiz_y = inter_y;
+            // DDA(data->real_pos.x, data->real_pos.y, inter_x, inter_y, data->image);
+            printf("Wall hit at: %f %f, angle: %.2f\n", inter_x, inter_y, data->rays[i].angle);
+            break;
+        }
+		inter_y += step_y;
+		inter_x +=  step_x;
+	}
+}
+
 void cast_rays(t_shared_data *data)
 {
-    int column_id = 0;
-    float ray_angle = data->player.rota_angle - (FOV / 2);
-    
-    int i = 0;
-    while (i < NUM_RAYS)
-    {
-        DDA(data->real_pos.x, data->real_pos.y, data->real_pos.x + cos(ray_angle) * 50, data->real_pos.y + sin(ray_angle) * 50, data->image);
-        ray_angle += FOV / NUM_RAYS;
-        i++;
-        column_id++;
-    }
+	int i = 0;
+	while (i < 1)
+	{
+		get_horizontal_inter(data, i);
+		float horz = distance_two_p(data->real_pos.x, data->real_pos.y, data->rays[i].horiz_x, data->rays[i].horiz_y);
+		get_vertical_inter(data, i);
+		float vertical = distance_two_p(data->real_pos.x, data->real_pos.y, data->rays[i].vert_x, data->rays[i].vert_y);
+		printf ("vertical %.2f horiz %.2f\n", vertical, horz);
+		if (horz < vertical)
+			DDA(data->real_pos.x, data->real_pos.y, data->rays[i].horiz_x, data->rays[i].horiz_y, data->image);
+		else
+			DDA(data->real_pos.x, data->real_pos.y, data->rays[i].vert_x, data->rays[i].vert_y, data->image);
+		i++;
+	}
 }
 void	render_player(t_shared_data *data)
 {
@@ -105,10 +281,12 @@ void	render_player(t_shared_data *data)
 		}
 		i++;
 	}
-    cast_rays(data);
-	// DDA(data->real_pos.x, data->real_pos.y, data->real_pos.x
-	// 	+ cos((data->player.rota_angle)) * 20, data->real_pos.y
-	// 	+ sin((data->player.rota_angle)) * 20, data->image);
+	create_rays(data);
+	cast_rays(data);
+    // render_rays(data);
+	DDA(data->real_pos.x, data->real_pos.y, data->real_pos.x
+		+ cos((data->player.rota_angle)) * 32, data->real_pos.y
+		+ sin((data->player.rota_angle)) * 32, data->image);
 }
 
 void	rander_map(t_shared_data *data)
@@ -184,6 +362,7 @@ void	ft_hook(mlx_key_data_t key, void *param)
 	}
 	data->player.rota_angle += (float)data->player.turn_dir
 		* data->player.rotate_speed;
+	data->player.rota_angle = norm_angle(data->player.rota_angle);
 	move_step = (float)data->player.walk_dir * data->player.move_speed;
 	new_x = (float)data->real_pos.x + cos((data->player.rota_angle))
 		* (float)move_step;
@@ -197,11 +376,9 @@ void	ft_hook(mlx_key_data_t key, void *param)
 			|| data->game_env->map[test_y][r_x] != '1')
 		&& data->game_env->map[r_y][r_x] != '1')
 	{
-		printf("HEEEEELL YEAH\n");
 		data->real_pos.x = new_x;
 		data->real_pos.y = new_y;
 	}
-	printf("angle is %.2f\n", data->player.rota_angle);
 	rander_map(data);
 }
 
@@ -210,6 +387,7 @@ int	raycaster(t_game_env *game_env)
 	t_shared_data	data;
 	t_player		player;
 
+	data.rays = NULL;
 	data.game_env = game_env;
 	data.p_pos = get_player_pos(data.game_env->map);
 	data.real_pos = get_player_pos(data.game_env->map);
@@ -242,6 +420,7 @@ int	raycaster(t_game_env *game_env)
 		puts(mlx_strerror(mlx_errno));
 		return (EXIT_FAILURE);
 	}
+	// create_rays(&data);
 	rander_map(&data);
 	mlx_key_hook(data.mlx, ft_hook, &data);
 	mlx_loop(data.mlx);
