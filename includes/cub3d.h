@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/15 16:28:09 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/16 18:14:32 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,19 @@ typedef struct s_player
 
 typedef struct s_ray
 {
-	float intrsc;
+	float horiz_x;
+	float horiz_y;
+	float vert_x;
+	float vert_y;
+	float wall_hit_x;
+	float wall_hit_y;
 	float angle;
+	float distance;
 	int columnd_id;
+	bool ray_up;
+	bool ray_down;
+	bool ray_right;
+	bool ray_left;
 } t_rays;
 typedef struct s_shared_data
 {
