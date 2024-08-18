@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/18 16:06:31 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/18 16:45:01 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ void get_vertical_inter(t_shared_data *data, int i)
 		}
 		if (data->game_env->map[map_y])
 		{
-			if ((data->game_env->map[(int )floor(old_y / 32)][map_x] == '1' && data->game_env->map[map_y][(int )floor(old_y / 32)] == '1') || data->game_env->map[map_y][map_x] == '1')
+			if (data->game_env->map[map_y] && data->game_env->map[map_y][map_x] == '1')
 			{
 				data->rays[i].vert_x = inter_x;
 				data->rays[i].vert_y = inter_y;
@@ -226,11 +226,17 @@ void cast_rays(t_shared_data *data)
 		float horz = distance_two_p(data->real_pos.x, data->real_pos.y, data->rays[i].horiz_x, data->rays[i].horiz_y);
 		get_vertical_inter(data, i);
 		float vertical = distance_two_p(data->real_pos.x, data->real_pos.y, data->rays[i].vert_x, data->rays[i].vert_y);
-		// printf ("vertical %.2f horiz %.2f\n", vertical, horz);
 		if (horz < vertical)
+		{
+			data->rays[i].distance = horz;
 			DDA(data->real_pos.x, data->real_pos.y, data->rays[i].horiz_x, data->rays[i].horiz_y, data->image);
+		}
 		else
+		{
+			data->rays[i].distance = vertical;
 			DDA(data->real_pos.x, data->real_pos.y, data->rays[i].vert_x, data->rays[i].vert_y, data->image);
+		}
+		
 		i++;
 	}
 }
@@ -376,7 +382,7 @@ int	raycaster(t_game_env *game_env)
 	data.player = player;
 	data.mlx = NULL;
 	data.image = NULL;
-	if (!(data.mlx = mlx_init(WIDTH, HEIGHT, "Cub3d", true)))
+	if (!(data.mlx = mlx_init(WIDTH, HEIGHT, "Cub3d", false)))
 	{
 		puts(mlx_strerror(mlx_errno));
 		return (EXIT_FAILURE);
