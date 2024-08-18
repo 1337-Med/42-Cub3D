@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/18 15:51:55 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/18 16:37:09 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ typedef struct s_wall
 	mlx_texture_t* east;
 } t_wall;
 
-#define WALL_WIDTH 100
+#define WALL_WIDTH 1
 #define PI 3.14159265358979323846
 // #define NUM_RAYS 320
 # define FOV (60 * (PI / 180))
-# define WIDTH 5120
-# define HEIGHT 2880
+# define WIDTH 2000
+# define HEIGHT 1000
 # define NUM_RAYS (WIDTH / WALL_WIDTH)
 typedef struct s_game_env
 {
