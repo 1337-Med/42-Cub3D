@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/18 16:37:09 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/19 19:30:51 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef struct s_wall
 	mlx_texture_t* west;
 	mlx_texture_t* east;
 } t_wall;
-
+#define MINI_FACTOR 1
 #define WALL_WIDTH 1
 #define PI 3.14159265358979323846
 // #define NUM_RAYS 320
@@ -80,6 +80,7 @@ typedef struct s_ray
 {
 	float horiz_x;
 	float horiz_y;
+	t_p_pos ray_p;
 	float vert_x;
 	float vert_y;
 	float wall_hit_x;
