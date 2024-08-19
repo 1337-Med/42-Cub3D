@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/19 14:49:32 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/19 14:53:16 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -427,5 +427,5 @@ int	raycaster(t_game_env *game_env)
 	mlx_loop(data.mlx);
 	mlx_terminate(data.mlx);
 	return (EXIT_SUCCESS);
-	return (0);
+	return (0); 
 }
