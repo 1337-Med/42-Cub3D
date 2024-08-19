@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/19 13:09:09 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/19 14:49:32 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	DDA(float x1, float y1, float x2, float y2, mlx_image_t *image)
 	y_inc = dy / (float)steps;
 	x = x1;
 	y = y1;
-	// printf("X:%f Y:%f\n",x2, y2);
 	mlx_put_pixel(image, round(x), round(y), 0xFFFFFFFF);
 	for (int i = 0; i < steps; i++)
 	{
