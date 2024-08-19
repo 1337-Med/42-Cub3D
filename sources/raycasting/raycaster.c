@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/18 16:45:01 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/19 13:09:09 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	DDA(float x1, float y1, float x2, float y2, mlx_image_t *image)
 	y_inc = dy / (float)steps;
 	x = x1;
 	y = y1;
-	printf("X:%f Y:%f\n",x2, y2);
+	// printf("X:%f Y:%f\n",x2, y2);
 	mlx_put_pixel(image, round(x), round(y), 0xFFFFFFFF);
 	for (int i = 0; i < steps; i++)
 	{
@@ -98,10 +98,10 @@ void  create_rays(t_shared_data *data)
 		data->rays[i].wall_hit_y = 0;
 		data->rays[i].distance = 0;
 		data->rays[i].columnd_id = column_id;
-		if (data->rays[i].angle > 0 && data->rays[i].angle < PI)
+		if (data->rays[i].angle >= 0 && data->rays[i].angle < PI)
 			data->rays[i].ray_down = true;
 		data->rays[i].ray_up = !data->rays[i].ray_down;
-		if (data->rays[i].angle < PI * 0.5 || data->rays[i].angle > 1.5 * PI)
+		if (data->rays[i].angle <= PI * 0.5 || data->rays[i].angle > 1.5 * PI)
 			data->rays[i].ray_right = true;
 		data->rays[i].ray_left = !data->rays[i].ray_right;
 		i++;
@@ -127,11 +127,12 @@ void get_vertical_inter(t_shared_data *data, int i)
 	float step_y;
 	float old_x;
 	float old_y;
+	float touch_x;
 	inter_x = floor(data->real_pos.x / 32) * 32;
 	if (data->rays[i].ray_right)
 		inter_x += 32;
 	inter_y = data->real_pos.y + ((inter_x - data->real_pos.x) * tan(data->rays[i].angle));
-	printf ("inter y %2.f\n", inter_y);
+	// printf ("inter y %2.f\n", inter_y);
 	step_x = 32;
 	if (data->rays[i].ray_left)
 		step_x = -step_x;
@@ -140,14 +141,17 @@ void get_vertical_inter(t_shared_data *data, int i)
 		step_y = -step_y;
 	if (data->rays[i].ray_down && step_y < 0)
 		step_y = -step_y;
-	if (data->rays[i].ray_left)
-		inter_x--;
+	// if (data->rays[i].ray_left)
+	// 	inter_x--;
 	old_x = inter_x;
 	old_y = inter_y;
 	while (inter_y > 0 && inter_x > 0 && inter_y < HEIGHT && inter_x < WIDTH)
 	{
+		touch_x = inter_x;
+		if (data->rays[i].ray_left)
+			touch_x--;
 		int map_y = (int)floor((inter_y / 32));
-        int map_x = (int)floor((inter_x / 32));
+        int map_x = (int)floor((touch_x / 32));
         if (map_y < 0 || map_y >= (int )ft_arrsize(data->game_env->map) || map_x < 0 || map_x >= (int )ft_strlen(data->game_env->map[map_y]))
 		{
 			inter_y += step_y;
@@ -156,7 +160,8 @@ void get_vertical_inter(t_shared_data *data, int i)
 		}
 		if (data->game_env->map[map_y])
 		{
-			if (data->game_env->map[map_y] && data->game_env->map[map_y][map_x] == '1')
+			// if ((data->game_env->map[(int )floor(old_y / 32)][map_x] == '1' && data->game_env->map[map_y][(int )floor(old_x / 32)] == '1') || data->game_env->map[map_y][map_x] == '1')
+			if (data->game_env->map[map_y][map_x] == '1')
 			{
 				data->rays[i].vert_x = inter_x;
 				data->rays[i].vert_y = inter_y;
@@ -178,6 +183,7 @@ void get_horizontal_inter(t_shared_data *data, int i)
 	float step_y;
 	float old_x;
 	float old_y;
+	float touch_y;
 	inter_y = floor(data->real_pos.y / 32) * 32;
 	inter_y += data->rays[i].ray_down ? 32 : 0;
 	inter_x = data->real_pos.x + ((inter_y - data->real_pos.y) / tan(data->rays[i].angle));
@@ -187,13 +193,14 @@ void get_horizontal_inter(t_shared_data *data, int i)
 	step_x = 32 / tan(data->rays[i].angle);
 	if ((data->rays[i].ray_left && step_x > 0) || (data->rays[i].ray_right && step_x < 0))
 		step_x = -step_x;
-	if (data->rays[i].ray_up)
-		inter_y--;
 	old_x = inter_x;
 	old_y = inter_y;
 	while (inter_y > 0 && inter_x > 0 && inter_y < HEIGHT && inter_x < WIDTH && data->game_env->map[(int)inter_y / 32])
 	{
-		int map_y = floor(inter_y / 32);
+		touch_y = inter_y;
+		if (data->rays[i].ray_up)
+			touch_y--;
+		int map_y = floor(touch_y / 32);
         int map_x = floor(inter_x / 32);
         if (map_y < 0 || map_y >= (int )ft_arrsize(data->game_env->map) || map_x < 0 || map_x > (int )ft_strlen(data->game_env->map[map_y]))
 		{
@@ -203,8 +210,11 @@ void get_horizontal_inter(t_shared_data *data, int i)
 		}
         if (data->game_env->map[map_y])
 		{
-			if ((data->game_env->map[(int )floor(old_y / 32)][map_x] == '1' && data->game_env->map[map_y][(int )floor(old_y / 32)] == '1') || data->game_env->map[map_y][map_x] == '1')
+			// printf("the old y %d map x %d map y %d old x %d\n", (int )floor(old_y / 32), map_x, map_y, (int )floor(old_x / 32));
+			// if ((data->game_env->map[(int )floor(old_y / 32)] && data->game_env->map[(int )floor(old_y / 32)][map_x] == '1' && data->game_env->map[map_y][(int )floor(old_x / 32)] == '1') || data->game_env->map[map_y][map_x] == '1')
+			if (data->game_env->map[map_y][map_x] == '1')
 			{
+				
 				data->rays[i].horiz_x = inter_x;
 				data->rays[i].horiz_y = inter_y;
 				break;
@@ -220,6 +230,7 @@ void get_horizontal_inter(t_shared_data *data, int i)
 void cast_rays(t_shared_data *data)
 {
 	int i = 0;
+	int a = 0;
 	while (i < NUM_RAYS)
 	{
 		get_horizontal_inter(data, i);
@@ -228,13 +239,25 @@ void cast_rays(t_shared_data *data)
 		float vertical = distance_two_p(data->real_pos.x, data->real_pos.y, data->rays[i].vert_x, data->rays[i].vert_y);
 		if (horz < vertical)
 		{
+			// if (data->rays[i].ray_up)
+			// 	a = 1;
+			// else if (data->rays[i].ray_down)
+			// 	a = -1;
 			data->rays[i].distance = horz;
-			DDA(data->real_pos.x, data->real_pos.y, data->rays[i].horiz_x, data->rays[i].horiz_y, data->image);
+			DDA(data->real_pos.x, data->real_pos.y, data->rays[i].horiz_x + a, data->rays[i].horiz_y + a, data->image);
 		}
 		else
 		{
+			// if (data->rays[i].ray_up)
+			// 	a = 1;
+			// else if (data->rays[i].ray_down)
+			// 	a = -1;
+			// if (data->rays[i].ray_left)
+			// 	a = 1;
+			// else if (data->rays[i].ray_right)
+			// 	a = -1;
 			data->rays[i].distance = vertical;
-			DDA(data->real_pos.x, data->real_pos.y, data->rays[i].vert_x, data->rays[i].vert_y, data->image);
+			DDA(data->real_pos.x, data->real_pos.y, data->rays[i].vert_x + a, data->rays[i].vert_y + a, data->image);
 		}
 		
 		i++;
