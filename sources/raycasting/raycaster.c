@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/19 19:39:44 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/19 21:51:24 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,15 +95,23 @@ void  create_rays(t_shared_data *data)
 	int column_id = 0;
     float ray_angle = (norm_angle(data->player.rota_angle)) - (FOV / 2);
 	data->rays = ft_alloc(sizeof(t_rays) * (NUM_RAYS + 1), data->rays, CALLOC);
-	while (i < NUM_RAYS)
+	while (i < 2)
 	{
 		data->rays[i].angle = norm_angle(ray_angle);
+		printf("%f angle \n", data->rays[i].angle);
 		data->rays[i].wall_hit_x = 0;
 		data->rays[i].wall_hit_y = 0;
+		data->rays[i].ray_p.x = 0;
+		data->rays[i].ray_p.y = 0;
+		// data->rays[i].horiz_x = 0;
+		// data->rays[i].horiz_y = 0;
+		data->rays[i].vert_x = 0;
+		data->rays[i].vert_y = 0;
+		
 		data->rays[i].distance = 0;
 		data->rays[i].columnd_id = column_id;
-		if (data->rays[i].angle > 0 && data->rays[i].angle < PI)
-		data->rays[i].ray_down = true;
+		if (data->rays[i].angle >= 0 && data->rays[i].angle <= PI)
+			data->rays[i].ray_down = true;
 		else
 			data->rays[i].ray_down = false;
 		data->rays[i].ray_up = !data->rays[i].ray_down;
@@ -161,6 +169,7 @@ void get_vertical_inter(t_shared_data *data, int i)
 		{
 			inter_y += step_y;
 			inter_x +=  step_x;
+			printf ("womp womp\n");
             continue;
 		}
 		if (data->game_env->map[map_y])
@@ -171,17 +180,25 @@ void get_vertical_inter(t_shared_data *data, int i)
 				data->rays[i].vert_y = inter_y;
 				if (data->rays[i].ray_right)
 				{
-					// data->rays[i].vert_x -= 0.25;
-					// data->rays[i].vert_y -= 0.25;
+					data->rays[i].vert_x -= 0.25;
+					data->rays[i].vert_y -= 0.25;
+					return ;
 				}
 				if (data->rays[i].ray_left)
 				{
-					// data->rays[i].vert_x += 0.25;
-					// data->rays[i].vert_y += 0.25;
+					data->rays[i].vert_x += 0.25;
+					data->rays[i].vert_y += 0.25;
+					return ;
 				}
+				// printf("%f %f\n", data->rays[i].vert_y,data->rays[i].vert_x);
+
 				break;
 			}
 		}
+		// else
+		// {
+		// 	pritf
+		// }
 		old_x = inter_x;
 		old_y = inter_y;
 		inter_y += step_y;
@@ -205,6 +222,7 @@ void get_horizontal_inter(t_shared_data *data, int i)
 	step_x = 32 / tan(data->rays[i].angle);
 	if ((data->rays[i].ray_left && step_x > 0) || (data->rays[i].ray_right && step_x < 0))
 		step_x = -step_x;
+	printf("inter x %f inter y %f \n", inter_x, inter_y);
 	while (inter_y > 0 && inter_x > 0 && inter_y < HEIGHT && inter_x < WIDTH && data->game_env->map[(int)inter_y / 32])
 	{
 		touch_y = inter_y;
@@ -218,6 +236,7 @@ void get_horizontal_inter(t_shared_data *data, int i)
 		{
 			inter_y += step_y;
 			inter_x +=  step_x;
+			printf("womp womp\n");
             continue;
 		}
         if (data->game_env->map[map_y])
@@ -229,17 +248,30 @@ void get_horizontal_inter(t_shared_data *data, int i)
 				data->rays[i].horiz_y = inter_y;
 				if (data->rays[i].ray_up)
 				{
+					printf("up before x %f y %f\n", data->rays[i].horiz_x, data->rays[i].horiz_y);
 					data->rays[i].horiz_x += 0.25;
 					data->rays[i].horiz_y += 0.25;
+					printf("up after x %f y %f\n", data->rays[i].horiz_x, data->rays[i].horiz_y);
 				}
-				if (data->rays[i].ray_down)
+				else if (data->rays[i].ray_down)
 				{
+					printf("down before x %f y %f\n", data->rays[i].horiz_x, data->rays[i].horiz_y);
 					data->rays[i].horiz_x -= 0.25;
 					data->rays[i].horiz_y -= 0.25;
+					printf("down after x %f y %f\n", data->rays[i].horiz_x, data->rays[i].horiz_y);
 				}
-				
+				// printf("%f \n", data->rays[i].horiz_x);
+				// if (data->rays[i].horiz_x == 0)
+				// {
+				// 	printf ("exit\n");
+				// 	exit(1);
+				// }
 				break;
 			}
+			// else
+			// {
+			// 	printf ("here\n");
+			// }
 		}
 		inter_y += step_y;
 		inter_x +=  step_x;
@@ -249,18 +281,19 @@ void get_horizontal_inter(t_shared_data *data, int i)
 void cast_rays(t_shared_data *data)
 {
 	int i = 0;
-	while (i < NUM_RAYS)
+	while (i < 2)
 	{
 		get_horizontal_inter(data, i);
 		float horz = distance_two_p(data->real_pos.x, data->real_pos.y, data->rays[i].horiz_x, data->rays[i].horiz_y);
 		get_vertical_inter(data, i);
 		float vertical = distance_two_p(data->real_pos.x, data->real_pos.y, data->rays[i].vert_x, data->rays[i].vert_y);
 		
-		if (horz < vertical)
+		if (horz <= vertical)
 		{
 			data->rays[i].distance = horz;
 			data->rays[i].ray_p.x = data->rays[i].horiz_x;
 			data->rays[i].ray_p.y = data->rays[i].horiz_y;
+			printf("x %f y %f\n", data->rays[i].horiz_x, data->rays[i].horiz_y);
 			DDA(data->real_pos.x * MINI_FACTOR, data->real_pos.y * MINI_FACTOR, data->rays[i].horiz_x * MINI_FACTOR, data->rays[i].horiz_y * MINI_FACTOR, data->image);
 		}
 		else
