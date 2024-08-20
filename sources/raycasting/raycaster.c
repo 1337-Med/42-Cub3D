@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/20 15:23:45 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/20 16:35:55 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,6 +294,7 @@ void cast_rays(t_shared_data *data)
 	int i = 0;
 	while (i < NUM_RAYS)
 	{
+		// printf("the ray angle %f the player angle %f sub angle %f \n", data->rays[i].angle, data->player.rota_angle, cos(data->rays[i].angle - data->player.rota_angle));
 		get_horizontal_inter(data, i);
 		float horz = distance_two_p(data->real_pos.x, data->real_pos.y, data->rays[i].horiz_x, data->rays[i].horiz_y);
 		get_vertical_inter(data, i);
@@ -301,12 +302,15 @@ void cast_rays(t_shared_data *data)
 		if ((int)data->rays[i].horiz_x == -1)
 		{
 			data->rays[i].distance = vertical;
+			data->rays[i].distance = data->rays[i].distance * cos(data->rays[i].angle - data->player.rota_angle);
 			data->rays[i].ray_p.x = data->rays[i].vert_x;
 			data->rays[i].ray_p.y = data->rays[i].vert_y;
 		}
 		else if ((int)data->rays[i].vert_x == -1)
 		{
 			data->rays[i].distance = horz;
+			data->rays[i].distance = data->rays[i].distance * cos(data->rays[i].angle - data->player.rota_angle);
+			
 			data->rays[i].ray_p.x = data->rays[i].horiz_x;
 			data->rays[i].ray_p.y = data->rays[i].horiz_y;
 		}
@@ -315,12 +319,14 @@ void cast_rays(t_shared_data *data)
 			if (horz <= vertical)
 			{
 				data->rays[i].distance = horz;
+				data->rays[i].distance = data->rays[i].distance * cos(data->rays[i].angle - data->player.rota_angle);
 				data->rays[i].ray_p.x = data->rays[i].horiz_x;
 				data->rays[i].ray_p.y = data->rays[i].horiz_y;
 			}
 			else
 			{
 				data->rays[i].distance = vertical;
+				data->rays[i].distance = data->rays[i].distance * cos(data->rays[i].angle - data->player.rota_angle);
 				data->rays[i].ray_p.x = data->rays[i].vert_x;
 				data->rays[i].ray_p.y = data->rays[i].vert_y;
 			}
@@ -382,7 +388,7 @@ void	rander_map(t_shared_data *data)
 	while (i < NUM_RAYS)
 	{
 		// printf("i %d\n", i);
-
+	
 		// Calculate the perpendicular distance from the camera plane to the wall
 		float distancepp = (WIDTH / 2) / tan(FOV / 2);
 		
@@ -476,7 +482,7 @@ void	ft_hook(mlx_key_data_t key, void *param)
 	}
 	data->player.rota_angle += norm_angle((float)data->player.turn_dir
 		* data->player.rotate_speed);
-	// data->player.rota_angle = norm_angle(data->player.rota_angle);
+	data->player.rota_angle = norm_angle(data->player.rota_angle);
 	move_step = (float)data->player.walk_dir * data->player.move_speed;
 	new_x = (float)data->real_pos.x + cos((data->player.rota_angle))
 		* (float)move_step;
