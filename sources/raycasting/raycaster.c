@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/19 21:51:24 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/20 15:23:45 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,19 +95,19 @@ void  create_rays(t_shared_data *data)
 	int column_id = 0;
     float ray_angle = (norm_angle(data->player.rota_angle)) - (FOV / 2);
 	data->rays = ft_alloc(sizeof(t_rays) * (NUM_RAYS + 1), data->rays, CALLOC);
-	while (i < 2)
+	while (i < NUM_RAYS)
 	{
 		data->rays[i].angle = norm_angle(ray_angle);
-		printf("%f angle \n", data->rays[i].angle);
+		// printf("%f angle \n", data->rays[i].angle);
 		data->rays[i].wall_hit_x = 0;
 		data->rays[i].wall_hit_y = 0;
 		data->rays[i].ray_p.x = 0;
 		data->rays[i].ray_p.y = 0;
-		// data->rays[i].horiz_x = 0;
-		// data->rays[i].horiz_y = 0;
-		data->rays[i].vert_x = 0;
-		data->rays[i].vert_y = 0;
-		
+		data->rays[i].horiz_x = -1;
+		data->rays[i].horiz_y = -1;
+		data->rays[i].vert_x = -1;
+		data->rays[i].vert_y = -1;
+
 		data->rays[i].distance = 0;
 		data->rays[i].columnd_id = column_id;
 		if (data->rays[i].angle >= 0 && data->rays[i].angle <= PI)
@@ -169,8 +169,11 @@ void get_vertical_inter(t_shared_data *data, int i)
 		{
 			inter_y += step_y;
 			inter_x +=  step_x;
-			printf ("womp womp\n");
-            continue;
+			data->rays[i].vert_x = -1;
+			data->rays[i].vert_y = -1;
+			return ;
+			// printf ("womp womp\n");
+            // continue;
 		}
 		if (data->game_env->map[map_y])
 		{
@@ -222,7 +225,7 @@ void get_horizontal_inter(t_shared_data *data, int i)
 	step_x = 32 / tan(data->rays[i].angle);
 	if ((data->rays[i].ray_left && step_x > 0) || (data->rays[i].ray_right && step_x < 0))
 		step_x = -step_x;
-	printf("inter x %f inter y %f \n", inter_x, inter_y);
+	// printf("inter x %f inter y %f \n", inter_x, inter_y);
 	while (inter_y > 0 && inter_x > 0 && inter_y < HEIGHT && inter_x < WIDTH && data->game_env->map[(int)inter_y / 32])
 	{
 		touch_y = inter_y;
@@ -234,10 +237,18 @@ void get_horizontal_inter(t_shared_data *data, int i)
         int map_x = floor(inter_x / 32);
         if (map_y < 0 || map_y >= (int )ft_arrsize(data->game_env->map) || map_x < 0 || map_x > (int )ft_strlen(data->game_env->map[map_y]))
 		{
+			// printf("before %f %f\n", inter_x, inter_y);
 			inter_y += step_y;
 			inter_x +=  step_x;
-			printf("womp womp\n");
-            continue;
+			data->rays[i].horiz_x = -1;
+			data->rays[i].horiz_y = -1;
+			// printf("-1 exited\n");
+			// exit(1);
+			// data
+			// // printf("after %f %f\n", inter_x, inter_y);
+			// printf("womp womp\n");
+            // continue;
+			return ;
 		}
         if (data->game_env->map[map_y])
 		{
@@ -248,17 +259,17 @@ void get_horizontal_inter(t_shared_data *data, int i)
 				data->rays[i].horiz_y = inter_y;
 				if (data->rays[i].ray_up)
 				{
-					printf("up before x %f y %f\n", data->rays[i].horiz_x, data->rays[i].horiz_y);
+					// printf("up before x %f y %f\n", data->rays[i].horiz_x, data->rays[i].horiz_y);
 					data->rays[i].horiz_x += 0.25;
 					data->rays[i].horiz_y += 0.25;
-					printf("up after x %f y %f\n", data->rays[i].horiz_x, data->rays[i].horiz_y);
+					// printf("up after x %f y %f\n", data->rays[i].horiz_x, data->rays[i].horiz_y);
 				}
 				else if (data->rays[i].ray_down)
 				{
-					printf("down before x %f y %f\n", data->rays[i].horiz_x, data->rays[i].horiz_y);
+					// printf("down before x %f y %f\n", data->rays[i].horiz_x, data->rays[i].horiz_y);
 					data->rays[i].horiz_x -= 0.25;
 					data->rays[i].horiz_y -= 0.25;
-					printf("down after x %f y %f\n", data->rays[i].horiz_x, data->rays[i].horiz_y);
+					// printf("down after x %f y %f\n", data->rays[i].horiz_x, data->rays[i].horiz_y);
 				}
 				// printf("%f \n", data->rays[i].horiz_x);
 				// if (data->rays[i].horiz_x == 0)
@@ -266,7 +277,7 @@ void get_horizontal_inter(t_shared_data *data, int i)
 				// 	printf ("exit\n");
 				// 	exit(1);
 				// }
-				break;
+				return ;
 			}
 			// else
 			// {
@@ -281,29 +292,39 @@ void get_horizontal_inter(t_shared_data *data, int i)
 void cast_rays(t_shared_data *data)
 {
 	int i = 0;
-	while (i < 2)
+	while (i < NUM_RAYS)
 	{
 		get_horizontal_inter(data, i);
 		float horz = distance_two_p(data->real_pos.x, data->real_pos.y, data->rays[i].horiz_x, data->rays[i].horiz_y);
 		get_vertical_inter(data, i);
 		float vertical = distance_two_p(data->real_pos.x, data->real_pos.y, data->rays[i].vert_x, data->rays[i].vert_y);
-		
-		if (horz <= vertical)
-		{
-			data->rays[i].distance = horz;
-			data->rays[i].ray_p.x = data->rays[i].horiz_x;
-			data->rays[i].ray_p.y = data->rays[i].horiz_y;
-			printf("x %f y %f\n", data->rays[i].horiz_x, data->rays[i].horiz_y);
-			DDA(data->real_pos.x * MINI_FACTOR, data->real_pos.y * MINI_FACTOR, data->rays[i].horiz_x * MINI_FACTOR, data->rays[i].horiz_y * MINI_FACTOR, data->image);
-		}
-		else
+		if ((int)data->rays[i].horiz_x == -1)
 		{
 			data->rays[i].distance = vertical;
 			data->rays[i].ray_p.x = data->rays[i].vert_x;
 			data->rays[i].ray_p.y = data->rays[i].vert_y;
-			DDA(data->real_pos.x * MINI_FACTOR, data->real_pos.y * MINI_FACTOR, data->rays[i].vert_x * MINI_FACTOR, data->rays[i].vert_y * MINI_FACTOR, data->image);
 		}
-		
+		else if ((int)data->rays[i].vert_x == -1)
+		{
+			data->rays[i].distance = horz;
+			data->rays[i].ray_p.x = data->rays[i].horiz_x;
+			data->rays[i].ray_p.y = data->rays[i].horiz_y;
+		}
+		else
+		{
+			if (horz <= vertical)
+			{
+				data->rays[i].distance = horz;
+				data->rays[i].ray_p.x = data->rays[i].horiz_x;
+				data->rays[i].ray_p.y = data->rays[i].horiz_y;
+			}
+			else
+			{
+				data->rays[i].distance = vertical;
+				data->rays[i].ray_p.x = data->rays[i].vert_x;
+				data->rays[i].ray_p.y = data->rays[i].vert_y;
+			}
+		}
 		i++;
 	}
 }
@@ -340,50 +361,50 @@ void	rander_map(t_shared_data *data)
 	// int	x;
 	// int	y;
 	// int i = 0;
-	// create_rays(data);
-	// cast_rays(data);
-	// int i = 0;
+	create_rays(data);
+	cast_rays(data);
+	int i = 0;
 	// mlx_win
-	// while (i < HEIGHT)
-	// {
-	// 	int p = 0;
-	// 	while (p < WIDTH)
-	// 	{
-	// 		if (i < HEIGHT / 2)
-	// 			mlx_put_pixel(data->image, p, i, 0xFF0000FF);
-	// 		else
-	// 			mlx_put_pixel(data->image, p, i, 0x02f7b2);
-	// 		p++;
-	// 	}
-	// 	i++;
-	// }
-	// i = 0;
-	// while (i < NUM_RAYS)
-	// {
-	// 	printf("i %d\n", i);
+	while (i < HEIGHT)
+	{
+		int p = 0;
+		while (p < WIDTH)
+		{
+			if (i < HEIGHT / 2)
+				mlx_put_pixel(data->image, p, i, 0x02f7b2);
+			else
+				mlx_put_pixel(data->image, p, i, 0xFFFFFFFF);
+			p++;
+		}
+		i++;
+	}
+	i = 0;
+	while (i < NUM_RAYS)
+	{
+		// printf("i %d\n", i);
 
-	// 	// Calculate the perpendicular distance from the camera plane to the wall
-	// 	float distancepp = (WIDTH / 2) / tan(FOV / 2);
+		// Calculate the perpendicular distance from the camera plane to the wall
+		float distancepp = (WIDTH / 2) / tan(FOV / 2);
 		
-	// 	// Calculate the height of the wall slice for this ray
-	// 	float wall_height = (32 / data->rays[i].distance) * distancepp;
+		// Calculate the height of the wall slice for this ray
+		float wall_height = (32 / data->rays[i].distance) * distancepp;
 
-	// 	// Determine the top and bottom y-coordinates of the wall slice
-	// 	int wall_top = (HEIGHT / 2) - (wall_height / 2);
-	// 	int wall_bottom = (HEIGHT / 2) + (wall_height / 2);
+		// Determine the top and bottom y-coordinates of the wall slice
+		int wall_top = (HEIGHT / 2) - (wall_height / 2);
+		int wall_bottom = (HEIGHT / 2) + (wall_height / 2);
 
-	// 	// Clamp the values to ensure they don't go out of the screen bounds
-	// 	if (wall_top < 0) wall_top = 0;
-	// 	if (wall_bottom >= HEIGHT) wall_bottom = HEIGHT - 1;
+		// Clamp the values to ensure they don't go out of the screen bounds
+		if (wall_top < 0) wall_top = 0;
+		if (wall_bottom >= HEIGHT) wall_bottom = HEIGHT - 1;
 
-	// 	// Draw the vertical line representing the wall slice
-	// 	for (int j = wall_top; j <= wall_bottom; j++)
-	// 	{
-	// 		mlx_put_pixel(data->image, i, j, 0xFFFFFFFF);
-	// 	}
+		// Draw the vertical line representing the wall slice
+		for (int j = wall_top; j <= wall_bottom; j++)
+		{
+			mlx_put_pixel(data->image, i, j, 0xFF0000FF);
+		}
 
-	// 	i++;
-	// }
+		i++;
+	}
 	int x = 0;
 	int y = 0;
 	while (data->game_env->map[y])
@@ -402,10 +423,10 @@ void	rander_map(t_shared_data *data)
 		}
 		y++;
 	}
-	create_rays(data);
-	cast_rays(data);
+	// create_rays(data);
+	// cast_rays(data);
 	// render_player(data);
-	// render_rays(data);
+	render_rays(data);
 }
 
 void	ft_hook(mlx_key_data_t key, void *param)
