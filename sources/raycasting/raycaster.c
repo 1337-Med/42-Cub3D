@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/20 16:35:55 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/21 11:58:54 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -361,7 +361,10 @@ void cast_rays(t_shared_data *data)
 	// 	+ cos((data->player.rota_angle)) * 32, data->real_pos.y
 	// 	+ sin((data->player.rota_angle)) * 32, data->image);
 // }
-
+int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
+{
+    return (r << 24 | g << 16 | b << 8 | a);
+}
 void	rander_map(t_shared_data *data)
 {
 	// int	x;
@@ -370,6 +373,18 @@ void	rander_map(t_shared_data *data)
 	create_rays(data);
 	cast_rays(data);
 	int i = 0;
+	int cell  = ft_pixel(
+				20, // R
+				150, // G
+				100, // B
+				255  // A
+			);;
+	int floor= ft_pixel(
+				20, // R
+				50, // G
+				200, // B
+				255  // A
+			);
 	// mlx_win
 	while (i < HEIGHT)
 	{
@@ -377,9 +392,9 @@ void	rander_map(t_shared_data *data)
 		while (p < WIDTH)
 		{
 			if (i < HEIGHT / 2)
-				mlx_put_pixel(data->image, p, i, 0x02f7b2);
+				mlx_put_pixel(data->image, p, i, floor);
 			else
-				mlx_put_pixel(data->image, p, i, 0xFFFFFFFF);
+				mlx_put_pixel(data->image, p, i, cell);
 			p++;
 		}
 		i++;
@@ -406,7 +421,12 @@ void	rander_map(t_shared_data *data)
 		// Draw the vertical line representing the wall slice
 		for (int j = wall_top; j <= wall_bottom; j++)
 		{
-			mlx_put_pixel(data->image, i, j, 0xFF0000FF);
+			mlx_put_pixel(data->image, i, j, ft_pixel(
+				150, // R
+				10, // G
+				10, // B
+				255  // A
+			));
 		}
 
 		i++;
