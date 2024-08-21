@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycaster.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/21 11:48:00 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/21 16:04:11 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,14 +183,14 @@ void get_vertical_inter(t_shared_data *data, int i)
 				data->rays[i].vert_y = inter_y;
 				if (data->rays[i].ray_right)
 				{
-					data->rays[i].vert_x -= 0.25;
-					data->rays[i].vert_y -= 0.25;
+					// data->rays[i].vert_x -= 0.25;
+					// data->rays[i].vert_y -= 0.25;
 					return ;
 				}
 				if (data->rays[i].ray_left)
 				{
-					data->rays[i].vert_x += 0.25;
-					data->rays[i].vert_y += 0.25;
+					// data->rays[i].vert_x += 0.25;
+					// data->rays[i].vert_y += 0.25;
 					return ;
 				}
 				// printf("%f %f\n", data->rays[i].vert_y,data->rays[i].vert_x);
@@ -260,15 +260,15 @@ void get_horizontal_inter(t_shared_data *data, int i)
 				if (data->rays[i].ray_up)
 				{
 					// printf("up before x %f y %f\n", data->rays[i].horiz_x, data->rays[i].horiz_y);
-					data->rays[i].horiz_x += 0.25;
-					data->rays[i].horiz_y += 0.25;
+					// data->rays[i].horiz_x += 0.25;
+					// data->rays[i].horiz_y += 0.25;
 					// printf("up after x %f y %f\n", data->rays[i].horiz_x, data->rays[i].horiz_y);
 				}
 				else if (data->rays[i].ray_down)
 				{
 					// printf("down before x %f y %f\n", data->rays[i].horiz_x, data->rays[i].horiz_y);
-					data->rays[i].horiz_x -= 0.25;
-					data->rays[i].horiz_y -= 0.25;
+					// data->rays[i].horiz_x -= 0.25;
+					// data->rays[i].horiz_y -= 0.25;
 					// printf("down after x %f y %f\n", data->rays[i].horiz_x, data->rays[i].horiz_y);
 				}
 				// printf("%f \n", data->rays[i].horiz_x);
