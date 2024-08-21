@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycaster.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/20 16:37:03 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/21 11:48:00 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -305,6 +305,8 @@ void cast_rays(t_shared_data *data)
 			data->rays[i].distance = data->rays[i].distance * cos(data->rays[i].angle - data->player.rota_angle);
 			data->rays[i].ray_p.x = data->rays[i].vert_x;
 			data->rays[i].ray_p.y = data->rays[i].vert_y;
+			data->rays[i].ray_down = 0;
+			data->rays[i].ray_up = 0;
 		}
 		else if ((int)data->rays[i].vert_x == -1)
 		{
@@ -313,6 +315,8 @@ void cast_rays(t_shared_data *data)
 			
 			data->rays[i].ray_p.x = data->rays[i].horiz_x;
 			data->rays[i].ray_p.y = data->rays[i].horiz_y;
+			data->rays[i].ray_left = 0;
+			data->rays[i].ray_right = 0;
 		}
 		else
 		{
@@ -322,6 +326,8 @@ void cast_rays(t_shared_data *data)
 				data->rays[i].distance = data->rays[i].distance * cos(data->rays[i].angle - data->player.rota_angle);
 				data->rays[i].ray_p.x = data->rays[i].horiz_x;
 				data->rays[i].ray_p.y = data->rays[i].horiz_y;
+				data->rays[i].ray_left = 0;
+			data->rays[i].ray_right = 0;
 			}
 			else
 			{
@@ -329,6 +335,8 @@ void cast_rays(t_shared_data *data)
 				data->rays[i].distance = data->rays[i].distance * cos(data->rays[i].angle - data->player.rota_angle);
 				data->rays[i].ray_p.x = data->rays[i].vert_x;
 				data->rays[i].ray_p.y = data->rays[i].vert_y;
+				data->rays[i].ray_down = 0;
+			data->rays[i].ray_up = 0;
 			}
 		}
 		i++;
@@ -362,6 +370,14 @@ void cast_rays(t_shared_data *data)
 	// 	+ sin((data->player.rota_angle)) * 32, data->image);
 // }
 
+void draw_hh(int wall_top, int wall_bottom, int i,t_shared_data *data, int color)
+{
+	for (int j = wall_top; j <= wall_bottom; j++)
+	{
+		mlx_put_pixel(data->image, i, j, color);
+	}
+}
+
 void	rander_map(t_shared_data *data)
 {
 	// int	x;
@@ -377,14 +393,15 @@ void	rander_map(t_shared_data *data)
 		while (p < WIDTH)
 		{
 			if (i < HEIGHT / 2)
-				mlx_put_pixel(data->image, p, i, 0x02f7b2);
+				mlx_put_pixel(data->image, p, i, 0x89CFF3FF);
 			else
-				mlx_put_pixel(data->image, p, i, 0xFFFFFFFF);
+				mlx_put_pixel(data->image, p, i, 0xB99470FF);
 			p++;
 		}
 		i++;
 	}
 	i = 0;
+	
 	while (i < NUM_RAYS)
 	{
 		// printf("i %d\n", i);
@@ -404,11 +421,14 @@ void	rander_map(t_shared_data *data)
 		if (wall_bottom >= HEIGHT) wall_bottom = HEIGHT - 1;
 
 		// Draw the vertical line representing the wall slice
-		for (int j = wall_top; j <= wall_bottom; j++)
-		{
-			mlx_put_pixel(data->image, i, j, 0xFF0000FF);
-		}
-
+		if(data->rays[i].ray_right)
+			draw_hh(wall_top, wall_bottom, i, data , COLOR_EAST);
+		else if (data->rays[i].ray_left)
+			draw_hh(wall_top, wall_bottom, i, data , COLOR_WEST);
+		else if (data->rays[i].ray_up)
+			draw_hh(wall_top, wall_bottom, i, data , COLOR_NORTH);
+		else if (data->rays[i].ray_down)
+			draw_hh(wall_top, wall_bottom, i, data , COLOR_SOUTH);
 		i++;
 	}
 	int x = 0;
