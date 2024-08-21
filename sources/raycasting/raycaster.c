@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/21 11:48:00 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/21 17:42:53 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,7 +294,6 @@ void cast_rays(t_shared_data *data)
 	int i = 0;
 	while (i < NUM_RAYS)
 	{
-		// printf("the ray angle %f the player angle %f sub angle %f \n", data->rays[i].angle, data->player.rota_angle, cos(data->rays[i].angle - data->player.rota_angle));
 		get_horizontal_inter(data, i);
 		float horz = distance_two_p(data->real_pos.x, data->real_pos.y, data->rays[i].horiz_x, data->rays[i].horiz_y);
 		get_vertical_inter(data, i);
@@ -302,7 +301,6 @@ void cast_rays(t_shared_data *data)
 		if ((int)data->rays[i].horiz_x == -1)
 		{
 			data->rays[i].distance = vertical;
-			data->rays[i].distance = data->rays[i].distance * cos(data->rays[i].angle - data->player.rota_angle);
 			data->rays[i].ray_p.x = data->rays[i].vert_x;
 			data->rays[i].ray_p.y = data->rays[i].vert_y;
 			data->rays[i].ray_down = 0;
@@ -311,8 +309,6 @@ void cast_rays(t_shared_data *data)
 		else if ((int)data->rays[i].vert_x == -1)
 		{
 			data->rays[i].distance = horz;
-			data->rays[i].distance = data->rays[i].distance * cos(data->rays[i].angle - data->player.rota_angle);
-			
 			data->rays[i].ray_p.x = data->rays[i].horiz_x;
 			data->rays[i].ray_p.y = data->rays[i].horiz_y;
 			data->rays[i].ray_left = 0;
@@ -323,7 +319,6 @@ void cast_rays(t_shared_data *data)
 			if (horz <= vertical)
 			{
 				data->rays[i].distance = horz;
-				data->rays[i].distance = data->rays[i].distance * cos(data->rays[i].angle - data->player.rota_angle);
 				data->rays[i].ray_p.x = data->rays[i].horiz_x;
 				data->rays[i].ray_p.y = data->rays[i].horiz_y;
 				data->rays[i].ray_left = 0;
@@ -332,7 +327,6 @@ void cast_rays(t_shared_data *data)
 			else
 			{
 				data->rays[i].distance = vertical;
-				data->rays[i].distance = data->rays[i].distance * cos(data->rays[i].angle - data->player.rota_angle);
 				data->rays[i].ray_p.x = data->rays[i].vert_x;
 				data->rays[i].ray_p.y = data->rays[i].vert_y;
 				data->rays[i].ray_down = 0;
@@ -370,23 +364,42 @@ void cast_rays(t_shared_data *data)
 	// 	+ sin((data->player.rota_angle)) * 32, data->image);
 // }
 
-void draw_hh(int wall_top, int wall_bottom, int i,t_shared_data *data, int color)
+uint32_t get_pixel(mlx_image_t *image, int x, int y)
 {
-	for (int j = wall_top; j <= wall_bottom; j++)
-	{
-		mlx_put_pixel(data->image, i, j, color);
-	}
+    // Ensure x and y are within bounds
+    if (x < 0 || x >= (int)image->width || y < 0 || y >= (int)image->height)
+        return 0; // Return 0 or handle out-of-bounds as needed
+
+    // Calculate the index in the pixel array
+    int pixel_index = (y * image->width + x) * 4;
+
+    // Access the pixel data
+    uint8_t *pixel_data = &image->pixels[pixel_index];
+
+    // Combine the RGBA values into a single uint32_t
+    uint32_t pixel_color = pixel_data[0] << 24 |  // Red
+                           pixel_data[1] << 16 |  // Green
+                           pixel_data[2] << 8  |  // Blue
+                           pixel_data[3];         // Alpha
+
+    return pixel_color;
 }
+
+void draw_hh(int wall_top, int wall_bottom, int i, t_shared_data *data, mlx_image_t *img, int tex_x) {
+	
+    for (int j = wall_top; j <= wall_bottom; j++) {
+        int tex_y = (j - wall_top) * img->height / (wall_bottom - wall_top);
+        mlx_put_pixel(data->image, i, j, get_pixel(img, tex_x, tex_y));
+    }
+}
+
 
 void	rander_map(t_shared_data *data)
 {
-	// int	x;
-	// int	y;
-	// int i = 0;
 	create_rays(data);
 	cast_rays(data);
 	int i = 0;
-	// mlx_win
+	int tex_y = 0;
 	while (i < HEIGHT)
 	{
 		int p = 0;
@@ -402,10 +415,12 @@ void	rander_map(t_shared_data *data)
 	}
 	i = 0;
 	
+		mlx_image_t *img_east = mlx_texture_to_image(data->mlx, data->game_env->wall->east);
+		mlx_image_t *img_north = mlx_texture_to_image(data->mlx, data->game_env->wall->north);
+		mlx_image_t *img_south = mlx_texture_to_image(data->mlx, data->game_env->wall->south);
+		mlx_image_t *img_west = mlx_texture_to_image(data->mlx, data->game_env->wall->west);
 	while (i < NUM_RAYS)
 	{
-		// printf("i %d\n", i);
-	
 		// Calculate the perpendicular distance from the camera plane to the wall
 		float distancepp = (WIDTH / 2) / tan(FOV / 2);
 		
@@ -413,22 +428,43 @@ void	rander_map(t_shared_data *data)
 		float wall_height = (32 / data->rays[i].distance) * distancepp;
 
 		// Determine the top and bottom y-coordinates of the wall slice
+	
 		int wall_top = (HEIGHT / 2) - (wall_height / 2);
 		int wall_bottom = (HEIGHT / 2) + (wall_height / 2);
 
-		// Clamp the values to ensure they don't go out of the screen bounds
 		if (wall_top < 0) wall_top = 0;
 		if (wall_bottom >= HEIGHT) wall_bottom = HEIGHT - 1;
+		
+// 		int tex_x;
+// 		if (data->rays[i].ray_up || data->rays[i].ray_down) {
+// 			// Horizontal walls (north or south)
+// 			tex_x = (int)(data->rays[i].ray_p.x) % img_north->width;
+// 		} else {
+// 			// Vertical walls (east or west)
+// 			tex_x = (int)(data->rays[i].ray_p.y) % img_east->width;
+// }
 
-		// Draw the vertical line representing the wall slice
 		if(data->rays[i].ray_right)
-			draw_hh(wall_top, wall_bottom, i, data , COLOR_EAST);
+		{
+			int tex_x = (int)(data->rays[i].ray_p.y) % img_west->width;
+			draw_hh(wall_top, wall_bottom, i, data , img_west, tex_x);
+		}
 		else if (data->rays[i].ray_left)
-			draw_hh(wall_top, wall_bottom, i, data , COLOR_WEST);
+		{
+			int tex_x = (int)(data->rays[i].ray_p.y) % img_east->width;
+			draw_hh(wall_top, wall_bottom, i, data , img_east, tex_x);
+		}
 		else if (data->rays[i].ray_up)
-			draw_hh(wall_top, wall_bottom, i, data , COLOR_NORTH);
+		{
+			int tex_x = (int)(data->rays[i].ray_p.x) % img_north->width;
+			draw_hh(wall_top, wall_bottom, i, data , img_north, tex_x);
+		}
 		else if (data->rays[i].ray_down)
-			draw_hh(wall_top, wall_bottom, i, data , COLOR_SOUTH);
+		{
+			int tex_x = (int)(data->rays[i].ray_p.x) % img_south->width;
+			draw_hh(wall_top, wall_bottom, i, data , img_south, tex_x);
+		}
+		tex_y++;
 		i++;
 	}
 	int x = 0;
@@ -449,9 +485,6 @@ void	rander_map(t_shared_data *data)
 		}
 		y++;
 	}
-	// create_rays(data);
-	// cast_rays(data);
-	// render_player(data);
 	render_rays(data);
 }
 
@@ -502,7 +535,7 @@ void	ft_hook(mlx_key_data_t key, void *param)
 	}
 	data->player.rota_angle += norm_angle((float)data->player.turn_dir
 		* data->player.rotate_speed);
-	data->player.rota_angle = norm_angle(data->player.rota_angle);
+	// data->player.rota_angle = norm_angle(data->player.rota_angle);
 	move_step = (float)data->player.walk_dir * data->player.move_speed;
 	new_x = (float)data->real_pos.x + cos((data->player.rota_angle))
 		* (float)move_step;

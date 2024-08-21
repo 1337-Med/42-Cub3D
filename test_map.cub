@@ -1,13 +1,14 @@
-WE ./texture/west.png
-SO ./texture/south.png
-EA ./texture/east.png
-NO ./texture/north.png
+WE ./texture/TECH_1.png
+SO ./texture/TECH_2.png
+EA ./texture/TECH_3.png
+NO ./texture/TECH_4.png
 
 F 220, 100,0
 C 225,30,0
 
 
-        1111111111111111111111111
+                      1
+        1111111111111101111111111
         1000000000110000000000001
         101100000111000000000001
         1001000000000000000000001
