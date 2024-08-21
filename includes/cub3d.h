@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/20 13:04:35 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/20 21:51:33 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@
 # include "stdio.h"
 # include "fcntl.h"
 # include "../MLX42/include/MLX42/MLX42.h"
+
+#define COLOR_NORTH 0xF5F5F5FF// Example color for north wall
+#define COLOR_SOUTH 0xF5F5F5FF // Example color for south wall
+#define COLOR_EAST  0xB5B5B5FF // Example color for east wall
+#define COLOR_WEST  0xB5B5B5FF // Example color for west wall
+
 
 typedef struct s_wall
 {
