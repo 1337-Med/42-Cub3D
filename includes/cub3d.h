@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/22 17:39:28 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/22 23:07:31 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,15 @@ typedef struct s_wall
 	mlx_texture_t* west;
 	mlx_texture_t* east;
 } t_wall;
+
+typedef struct s_side
+{
+	mlx_image_t* north;
+	mlx_image_t* south;
+	mlx_image_t* west;
+	mlx_image_t* east;
+} t_side;
+
 #define MINI_FACTOR 0.4
 #define WALL_WIDTH 1
 #define PI 3.14159265358979323846
@@ -44,6 +53,7 @@ typedef struct s_game_env
 {
 	char	**map;
 	t_wall	*wall;
+	t_side	*side;
 	int		floor;
 	int		ceiling;
 
@@ -108,7 +118,10 @@ typedef struct s_shared_data
 	t_p_pos real_pos;
 	t_player player;
 	t_rays *rays;
+	mlx_image_t* target_img;
 } t_shared_data;
 t_p_pos get_player_pos(char **map);
+void texture_to_img(t_shared_data * data);
+void rander_textures(t_shared_data *data, int i, int wall_top, int wall_bottom);
 int degree_to_raidian(float dg);
 # endif

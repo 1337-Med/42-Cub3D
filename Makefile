@@ -2,7 +2,8 @@
 SRC =	./sources/parser/parser.c ./sources/parser/parser_utils.c  ./sources/parser/texture_parsing.c ./sources/parser/map_parsing.c\
 		./sources/cub3d.c \
 		./sources/raycasting/utils.c \
-		./sources/raycasting/raycaster.c
+		./sources/raycasting/raycaster.c \
+		./sources/rander_texture/rander_texture.c
 
 OBJ = $(SRC:.c=.o)
 
