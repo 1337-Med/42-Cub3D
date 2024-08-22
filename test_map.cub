@@ -3,8 +3,8 @@ SO ./texture/stone_brick_doubleslab_top.png
 EA ./texture/stone_brick_doubleslab.png
 NO ./texture/stone_doubleslab.png
 
-F 220, 100,0
-C 225,30,0
+F 255,229,204
+C 204,255,255
 
 
                       1

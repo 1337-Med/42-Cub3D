@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 21:22:31 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/21 11:42:04 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/22 23:37:48 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	get_rgba(int r, int g, int b, t_wall *wall)
 {
 	if (r < 0 || r > 255 || r < 0 || g < 0 || g > 255 || b < 0 || b > 255)
 		free_print("invalid numbers for rgb values\n", wall);
-	return (r << 24 | g << 16 | b << 8 | 1);
+	return (r << 24) | (g << 16) | b << 8 | (1 * 255);
 }
 
 char	**spliter(char *line)

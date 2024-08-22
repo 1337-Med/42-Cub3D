@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/22 23:18:05 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/22 23:23:23 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -352,9 +352,9 @@ void	rander_map(t_shared_data *data)
 		while (p < WIDTH)
 		{
 			if (i < HEIGHT / 2)
-				mlx_put_pixel(data->image, p, i, 0x89CFF3FF);
+				mlx_put_pixel(data->image, p, i, data->game_env->ceiling);
 			else
-				mlx_put_pixel(data->image, p, i, 0xB99470FF);
+				mlx_put_pixel(data->image, p, i, data->game_env->floor);
 			p++;
 		}
 		i++;
