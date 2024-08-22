@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/22 22:00:20 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/22 23:18:05 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -340,106 +340,6 @@ void cast_rays(t_shared_data *data)
 		i++;
 	}
 }
-// void	render_player(t_shared_data *data)
-// {
-	// int	color;
-	// float	i;
-	// float	j;
-
-	// color = 0xFFFFFFFF;
-	// i = -5 * MINI_FACTOR;
-	// j = -5 * MINI_FACTOR;
-	// while (i <= 5 * MINI_FACTOR)
-	// {
-	// 	j = -5;
-	// 	while (j <= 5 * MINI_FACTOR)
-	// 	{
-	// 		mlx_put_pixel(data->image, data->real_pos.x * MINI_FACTOR + j, data->real_pos.y * MINI_FACTOR
-	// 			+ i, color);
-	// 		j++;
-	// 	}
-	// 	i++;
-	// }
-	// create_rays(data);
-	// cast_rays(data);
-    // render_rays(data);
-	// DDA(data->real_pos.x, data->real_pos.y, data->real_pos.x
-	// 	+ cos((data->player.rota_angle)) * 32, data->real_pos.y
-	// 	+ sin((data->player.rota_angle)) * 32, data->image);
-// }
-
-// void texture_to_img(t_shared_data * data)
-// {
-// 	data->game_env->side = ft_alloc(sizeof(t_side), data->game_env->side , MALLOC);
-//     data->game_env->side->east = mlx_texture_to_image(data->mlx, data->game_env->wall->east);
-// 	data->game_env->side->north = mlx_texture_to_image(data->mlx, data->game_env->wall->north);
-// 	data->game_env->side->south = mlx_texture_to_image(data->mlx, data->game_env->wall->south);
-// 	data->game_env->side->west = mlx_texture_to_image(data->mlx, data->game_env->wall->west);
-// }
-
-// uint32_t get_pixel(mlx_image_t *image, int x, int y)
-// {
-//     // Ensure x and y are within bounds
-//     if (x < 0 || x >= (int)image->width || y < 0 || y >= (int)image->height)
-//         return 0; // Return 0 or handle out-of-bounds as needed
-
-//     // Calculate the index in the pixel array
-//     int pixel_index = (y * image->width + x) * 4;
-
-//     // Access the pixel data
-//     uint8_t *pixel_data = &image->pixels[pixel_index];
-
-//     // Combine the RGBA values into a single uint32_t
-//     uint32_t pixel_color = pixel_data[0] << 24 |  // Red
-//                            pixel_data[1] << 16 |  // Green
-//                            pixel_data[2] << 8  |  // Blue
-//                            pixel_data[3];         // Alpha
-
-//     return pixel_color;
-// }
-// void draw_hh(int wall_top, int wall_bottom, int i, t_shared_data *data, mlx_image_t *img, int tex_x) 
-// {
-// 	int tex_y;
-// 	int line_dis;
-// 	int j;
-
-// 	line_dis = wall_bottom - wall_top;
-// 	j = wall_top;
-// 	while (j <= wall_bottom)
-// 	{
-// 		tex_y = ((j -  wall_top) * img->height) / line_dis;
-// 		if(j >= 0 && i >= 0 && j < HEIGHT && i <= WIDTH && tex_y >= 0 && tex_y < (int)img->height)
-// 			mlx_put_pixel(data->image, i, j, get_pixel(img, tex_x, tex_y));
-// 		j++;
-// 	}
-// }
-
-// void rander_textures(t_shared_data *data, int i, int wall_top, int wall_bottom)
-// {
-// 	int tex_x;
-
-// 	if(data->rays[i].ray_right)
-// 	{
-// 		tex_x = ((int)(data->rays[i].ray_p.y) / 2) % data->game_env->side->west->width;
-// 		draw_hh(wall_top, wall_bottom, i, data , data->game_env->side->west, tex_x);
-// 	}
-// 	else if (data->rays[i].ray_left)
-// 	{
-// 		tex_x = ((int)(data->rays[i].ray_p.y) / 2) % data->game_env->side->east->width;
-// 		draw_hh(wall_top, wall_bottom, i, data , data->game_env->side->east, tex_x);
-// 	}
-// 	else if (data->rays[i].ray_up)
-// 	{
-// 		tex_x = ((int)(data->rays[i].ray_p.x)  / 2) % data->game_env->side->north->width;
-// 		draw_hh(wall_top, wall_bottom, i, data , data->game_env->side->north, tex_x);
-// 	}
-// 	else if (data->rays[i].ray_down)
-// 	{
-// 		tex_x = ((int)(data->rays[i].ray_p.x)  / 2) % data->game_env->side->south->width;
-// 		draw_hh(wall_top, wall_bottom, i, data , data->game_env->side->south, tex_x);
-// 	}
-// }
-
 
 void	rander_map(t_shared_data *data)
 {
@@ -481,11 +381,8 @@ void	rander_map(t_shared_data *data)
 		{
 			if (data->game_env->map[y][x] == '1')
 				render_rec(y, x, data->image, 'W');
-			if (data->game_env->map[y][x] == '0'
-				|| data->game_env->map[y][x] == 'N')
-			{
+			if (data->game_env->map[y][x] == '0' || data->game_env->map[y][x] == 'N')
 				render_rec(y, x, data->image, 'F');
-			}
 			x++;
 		}
 		y++;
