@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 21:35:30 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/22 23:30:15 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/22 23:53:06 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,8 @@ int	calculate_colors(char *s, t_wall *wall)
 	if (ft_arrsize(rgba) != 3 && ft_arrsize(rgba) != 4)
 		free_print("invalid rgba colors\n", wall);
 	if (ft_arrsize(rgba) == 3)
-	{
-		printf("%d %d %d\n", ft_atoi(rgba[0]), ft_atoi(rgba[1]), ft_atoi(rgba[2]));
 		color = get_rgba(ft_atoi(rgba[0]), ft_atoi(rgba[1]), ft_atoi(rgba[2]),
 				wall);
-		
-	}
 	ft_alloc(0, rgba, FREE_PTR);
 	return (color);
 }
@@ -90,7 +86,6 @@ void	save_earth_sky(char **arr, t_game_env **game_env)
 			free_print("invalid rgb format. soulde be like 255,255,255 \n",
 				(*game_env)->wall);
 		(*game_env)->floor = calculate_colors(trimed, (*game_env)->wall);
-		printf("%d\n", (*game_env)->floor);
 	}
 	if (ft_strlen(arr[0]) == 1 && !ft_strncmp(arr[0], "C", ft_strlen(arr[0])))
 	{
@@ -102,7 +97,6 @@ void	save_earth_sky(char **arr, t_game_env **game_env)
 			free_print("invalid rgb format. soulde be like 255,255,255 \n",
 				(*game_env)->wall);
 		(*game_env)->ceiling = calculate_colors(trimed, (*game_env)->wall);
-		printf("%d\n", (*game_env)->ceiling);
 
 	}
 }
