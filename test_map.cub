@@ -1,7 +1,7 @@
-WE ./texture/TECH_1.png
-SO ./texture/TECH_2.png
-EA ./texture/TECH_3.png
-NO ./texture/TECH_4.png
+WE ./texture/andesite_doubleslab.png
+SO ./texture/stone_brick_doubleslab_top.png
+EA ./texture/stone_brick_doubleslab.png
+NO ./texture/stone_doubleslab.png
 
 F 220, 100,0
 C 225,30,0

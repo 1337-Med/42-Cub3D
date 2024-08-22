@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/21 17:42:53 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/22 18:41:19 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,14 +183,14 @@ void get_vertical_inter(t_shared_data *data, int i)
 				data->rays[i].vert_y = inter_y;
 				if (data->rays[i].ray_right)
 				{
-					data->rays[i].vert_x -= 0.25;
-					data->rays[i].vert_y -= 0.25;
+					// data->rays[i].vert_x -= 0.25;
+					// data->rays[i].vert_y -= 0.25;
 					return ;
 				}
 				if (data->rays[i].ray_left)
 				{
-					data->rays[i].vert_x += 0.25;
-					data->rays[i].vert_y += 0.25;
+					// data->rays[i].vert_x += 0.25;
+					// data->rays[i].vert_y += 0.25;
 					return ;
 				}
 				// printf("%f %f\n", data->rays[i].vert_y,data->rays[i].vert_x);
@@ -260,15 +260,15 @@ void get_horizontal_inter(t_shared_data *data, int i)
 				if (data->rays[i].ray_up)
 				{
 					// printf("up before x %f y %f\n", data->rays[i].horiz_x, data->rays[i].horiz_y);
-					data->rays[i].horiz_x += 0.25;
-					data->rays[i].horiz_y += 0.25;
+					// data->rays[i].horiz_x += 0.25;
+					// data->rays[i].horiz_y += 0.25;
 					// printf("up after x %f y %f\n", data->rays[i].horiz_x, data->rays[i].horiz_y);
 				}
 				else if (data->rays[i].ray_down)
 				{
 					// printf("down before x %f y %f\n", data->rays[i].horiz_x, data->rays[i].horiz_y);
-					data->rays[i].horiz_x -= 0.25;
-					data->rays[i].horiz_y -= 0.25;
+					// data->rays[i].horiz_x -= 0.25;
+					// data->rays[i].horiz_y -= 0.25;
 					// printf("down after x %f y %f\n", data->rays[i].horiz_x, data->rays[i].horiz_y);
 				}
 				// printf("%f \n", data->rays[i].horiz_x);
@@ -301,6 +301,7 @@ void cast_rays(t_shared_data *data)
 		if ((int)data->rays[i].horiz_x == -1)
 		{
 			data->rays[i].distance = vertical;
+			data->rays[i].distance = data->rays[i].distance * cos(data->rays[i].angle - data->player.rota_angle);
 			data->rays[i].ray_p.x = data->rays[i].vert_x;
 			data->rays[i].ray_p.y = data->rays[i].vert_y;
 			data->rays[i].ray_down = 0;
@@ -309,6 +310,7 @@ void cast_rays(t_shared_data *data)
 		else if ((int)data->rays[i].vert_x == -1)
 		{
 			data->rays[i].distance = horz;
+			data->rays[i].distance = data->rays[i].distance * cos(data->rays[i].angle - data->player.rota_angle);
 			data->rays[i].ray_p.x = data->rays[i].horiz_x;
 			data->rays[i].ray_p.y = data->rays[i].horiz_y;
 			data->rays[i].ray_left = 0;
@@ -319,6 +321,7 @@ void cast_rays(t_shared_data *data)
 			if (horz <= vertical)
 			{
 				data->rays[i].distance = horz;
+				data->rays[i].distance = data->rays[i].distance * cos(data->rays[i].angle - data->player.rota_angle);
 				data->rays[i].ray_p.x = data->rays[i].horiz_x;
 				data->rays[i].ray_p.y = data->rays[i].horiz_y;
 				data->rays[i].ray_left = 0;
@@ -327,6 +330,7 @@ void cast_rays(t_shared_data *data)
 			else
 			{
 				data->rays[i].distance = vertical;
+				data->rays[i].distance = data->rays[i].distance * cos(data->rays[i].angle - data->player.rota_angle);
 				data->rays[i].ray_p.x = data->rays[i].vert_x;
 				data->rays[i].ray_p.y = data->rays[i].vert_y;
 				data->rays[i].ray_down = 0;
@@ -384,14 +388,17 @@ uint32_t get_pixel(mlx_image_t *image, int x, int y)
 
     return pixel_color;
 }
-
-void draw_hh(int wall_top, int wall_bottom, int i, t_shared_data *data, mlx_image_t *img, int tex_x) {
-	
+void draw_hh(int wall_top, int wall_bottom, int i, t_shared_data *data, mlx_image_t *img, int tex_x, float w_h) 
+{
+	(void)w_h;
     for (int j = wall_top; j <= wall_bottom; j++) {
-        int tex_y = (j - wall_top) * img->height / (wall_bottom - wall_top);
-        mlx_put_pixel(data->image, i, j, get_pixel(img, tex_x, tex_y));
+        int tex_y = ((j -  wall_top) * img->height) / (wall_bottom - wall_top);
+		if(j >= 0 && j < HEIGHT && i >= 0 && i <= WIDTH && tex_y >= 0 && tex_y < (int)img->height)
+			mlx_put_pixel(data->image, i, j, get_pixel(img, tex_x, tex_y));
     }
 }
+
+
 
 
 void	rander_map(t_shared_data *data)
@@ -432,37 +439,25 @@ void	rander_map(t_shared_data *data)
 		int wall_top = (HEIGHT / 2) - (wall_height / 2);
 		int wall_bottom = (HEIGHT / 2) + (wall_height / 2);
 
-		if (wall_top < 0) wall_top = 0;
-		if (wall_bottom >= HEIGHT) wall_bottom = HEIGHT - 1;
-		
-// 		int tex_x;
-// 		if (data->rays[i].ray_up || data->rays[i].ray_down) {
-// 			// Horizontal walls (north or south)
-// 			tex_x = (int)(data->rays[i].ray_p.x) % img_north->width;
-// 		} else {
-// 			// Vertical walls (east or west)
-// 			tex_x = (int)(data->rays[i].ray_p.y) % img_east->width;
-// }
-
 		if(data->rays[i].ray_right)
 		{
-			int tex_x = (int)(data->rays[i].ray_p.y) % img_west->width;
-			draw_hh(wall_top, wall_bottom, i, data , img_west, tex_x);
+			int tex_x = ((int)(data->rays[i].ray_p.y) / 2) % img_west->width;
+			draw_hh(wall_top, wall_bottom, i, data , img_west, tex_x, wall_height);
 		}
 		else if (data->rays[i].ray_left)
 		{
-			int tex_x = (int)(data->rays[i].ray_p.y) % img_east->width;
-			draw_hh(wall_top, wall_bottom, i, data , img_east, tex_x);
+			int tex_x = ((int)(data->rays[i].ray_p.y) / 2) % img_east->width;
+			draw_hh(wall_top, wall_bottom, i, data , img_east, tex_x, wall_height);
 		}
 		else if (data->rays[i].ray_up)
 		{
-			int tex_x = (int)(data->rays[i].ray_p.x) % img_north->width;
-			draw_hh(wall_top, wall_bottom, i, data , img_north, tex_x);
+			int tex_x = ((int)(data->rays[i].ray_p.x)  / 2)% img_north->width;
+			draw_hh(wall_top, wall_bottom, i, data , img_north, tex_x, wall_height);
 		}
 		else if (data->rays[i].ray_down)
 		{
-			int tex_x = (int)(data->rays[i].ray_p.x) % img_south->width;
-			draw_hh(wall_top, wall_bottom, i, data , img_south, tex_x);
+			int tex_x = ((int)(data->rays[i].ray_p.x)  / 2) % img_south->width;
+			draw_hh(wall_top, wall_bottom, i, data , img_south, tex_x, wall_height);
 		}
 		tex_y++;
 		i++;
