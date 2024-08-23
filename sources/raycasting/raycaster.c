@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/21 11:58:54 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/23 11:16:08 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,14 +183,14 @@ void get_vertical_inter(t_shared_data *data, int i)
 				data->rays[i].vert_y = inter_y;
 				if (data->rays[i].ray_right)
 				{
-					data->rays[i].vert_x -= 0.25;
-					data->rays[i].vert_y -= 0.25;
+					// data->rays[i].vert_x -= 0.25;
+					// data->rays[i].vert_y -= 0.25;
 					return ;
 				}
 				if (data->rays[i].ray_left)
 				{
-					data->rays[i].vert_x += 0.25;
-					data->rays[i].vert_y += 0.25;
+					// data->rays[i].vert_x += 0.25;
+					// data->rays[i].vert_y += 0.25;
 					return ;
 				}
 				// printf("%f %f\n", data->rays[i].vert_y,data->rays[i].vert_x);
@@ -260,15 +260,15 @@ void get_horizontal_inter(t_shared_data *data, int i)
 				if (data->rays[i].ray_up)
 				{
 					// printf("up before x %f y %f\n", data->rays[i].horiz_x, data->rays[i].horiz_y);
-					data->rays[i].horiz_x += 0.25;
-					data->rays[i].horiz_y += 0.25;
+					// data->rays[i].horiz_x += 0.25;
+					// data->rays[i].horiz_y += 0.25;
 					// printf("up after x %f y %f\n", data->rays[i].horiz_x, data->rays[i].horiz_y);
 				}
 				else if (data->rays[i].ray_down)
 				{
 					// printf("down before x %f y %f\n", data->rays[i].horiz_x, data->rays[i].horiz_y);
-					data->rays[i].horiz_x -= 0.25;
-					data->rays[i].horiz_y -= 0.25;
+					// data->rays[i].horiz_x -= 0.25;
+					// data->rays[i].horiz_y -= 0.25;
 					// printf("down after x %f y %f\n", data->rays[i].horiz_x, data->rays[i].horiz_y);
 				}
 				// printf("%f \n", data->rays[i].horiz_x);
@@ -294,7 +294,6 @@ void cast_rays(t_shared_data *data)
 	int i = 0;
 	while (i < NUM_RAYS)
 	{
-		// printf("the ray angle %f the player angle %f sub angle %f \n", data->rays[i].angle, data->player.rota_angle, cos(data->rays[i].angle - data->player.rota_angle));
 		get_horizontal_inter(data, i);
 		float horz = distance_two_p(data->real_pos.x, data->real_pos.y, data->rays[i].horiz_x, data->rays[i].horiz_y);
 		get_vertical_inter(data, i);
@@ -305,14 +304,17 @@ void cast_rays(t_shared_data *data)
 			data->rays[i].distance = data->rays[i].distance * cos(data->rays[i].angle - data->player.rota_angle);
 			data->rays[i].ray_p.x = data->rays[i].vert_x;
 			data->rays[i].ray_p.y = data->rays[i].vert_y;
+			data->rays[i].ray_down = 0;
+			data->rays[i].ray_up = 0;
 		}
 		else if ((int)data->rays[i].vert_x == -1)
 		{
 			data->rays[i].distance = horz;
 			data->rays[i].distance = data->rays[i].distance * cos(data->rays[i].angle - data->player.rota_angle);
-			
 			data->rays[i].ray_p.x = data->rays[i].horiz_x;
 			data->rays[i].ray_p.y = data->rays[i].horiz_y;
+			data->rays[i].ray_left = 0;
+			data->rays[i].ray_right = 0;
 		}
 		else
 		{
@@ -322,6 +324,8 @@ void cast_rays(t_shared_data *data)
 				data->rays[i].distance = data->rays[i].distance * cos(data->rays[i].angle - data->player.rota_angle);
 				data->rays[i].ray_p.x = data->rays[i].horiz_x;
 				data->rays[i].ray_p.y = data->rays[i].horiz_y;
+				data->rays[i].ray_left = 0;
+			data->rays[i].ray_right = 0;
 			}
 			else
 			{
@@ -329,72 +333,27 @@ void cast_rays(t_shared_data *data)
 				data->rays[i].distance = data->rays[i].distance * cos(data->rays[i].angle - data->player.rota_angle);
 				data->rays[i].ray_p.x = data->rays[i].vert_x;
 				data->rays[i].ray_p.y = data->rays[i].vert_y;
+				data->rays[i].ray_down = 0;
+			data->rays[i].ray_up = 0;
 			}
 		}
 		i++;
 	}
 }
-// void	render_player(t_shared_data *data)
-// {
-	// int	color;
-	// float	i;
-	// float	j;
-
-	// color = 0xFFFFFFFF;
-	// i = -5 * MINI_FACTOR;
-	// j = -5 * MINI_FACTOR;
-	// while (i <= 5 * MINI_FACTOR)
-	// {
-	// 	j = -5;
-	// 	while (j <= 5 * MINI_FACTOR)
-	// 	{
-	// 		mlx_put_pixel(data->image, data->real_pos.x * MINI_FACTOR + j, data->real_pos.y * MINI_FACTOR
-	// 			+ i, color);
-	// 		j++;
-	// 	}
-	// 	i++;
-	// }
-	// create_rays(data);
-	// cast_rays(data);
-    // render_rays(data);
-	// DDA(data->real_pos.x, data->real_pos.y, data->real_pos.x
-	// 	+ cos((data->player.rota_angle)) * 32, data->real_pos.y
-	// 	+ sin((data->player.rota_angle)) * 32, data->image);
-// }
-int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
-{
-    return (r << 24 | g << 16 | b << 8 | a);
-}
 void	rander_map(t_shared_data *data)
 {
-	// int	x;
-	// int	y;
-	// int i = 0;
 	create_rays(data);
 	cast_rays(data);
 	int i = 0;
-	int cell  = ft_pixel(
-				20, // R
-				150, // G
-				100, // B
-				255  // A
-			);;
-	int floor= ft_pixel(
-				20, // R
-				50, // G
-				200, // B
-				255  // A
-			);
-	// mlx_win
 	while (i < HEIGHT)
 	{
 		int p = 0;
 		while (p < WIDTH)
 		{
 			if (i < HEIGHT / 2)
-				mlx_put_pixel(data->image, p, i, floor);
+				mlx_put_pixel(data->image, p, i, data->game_env->ceiling);
 			else
-				mlx_put_pixel(data->image, p, i, cell);
+				mlx_put_pixel(data->image, p, i, data->game_env->floor);
 			p++;
 		}
 		i++;
@@ -402,33 +361,14 @@ void	rander_map(t_shared_data *data)
 	i = 0;
 	while (i < NUM_RAYS)
 	{
-		// printf("i %d\n", i);
-	
 		// Calculate the perpendicular distance from the camera plane to the wall
 		float distancepp = (WIDTH / 2) / tan(FOV / 2);
-		
 		// Calculate the height of the wall slice for this ray
 		float wall_height = (32 / data->rays[i].distance) * distancepp;
-
 		// Determine the top and bottom y-coordinates of the wall slice
 		int wall_top = (HEIGHT / 2) - (wall_height / 2);
 		int wall_bottom = (HEIGHT / 2) + (wall_height / 2);
-
-		// Clamp the values to ensure they don't go out of the screen bounds
-		if (wall_top < 0) wall_top = 0;
-		if (wall_bottom >= HEIGHT) wall_bottom = HEIGHT - 1;
-
-		// Draw the vertical line representing the wall slice
-		for (int j = wall_top; j <= wall_bottom; j++)
-		{
-			mlx_put_pixel(data->image, i, j, ft_pixel(
-				150, // R
-				10, // G
-				10, // B
-				255  // A
-			));
-		}
-
+		rander_textures(data, i, wall_top, wall_bottom);
 		i++;
 	}
 	int x = 0;
@@ -440,18 +380,12 @@ void	rander_map(t_shared_data *data)
 		{
 			if (data->game_env->map[y][x] == '1')
 				render_rec(y, x, data->image, 'W');
-			if (data->game_env->map[y][x] == '0'
-				|| data->game_env->map[y][x] == 'N')
-			{
+			if (data->game_env->map[y][x] == '0' || data->game_env->map[y][x] == 'N')
 				render_rec(y, x, data->image, 'F');
-			}
 			x++;
 		}
 		y++;
 	}
-	// create_rays(data);
-	// cast_rays(data);
-	// render_player(data);
 	render_rays(data);
 }
 
@@ -502,7 +436,7 @@ void	ft_hook(mlx_key_data_t key, void *param)
 	}
 	data->player.rota_angle += norm_angle((float)data->player.turn_dir
 		* data->player.rotate_speed);
-	data->player.rota_angle = norm_angle(data->player.rota_angle);
+	// data->player.rota_angle = norm_angle(data->player.rota_angle);
 	move_step = (float)data->player.walk_dir * data->player.move_speed;
 	new_x = (float)data->real_pos.x + cos((data->player.rota_angle))
 		* (float)move_step;
@@ -561,10 +495,11 @@ int	raycaster(t_game_env *game_env)
 		return (EXIT_FAILURE);
 	}
 	// create_rays(&data);
+	texture_to_img(&data);
 	rander_map(&data);
 	mlx_key_hook(data.mlx, ft_hook, &data);
 	mlx_loop(data.mlx);
 	mlx_terminate(data.mlx);
 	return (EXIT_SUCCESS);
-	return (0);
+	return (0); 
 }

@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 21:35:30 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/13 16:46:30 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/22 23:53:06 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void	save_earth_sky(char **arr, t_game_env **game_env)
 			free_print("invalid rgb format. soulde be like 255,255,255 \n",
 				(*game_env)->wall);
 		(*game_env)->ceiling = calculate_colors(trimed, (*game_env)->wall);
+
 	}
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_parsing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 21:34:36 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/14 12:11:50 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/15 15:14:55 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,15 @@ void	flod_fill_checker(char **map, int *xy, t_wall *wall)
 
 void	check_map(char **map, t_wall *wall)
 {
-	char	**temp_map = NULL;
+	char	**temp_map;
 	int		*xy;
+	int		i;
+	int		len;
 
-	// temp_map = map;
-	int len = ft_arrsize(map) + 1;
+	temp_map = NULL;
+	len = ft_arrsize(map) + 1;
 	temp_map = ft_alloc(sizeof(char *) * len, temp_map, CALLOC);
-	int i = 0;
+	i = 0;
 	while (map[i])
 	{
 		temp_map[i] = ft_strdup(map[i]);
