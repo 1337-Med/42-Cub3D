@@ -19,7 +19,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	make -C ./super_libft
-	$(CC) $(CFLAGS) ./super_libft/libft.a ./MLX42/build/libmlx42.a -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/" -o $(NAME) $(DEPS) $(OBJ)
+	$(CC) $(CFLAGS) ./super_libft/libft.a ./MLX42/build/libmlx42.a -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/" -o $(NAME)  $(OBJ)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@

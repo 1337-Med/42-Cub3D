@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/22 23:37:29 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/23 13:00:45 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ typedef struct s_side
 	mlx_image_t* east;
 } t_side;
 
-#define MINI_FACTOR 0.4
+#define MINI_FACTOR 0.2
 #define WALL_WIDTH 1
 #define PI 3.14159265358979323846
 // #define NUM_RAYS 320
 # define FOV (60 * (PI / 180))
-# define WIDTH 2000
-# define HEIGHT 1000
+# define WIDTH 920
+# define HEIGHT 800
 # define NUM_RAYS (WIDTH / WALL_WIDTH)
 typedef struct s_game_env
 {

@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/23 11:16:08 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/23 16:51:09 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -361,11 +361,11 @@ void	rander_map(t_shared_data *data)
 	i = 0;
 	while (i < NUM_RAYS)
 	{
-		// Calculate the perpendicular distance from the camera plane to the wall
+		if (data->rays[i].distance < 0.5)
+			data->rays[i].distance = 0.5;
+		// printf("ray dist %f\n", data->rays[i].distance);
 		float distancepp = (WIDTH / 2) / tan(FOV / 2);
-		// Calculate the height of the wall slice for this ray
 		float wall_height = (32 / data->rays[i].distance) * distancepp;
-		// Determine the top and bottom y-coordinates of the wall slice
 		int wall_top = (HEIGHT / 2) - (wall_height / 2);
 		int wall_bottom = (HEIGHT / 2) + (wall_height / 2);
 		rander_textures(data, i, wall_top, wall_bottom);
@@ -473,7 +473,7 @@ int	raycaster(t_game_env *game_env)
 	player.turn_dir = 0;
 	player.rota_angle = PI / 2;
 	player.move_speed = 4;
-	player.rotate_speed = 4 * (PI / 180);
+	player.rotate_speed = 5 * (PI / 180);
 	data.player = player;
 	data.mlx = NULL;
 	data.image = NULL;
