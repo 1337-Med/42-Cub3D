@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/24 13:01:13 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/24 16:36:31 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ void check_map(char **map, t_wall *wall);
 char **spliter(char *line);
 void save_tools(char **arr, t_game_env **game_env);
 void free_texture(t_wall *wall);
-
 //general functions
 t_game_env *parser(int ac, char **av);
 int raycaster(t_game_env *game_env);
@@ -124,4 +123,5 @@ t_p_pos get_player_pos(char **map);
 void texture_to_img(t_shared_data * data);
 void rander_textures(t_shared_data *data, int i, int wall_top, int wall_bottom);
 int degree_to_raidian(float dg);
+bool move_down_condition(t_shared_data *data);
 # endif
