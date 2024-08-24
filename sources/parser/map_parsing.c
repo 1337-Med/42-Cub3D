@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_parsing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 21:34:36 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/15 15:14:55 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/24 13:15:29 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	check_map(char **map, t_wall *wall)
 		i++;
 	}
 	temp_map[i] = NULL;
-	xy = player_position(map); // hayda kanet
+	xy = player_position(map);
 	temp_map[xy[0]][xy[1]] = '0';
 	flod_fill_checker(temp_map, xy, wall);
 }

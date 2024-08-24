@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/24 13:01:25 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/24 13:11:37 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -419,7 +419,30 @@ void	ft_hook(mlx_key_data_t key, void *param)
 	}
 	rander_map(data);
 }
-
+void ft_loop (void *data)
+{
+	static int a = 50;
+	static int t_x = 0,t_y = 0;
+	int x ,y;
+	if (a == 50)
+	{
+		mlx_get_mouse_pos(((t_shared_data *)data)->mlx, &t_x, &t_y);
+		a = 0;
+	}
+	mlx_get_mouse_pos(((t_shared_data *)data)->mlx, &x, &y);
+	a++;
+	if (t_x < x)
+	{
+		((t_shared_data *)data)->player.rota_angle += norm_angle(0.6 * ((t_shared_data *)data)->player.rotate_speed);
+		rander_map(data);
+	}
+	else if (t_x > x)
+	{
+		((t_shared_data *)data)->player.rota_angle += norm_angle(-0.6 * ((t_shared_data *)data)->player.rotate_speed);
+		rander_map(data);
+	}
+	// printf("1\n");	
+}
 int	raycaster(t_game_env *game_env)
 {
 	t_shared_data	data;
@@ -462,6 +485,7 @@ int	raycaster(t_game_env *game_env)
 	texture_to_img(&data);
 	rander_map(&data);
 	mlx_key_hook(data.mlx, ft_hook, &data);
+	mlx_loop_hook(data.mlx, ft_loop, &data);
 	mlx_loop(data.mlx);
 	mlx_terminate(data.mlx);
 	return (EXIT_SUCCESS);
