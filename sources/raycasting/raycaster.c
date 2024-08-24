@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycaster.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/24 19:00:22 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/24 19:31:07 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -526,30 +526,25 @@ void	ft_hook(mlx_key_data_t key, void *param)
 	}
 	rander_map(data);
 }
-void	ft_loop(void *data)
+void ft_loop(void *data)
 {
-	static int a = 20;
-	static int t_x = 0,t_y = 0;
-	int x ,y;
-	if (a == 20)
-	{
-		mlx_get_mouse_pos(((t_shared_data *)data)->mlx, &t_x, &t_y);
-		a = 0;
-	}
-	mlx_get_mouse_pos(((t_shared_data *)data)->mlx, &x, &y);
-	a++;
-	if (t_x < x)
-	{
-		((t_shared_data *)data)->player.rota_angle += norm_angle(0.2 * ((t_shared_data *)data)->player.rotate_speed);
-		rander_map(data);
-	}
-	else if (t_x > x)
-	{
-		((t_shared_data *)data)->player.rota_angle += norm_angle(-0.2 * ((t_shared_data *)data)->player.rotate_speed);
-		rander_map(data);
-	}
-	// printf("1\n");
+    static int last_x = 0;
+    int current_x, current_y;
+	mlx_set_cursor_mode(((t_shared_data *)data)->mlx, MLX_MOUSE_HIDDEN);
+    mlx_get_mouse_pos(((t_shared_data *)data)->mlx, &current_x, &current_y);
+    int delta_x = current_x - last_x;
+    if (delta_x != 0)
+    {
+        ((t_shared_data *)data)->player.rota_angle += norm_angle(delta_x * (0.5 * (PI / 180))); 
+        rander_map(data);
+    }
+    last_x = current_x;
+    int screen_center_x = WIDTH / 2;
+    int screen_center_y = HEIGHT / 2;
+    mlx_set_mouse_pos(((t_shared_data *)data)->mlx, screen_center_x, screen_center_y);
+    last_x = screen_center_x;
 }
+
 int	raycaster(t_game_env *game_env)
 {
 	t_shared_data	data;
