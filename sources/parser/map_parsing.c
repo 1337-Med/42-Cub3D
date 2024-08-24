@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 21:34:36 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/15 15:14:55 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/24 15:52:27 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ int	*player_position(char **map)
 {
 	int	j;
 	int	i;
-
+	int *ij = NULL;
+	ij = ft_alloc(sizeof(int) * 2, ij, CALLOC);
 	i = 0;
 	while (map[i])
 	{
@@ -24,12 +25,16 @@ int	*player_position(char **map)
 		while (map[i][j])
 		{
 			if (ft_strchr("NSEW", map[i][j]))
-				return ((int [2]){i, j});
+			{
+				ij[0] = i;
+				ij[1] = j;
+				return (ij);
+			}
 			j++;
 		}
 		i++;
 	}
-	return ((int [2]){0, 0});
+	return (ij);
 }
 
 void	flod_fill_checker(char **map, int *xy, t_wall *wall)
@@ -71,7 +76,9 @@ void	check_map(char **map, t_wall *wall)
 		i++;
 	}
 	temp_map[i] = NULL;
-	xy = player_position(map); // hayda kanet
+	xy = player_position(map);
 	temp_map[xy[0]][xy[1]] = '0';
 	flod_fill_checker(temp_map, xy, wall);
+	ft_alloc(0, xy, FREE_PTR);
+	ft_alloc(0, temp_map, FREE_PTR);
 }

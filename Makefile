@@ -7,7 +7,7 @@ SRC =	./sources/parser/parser.c ./sources/parser/parser_utils.c  ./sources/parse
 
 OBJ = $(SRC:.c=.o)
 
-CFLAGS = -Wall -Wextra -I ./includes -I ./super_libft -O3 #-fsanitize=address -g -O3
+CFLAGS = -Wall -Wextra -I ./includes -I ./super_libft -O3 -fsanitize=address -g
 
 NAME = cub3d
 
