@@ -6,24 +6,24 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/24 13:11:37 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/24 18:51:43 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	create_trgb(unsigned char t, unsigned char r, unsigned char g, unsigned char b)
+int	create_trgb(unsigned char t, unsigned char r, unsigned char g,
+		unsigned char b)
 {
-	return (*(int *)(unsigned char [4]){b, g, r, t});
+	return (*(int *)(unsigned char[4]){b, g, r, t});
 }
-float distance_two_p(float x1, float y1, float x2, float y2)
+float	distance_two_p(float x1, float y1, float x2, float y2)
 {
 	return (sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
 }
-float norm_angle(float angle)
+float	norm_angle(float angle)
 {
-	
-	angle = fmod (angle, (2 * PI));
+	angle = fmod(angle, (2 * PI));
 	if (angle < 0)
 	{
 		angle = (PI * 2) + angle;
@@ -33,9 +33,9 @@ float norm_angle(float angle)
 
 void	DDA(float x1, float y1, float x2, float y2, mlx_image_t *image)
 {
-	float		dx;
-	float		dy;
-	float		steps;
+	float	dx;
+	float	dy;
+	float	steps;
 	float	x_inc;
 	float	y_inc;
 	float	x;
@@ -49,7 +49,7 @@ void	DDA(float x1, float y1, float x2, float y2, mlx_image_t *image)
 	x = x1;
 	y = y1;
 	mlx_put_pixel(image, round(x), round(y), 0xFFFFFFFF);
-	for (int i = 0; i < steps; i++)  // Loop includes the endpoint
+	for (int i = 0; i < steps; i++) // Loop includes the endpoint
 	{
 		x += x_inc;
 		y += y_inc;
@@ -60,11 +60,12 @@ void	DDA(float x1, float y1, float x2, float y2, mlx_image_t *image)
 
 void	render_rec(int y, int x, mlx_image_t *image, char c)
 {
-	int	start_y;
-	int	start_x;
-	int	color;
+	int		start_y;
+	int		start_x;
+	int		color;
 	float	i;
 	float	j;
+
 	start_y = y * 32 * MINI_FACTOR;
 	start_x = x * 32 * MINI_FACTOR;
 	if (c == 'W')
@@ -89,11 +90,15 @@ void	render_rec(int y, int x, mlx_image_t *image, char c)
 	}
 }
 
-void  create_rays(t_shared_data *data)
+void	create_rays(t_shared_data *data)
 {
-	int i = 0;
-	int column_id = 0;
-    float ray_angle = (norm_angle(data->player.rota_angle)) - (FOV / 2);
+	int		i;
+	int		column_id;
+	float	ray_angle;
+
+	i = 0;
+	column_id = 0;
+	ray_angle = (norm_angle(data->player.rota_angle)) - (FOV / 2);
 	data->rays = NULL;
 	data->rays = ft_alloc(sizeof(t_rays) * (NUM_RAYS + 1), data->rays, CALLOC);
 	while (i < NUM_RAYS)
@@ -108,7 +113,6 @@ void  create_rays(t_shared_data *data)
 		data->rays[i].horiz_y = -1;
 		data->rays[i].vert_x = -1;
 		data->rays[i].vert_y = -1;
-
 		data->rays[i].distance = 0;
 		data->rays[i].columnd_id = column_id;
 		if (data->rays[i].angle >= 0 && data->rays[i].angle <= PI)
@@ -127,26 +131,34 @@ void  create_rays(t_shared_data *data)
 	}
 }
 
-void render_rays(t_shared_data *data)
+void	render_rays(t_shared_data *data)
 {
-    int i = 0;
-    while (i < NUM_RAYS)
-    {
-        DDA(data->real_pos.x  * MINI_FACTOR, data->real_pos.y  * MINI_FACTOR, data->rays[i].ray_p.x  * MINI_FACTOR, data->rays[i].ray_p.y * MINI_FACTOR, data->image);
-        i++;
-    }
+	int	i;
+
+	i = 0;
+	while (i < NUM_RAYS)
+	{
+		DDA(data->real_pos.x * MINI_FACTOR, data->real_pos.y * MINI_FACTOR,
+			data->rays[i].ray_p.x * MINI_FACTOR, data->rays[i].ray_p.y
+			* MINI_FACTOR, data->image);
+		i++;
+	}
 }
-void get_vertical_inter(t_shared_data *data, int i)
+void	get_vertical_inter(t_shared_data *data, int i)
 {
-	float inter_x;
-	float inter_y;
-	float step_x;
-	float step_y;
-	float touch_x;
+	float	inter_x;
+	float	inter_y;
+	float	step_x;
+	float	step_y;
+	float	touch_x;
+	int		map_y;
+	int		map_x;
+
 	inter_x = floor(data->real_pos.x / 32) * 32;
 	if (data->rays[i].ray_right)
 		inter_x += 32;
-	inter_y = data->real_pos.y + ((inter_x - data->real_pos.x) * tan(data->rays[i].angle));
+	inter_y = data->real_pos.y + ((inter_x - data->real_pos.x)
+			* tan(data->rays[i].angle));
 	step_x = 32;
 	if (data->rays[i].ray_left)
 		step_x = -step_x;
@@ -161,12 +173,13 @@ void get_vertical_inter(t_shared_data *data, int i)
 		touch_x = inter_x;
 		if (data->rays[i].ray_left)
 			touch_x--;
-		int map_y = (int)floor((inter_y / 32));
-        int map_x = (int)floor((touch_x / 32));
-        if (map_y < 0 || map_y >= (int )ft_arrsize(data->game_env->map) || map_x < 0 || map_x >= (int )ft_strlen(data->game_env->map[map_y]))
+		map_y = (int)floor((inter_y / 32));
+		map_x = (int)floor((touch_x / 32));
+		if (map_y < 0 || map_y >= (int)ft_arrsize(data->game_env->map)
+			|| map_x < 0 || map_x >= (int)ft_strlen(data->game_env->map[map_y]))
 		{
 			inter_y += step_y;
-			inter_x +=  step_x;
+			inter_x += step_x;
 			data->rays[i].vert_x = -1;
 			data->rays[i].vert_y = -1;
 			// printf ("womp womp\n");
@@ -176,142 +189,153 @@ void get_vertical_inter(t_shared_data *data, int i)
 		{
 			if (data->game_env->map[map_y][map_x] == '1')
 			{
-			// printf("here 1\n");
+				// printf("here 1\n");
 				data->rays[i].vert_x = inter_x;
 				data->rays[i].vert_y = inter_y;
 				return ;
 			}
 		}
 		inter_y += step_y;
-		inter_x +=  step_x;
-		// printf("%d %f %f %d %d %c \n", i, inter_x, inter_y, (int)floor((inter_x / 32)), (int)floor((inter_y / 32)), data->game_env->map[5][29]);
+		inter_x += step_x;
+		// printf("%d %f %f %d %d %c \n", i, inter_x, inter_y,
+			// (int)floor((inter_x / 32)), (int)floor((inter_y / 32)),
+			// data->game_env->map[5][29]);
 	}
-			// printf("here 2\n");
+	// printf("here 2\n");
 }
 
-void get_horizontal_inter(t_shared_data *data, int i)
+void	get_horizontal_inter(t_shared_data *data, int i)
 {
-	float inter_x;
-	float inter_y;
-	float step_x;
-	float step_y;
-	float touch_y;
+	float	inter_x;
+	float	inter_y;
+	float	step_x;
+	float	step_y;
+	float	touch_y;
+	int		map_y;
+	int		map_x;
+
 	inter_y = floor(data->real_pos.y / 32) * 32;
 	inter_y += data->rays[i].ray_down ? 32 : 0;
-	inter_x = data->real_pos.x + ((inter_y - data->real_pos.y) / tan(data->rays[i].angle));
+	inter_x = data->real_pos.x + ((inter_y - data->real_pos.y)
+			/ tan(data->rays[i].angle));
 	step_y = 32;
 	if (data->rays[i].ray_up)
 		step_y = -step_y;
 	step_x = 32 / tan(data->rays[i].angle);
-	if ((data->rays[i].ray_left && step_x > 0) || (data->rays[i].ray_right && step_x < 0))
+	if ((data->rays[i].ray_left && step_x > 0) || (data->rays[i].ray_right
+			&& step_x < 0))
 		step_x = -step_x;
-	// while (inter_y > 0 && inter_x > 0 && inter_y < HEIGHT && inter_x < WIDTH && data->game_env->map[(int)inter_y / 32])
+	// while (inter_y > 0 && inter_x > 0 && inter_y < HEIGHT && inter_x < WIDTH
+		// && data->game_env->map[(int)inter_y / 32])
 	while (inter_y > 0 && inter_x > 0 && inter_y < HEIGHT)
 	{
 		touch_y = inter_y;
 		if (data->rays[i].ray_up)
 			touch_y--;
-		int map_y = floor(touch_y / 32);
-        int map_x = floor(inter_x / 32);
-        if (map_y < 0 || map_y >= (int )ft_arrsize(data->game_env->map) || map_x < 0 || map_x > (int )ft_strlen(data->game_env->map[map_y]))
+		map_y = floor(touch_y / 32);
+		map_x = floor(inter_x / 32);
+		if (map_y < 0 || map_y >= (int)ft_arrsize(data->game_env->map)
+			|| map_x < 0 || map_x > (int)ft_strlen(data->game_env->map[map_y]))
 		{
 			inter_y += step_y;
-			inter_x +=  step_x;
+			inter_x += step_x;
 			data->rays[i].horiz_x = -1;
 			data->rays[i].horiz_y = -1;
 			return ;
 		}
-        if (data->game_env->map[map_y])
+		if (data->game_env->map[map_y])
 		{
 			if (data->game_env->map[map_y][map_x] == '1')
 			{
-				
 				data->rays[i].horiz_x = inter_x;
 				data->rays[i].horiz_y = inter_y;
 				return ;
 			}
 		}
 		inter_y += step_y;
-		inter_x +=  step_x;
+		inter_x += step_x;
 	}
 }
 
-void cast_rays(t_shared_data *data)
+void	cast_rays(t_shared_data *data, int num_rays)
 {
-	int i = 0;
-	while (i < NUM_RAYS)
+	int		i;
+	float	horz;
+	float	vertical;
+
+	i = 0;
+	while (i < num_rays)
 	{
 		get_horizontal_inter(data, i);
-		float horz = distance_two_p(data->real_pos.x, data->real_pos.y, data->rays[i].horiz_x, data->rays[i].horiz_y);
+		horz = distance_two_p(data->real_pos.x, data->real_pos.y,
+				data->rays[i].horiz_x, data->rays[i].horiz_y);
 		get_vertical_inter(data, i);
-		float vertical = distance_two_p(data->real_pos.x, data->real_pos.y, data->rays[i].vert_x, data->rays[i].vert_y);
-		// if (data->rays[i].vert_y == -1 || data->rays[i].horiz_x == -1)
-		// 	printf("yes\n");
+		vertical = distance_two_p(data->real_pos.x, data->real_pos.y,
+				data->rays[i].vert_x, data->rays[i].vert_y);
 		if ((int)data->rays[i].horiz_x == -1)
 		{
 			data->rays[i].distance = vertical;
-			data->rays[i].distance = data->rays[i].distance * cos(data->rays[i].angle - data->player.rota_angle);
+			data->rays[i].distance = data->rays[i].distance
+				* cos(data->rays[i].angle - data->player.rota_angle);
 			data->rays[i].ray_p.x = data->rays[i].vert_x;
 			data->rays[i].ray_p.y = data->rays[i].vert_y;
 			data->rays[i].ray_down = 0;
 			data->rays[i].ray_up = 0;
-			// printf("1\n");
-			// printf("%d horz is -1 vert %f %f\n", i, data->rays[i].vert_x, data->rays[i].vert_y);
-			
 		}
 		else if ((int)data->rays[i].vert_x == -1)
 		{
 			data->rays[i].distance = horz;
-			data->rays[i].distance = data->rays[i].distance * cos(data->rays[i].angle - data->player.rota_angle);
+			data->rays[i].distance = data->rays[i].distance
+				* cos(data->rays[i].angle - data->player.rota_angle);
 			data->rays[i].ray_p.x = data->rays[i].horiz_x;
 			data->rays[i].ray_p.y = data->rays[i].horiz_y;
 			data->rays[i].ray_left = 0;
 			data->rays[i].ray_right = 0;
-			// printf("2\n");
-			// printf("vert is -1\n");
-			// exit (1);
 		}
-		else if ((int)data->rays[i].horiz_x != -1 && (int)data->rays[i].vert_x != -1)
+		else if ((int)data->rays[i].horiz_x != -1
+			&& (int)data->rays[i].vert_x != -1)
 		{
 			if (horz <= vertical)
 			{
-			// printf("%d horz x %f y %f vert x %f y %f\n",i,  data->rays[i].horiz_x, data->rays[i].horiz_y, data->rays[i].vert_x, data->rays[i].vert_y);
-			
-			// printf("3\n");
 				data->rays[i].distance = horz;
-				data->rays[i].distance = data->rays[i].distance * cos(data->rays[i].angle - data->player.rota_angle);
+				data->rays[i].distance = data->rays[i].distance
+					* cos(data->rays[i].angle - data->player.rota_angle);
 				data->rays[i].ray_p.x = data->rays[i].horiz_x;
 				data->rays[i].ray_p.y = data->rays[i].horiz_y;
 				data->rays[i].ray_left = 0;
-			data->rays[i].ray_right = 0;
+				data->rays[i].ray_right = 0;
 			}
 			else
 			{
-				// if ((int)data->rays[i].vert_y == -1)
-				// 	exit(1);
-			// printf("vert x %f y %f\n", data->rays[i].vert_x, data->rays[i].vert_y);
-			// printf("4\n");
 				data->rays[i].distance = vertical;
-				data->rays[i].distance = data->rays[i].distance * cos(data->rays[i].angle - data->player.rota_angle);
+				data->rays[i].distance = data->rays[i].distance
+					* cos(data->rays[i].angle - data->player.rota_angle);
 				data->rays[i].ray_p.x = data->rays[i].vert_x;
 				data->rays[i].ray_p.y = data->rays[i].vert_y;
 				data->rays[i].ray_down = 0;
-			data->rays[i].ray_up = 0;
+				data->rays[i].ray_up = 0;
 			}
 		}
-		else
-			printf("yes\n");
 		i++;
 	}
 }
 void	rander_map(t_shared_data *data)
 {
+	int		i;
+	int		p;
+	float	distancepp;
+	float	wall_height;
+	int		wall_top;
+	int		wall_bottom;
+	int		x;
+	int		y;
+
 	create_rays(data);
-	cast_rays(data);
-	int i = 0;
+	cast_rays(data, NUM_RAYS);
+	i = 0;
 	while (i < HEIGHT)
 	{
-		int p = 0;
+		p = 0;
 		while (p < WIDTH)
 		{
 			if (i < HEIGHT / 2)
@@ -327,16 +351,15 @@ void	rander_map(t_shared_data *data)
 	{
 		if (data->rays[i].distance < 0.5)
 			data->rays[i].distance = 0.5;
-		// printf("ray dist %f\n", data->rays[i].distance);
-		float distancepp = (WIDTH / 2) / tan(FOV / 2);
-		float wall_height = (32 / data->rays[i].distance) * distancepp;
-		int wall_top = (HEIGHT / 2) - (wall_height / 2);
-		int wall_bottom = (HEIGHT / 2) + (wall_height / 2);
+		distancepp = (WIDTH / 2) / tan(FOV / 2);
+		wall_height = (32 / data->rays[i].distance) * distancepp;
+		wall_top = (HEIGHT / 2) - (wall_height / 2);
+		wall_bottom = (HEIGHT / 2) + (wall_height / 2);
 		rander_textures(data, i, wall_top, wall_bottom);
 		i++;
 	}
-	int x = 0;
-	int y = 0;
+	x = 0;
+	y = 0;
 	while (data->game_env->map[y])
 	{
 		x = 0;
@@ -344,15 +367,99 @@ void	rander_map(t_shared_data *data)
 		{
 			if (data->game_env->map[y][x] == '1')
 				render_rec(y, x, data->image, 'W');
-			if (data->game_env->map[y][x] == '0' || data->game_env->map[y][x] == 'N')
+			if (data->game_env->map[y][x] == '0'
+				|| data->game_env->map[y][x] == 'N')
 				render_rec(y, x, data->image, 'F');
 			x++;
 		}
 		y++;
 	}
 	render_rays(data);
+	// move_down_condition(data);
 }
+bool	move_down_condition(t_shared_data *data)
+{
+	float			opposite;
+	float			ray_angle;
+	t_shared_data	back_data;
 
+	opposite = fmod(data->player.rota_angle + degree_to_raidian(180),
+			degree_to_raidian(360));
+	ray_angle = ((data->player.rota_angle + opposite)) / 2;
+	// printf ("ray angle %f\n", ray_angle);
+	back_data.game_env = data->game_env;
+	back_data.player = data->player;
+	back_data.player.rota_angle = opposite;
+	back_data.rays = NULL;
+	back_data.rays = ft_alloc(sizeof(t_rays) * (1), back_data.rays, CALLOC);
+	back_data.rays[0].angle = norm_angle(ray_angle);
+	back_data.rays[0].wall_hit_x = 0;
+	back_data.rays[0].wall_hit_y = 0;
+	back_data.rays[0].ray_p.x = 0;
+	back_data.rays[0].ray_p.y = 0;
+	back_data.rays[0].horiz_x = -1;
+	back_data.rays[0].horiz_y = -1;
+	back_data.rays[0].vert_x = -1;
+	back_data.rays[0].vert_y = -1;
+	back_data.rays[0].distance = 0;
+	if (back_data.rays[0].angle >= 0 && back_data.rays[0].angle <= PI)
+		back_data.rays[0].ray_down = true;
+	else
+		back_data.rays[0].ray_down = false;
+	back_data.rays[0].ray_up = !back_data.rays[0].ray_down;
+	if (back_data.rays[0].angle <= PI * 0.5 || back_data.rays[0].angle >= 1.5
+		* PI)
+		back_data.rays[0].ray_right = true;
+	else
+		back_data.rays[0].ray_right = false;
+	back_data.rays[0].ray_left = !back_data.rays[0].ray_right;
+	cast_rays(&back_data, 1);
+	// printf("distance %f\b", back_data.rays[0].distance);
+	DDA(data->real_pos.x * MINI_FACTOR, data->real_pos.y * MINI_FACTOR,
+		back_data.rays[0].ray_p.x * MINI_FACTOR, back_data.rays[0].ray_p.y
+		* MINI_FACTOR, data->image);
+	return (true);
+}
+bool	move_up_condition(t_shared_data *data)
+{
+	int		i;
+		t_p_pos new;
+		float move_step;
+		t_p_pos pos;
+	t_p_pos	real;
+
+	// printf("here\n");
+	// if(move_down_condition(data))
+	// 	return (true);
+	if ((data->player.walk_dir == 1 && data->rays && data->rays[WIDTH
+			/ 2].distance > 9))
+		return (true);
+	if (data->player.walk_dir == -1)
+	{
+		i = 0;
+		real = data->real_pos;
+		while (i < 2)
+		{
+				// printf("hehe\n");
+			move_step = (float)data->player.walk_dir * data->player.move_speed;
+			new.x = (float)real.x + cos((data->player.rota_angle))
+				* (float)move_step;
+			new.y = (float)real.y + sin((data->player.rota_angle))
+				* (float)move_step;
+			pos.x = (int)floor(new.x / 32.0);
+			pos.y = (int)floor(new.y / 32.0);
+			if (data->game_env->map[(int)pos.y][(int)pos.x] == '1')
+			{
+				return (false);
+			}
+			real.x = new.x;
+			real.y = new.y;
+			i++;
+		}
+		return (true);
+	}
+	return (false);
+}
 void	ft_hook(mlx_key_data_t key, void *param)
 {
 	t_shared_data	*data;
@@ -399,7 +506,7 @@ void	ft_hook(mlx_key_data_t key, void *param)
 		data->player.walk_dir = -1;
 	}
 	data->player.rota_angle += norm_angle((float)data->player.turn_dir
-		* data->player.rotate_speed);
+			* data->player.rotate_speed);
 	// data->player.rota_angle = norm_angle(data->player.rota_angle);
 	move_step = (float)data->player.walk_dir * data->player.move_speed;
 	new_x = (float)data->real_pos.x + cos((data->player.rota_angle))
@@ -412,18 +519,19 @@ void	ft_hook(mlx_key_data_t key, void *param)
 	test_y = data->real_pos.y / 32;
 	if ((data->game_env->map[r_y][test_x] != '1'
 			|| data->game_env->map[test_y][r_x] != '1')
-		&& data->game_env->map[r_y][r_x] != '1')
+		&& data->game_env->map[r_y][r_x] != '1' && move_up_condition(data))
 	{
 		data->real_pos.x = new_x;
 		data->real_pos.y = new_y;
 	}
 	rander_map(data);
 }
-void ft_loop (void *data)
+void	ft_loop(void *data)
 {
-	static int a = 50;
-	static int t_x = 0,t_y = 0;
-	int x ,y;
+	static int	a = 50;
+	static int	t_x = 0, t_y = 0;
+
+	int x, y;
 	if (a == 50)
 	{
 		mlx_get_mouse_pos(((t_shared_data *)data)->mlx, &t_x, &t_y);
@@ -433,15 +541,17 @@ void ft_loop (void *data)
 	a++;
 	if (t_x < x)
 	{
-		((t_shared_data *)data)->player.rota_angle += norm_angle(0.6 * ((t_shared_data *)data)->player.rotate_speed);
+		((t_shared_data *)data)->player.rota_angle += norm_angle(0.6
+				* ((t_shared_data *)data)->player.rotate_speed);
 		rander_map(data);
 	}
 	else if (t_x > x)
 	{
-		((t_shared_data *)data)->player.rota_angle += norm_angle(-0.6 * ((t_shared_data *)data)->player.rotate_speed);
+		((t_shared_data *)data)->player.rota_angle += norm_angle(-0.6
+				* ((t_shared_data *)data)->player.rotate_speed);
 		rander_map(data);
 	}
-	// printf("1\n");	
+	// printf("1\n");
 }
 int	raycaster(t_game_env *game_env)
 {
@@ -458,7 +568,7 @@ int	raycaster(t_game_env *game_env)
 	player.raduis = 3;
 	player.walk_dir = 0;
 	player.turn_dir = 0;
-	player.rota_angle = PI * 2;
+	player.rota_angle = PI / 2;
 	player.move_speed = 4;
 	player.rotate_speed = 5 * (PI / 180);
 	data.player = player;
@@ -485,9 +595,9 @@ int	raycaster(t_game_env *game_env)
 	texture_to_img(&data);
 	rander_map(&data);
 	mlx_key_hook(data.mlx, ft_hook, &data);
-	mlx_loop_hook(data.mlx, ft_loop, &data);
+	// mlx_loop_hook(data.mlx, ft_loop, &data);
 	mlx_loop(data.mlx);
 	mlx_terminate(data.mlx);
 	return (EXIT_SUCCESS);
-	return (0); 
+	return (0);
 }
