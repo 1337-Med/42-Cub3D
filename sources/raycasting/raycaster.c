@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/24 18:54:38 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/24 19:00:22 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -592,7 +592,7 @@ int	raycaster(t_game_env *game_env)
 	texture_to_img(&data);
 	rander_map(&data);
 	mlx_key_hook(data.mlx, ft_hook, &data);
-	// mlx_loop_hook(data.mlx, ft_loop, &data);
+	mlx_loop_hook(data.mlx, ft_loop, &data);
 	mlx_loop(data.mlx);
 	mlx_terminate(data.mlx);
 	return (EXIT_SUCCESS);
