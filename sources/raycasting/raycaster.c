@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/24 19:31:07 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/24 19:40:42 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -543,6 +543,7 @@ void ft_loop(void *data)
     int screen_center_y = HEIGHT / 2;
     mlx_set_mouse_pos(((t_shared_data *)data)->mlx, screen_center_x, screen_center_y);
     last_x = screen_center_x;
+    rander_map(data);
 }
 
 int	raycaster(t_game_env *game_env)
@@ -561,7 +562,7 @@ int	raycaster(t_game_env *game_env)
 	player.walk_dir = 0;
 	player.turn_dir = 0;
 	player.rota_angle = PI / 2;
-	player.move_speed = 4;
+	player.move_speed = 8;
 	player.rotate_speed = 5 * (PI / 180);
 	data.player = player;
 	data.mlx = NULL;
