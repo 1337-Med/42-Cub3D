@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/25 16:24:21 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/26 14:57:10 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -427,12 +427,15 @@ bool	move_up_condition(t_shared_data *data)
 		float move_step;
 		t_p_pos pos;
 	t_p_pos	real;
-
+	int index;
+	if (data->rays[WIDTH - 1].distance < data->rays[0].distance)
+		index = WIDTH - 1;
+	else
+		index = 0;
 	// printf("here\n");
 	// if(move_down_condition(data))
 	// 	return (true);
-	if ((data->player.walk_dir == 1 && data->rays && data->rays[WIDTH
-			/ 2].distance > 9))
+	if ((data->player.walk_dir == 1 && data->rays && data->rays[index].distance > 9))
 		return (true);
 	if (data->player.walk_dir == -1)
 	{
@@ -493,8 +496,8 @@ void	ft_hook(mlx_key_data_t key, void *param)
 			data->real_pos.x = new_x;
 			data->real_pos.y = new_y;
 		}
-
 		rander_map(data);
+		return ;
 	}
 	if (key.key == MLX_KEY_D && mlx_is_key_down(data->mlx, MLX_KEY_D))
 	{
@@ -518,6 +521,7 @@ void	ft_hook(mlx_key_data_t key, void *param)
 		}
 
 		rander_map(data);
+		return ;
 	}
 	if (key.key == MLX_KEY_RIGHT && key.action == MLX_RELEASE)
 	{
