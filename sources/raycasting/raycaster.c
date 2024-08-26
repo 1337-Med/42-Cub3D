@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycaster.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/25 16:24:21 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/26 16:25:53 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -516,7 +516,6 @@ void	ft_hook(mlx_key_data_t key, void *param)
 			data->real_pos.x = new_x;
 			data->real_pos.y = new_y;
 		}
-
 		rander_map(data);
 	}
 	if (key.key == MLX_KEY_RIGHT && key.action == MLX_RELEASE)
@@ -553,7 +552,6 @@ void	ft_hook(mlx_key_data_t key, void *param)
 	}
 	data->player.rota_angle += norm_angle((float)data->player.turn_dir
 			* data->player.rotate_speed);
-	// data->player.rota_angle = norm_angle(data->player.rota_angle);
 	move_step = (float)data->player.walk_dir * data->player.move_speed;
 	new_x = (float)data->real_pos.x + cos((data->player.rota_angle))
 		* (float)move_step;
@@ -574,10 +572,14 @@ void	ft_hook(mlx_key_data_t key, void *param)
 }
 void ft_loop(void *data)
 {
-    static int last_x = 0;
-    int current_x, current_y;
-	mlx_set_cursor_mode(((t_shared_data *)data)->mlx, MLX_MOUSE_HIDDEN);
-    mlx_get_mouse_pos(((t_shared_data *)data)->mlx, &current_x, &current_y);
+    static int last_x = WIDTH / 2;
+	static int i = 0;
+    int current_x = WIDTH / 2, current_y = HEIGHT / 2;
+    int screen_center_x = WIDTH / 2;
+    int screen_center_y = HEIGHT / 2;
+
+	if (i > 1)
+    	mlx_get_mouse_pos(((t_shared_data *)data)->mlx, &current_x, &current_y);
     int delta_x = current_x - last_x;
     if (delta_x != 0)
     {
@@ -585,11 +587,11 @@ void ft_loop(void *data)
         rander_map(data);
     }
     last_x = current_x;
-    int screen_center_x = WIDTH / 2;
-    int screen_center_y = HEIGHT / 2;
     mlx_set_mouse_pos(((t_shared_data *)data)->mlx, screen_center_x, screen_center_y);
     last_x = screen_center_x;
     rander_map(data);
+	if (i < 2)
+		i++;
 }
 
 int	raycaster(t_game_env *game_env)
@@ -633,6 +635,8 @@ int	raycaster(t_game_env *game_env)
 	// create_rays(&data);
 	texture_to_img(&data);
 	rander_map(&data);
+	mlx_set_cursor_mode(data.mlx, MLX_MOUSE_HIDDEN);
+    mlx_set_mouse_pos(data.mlx, WIDTH / 2, HEIGHT / 2);
 	mlx_key_hook(data.mlx, ft_hook, &data);
 	mlx_loop_hook(data.mlx, ft_loop, &data);
 	mlx_loop(data.mlx);
