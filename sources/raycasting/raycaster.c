@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/26 14:57:10 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/26 16:47:55 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -375,51 +375,8 @@ void	rander_map(t_shared_data *data)
 		y++;
 	}
 	render_rays(data);
-	// move_down_condition(data);
 }
-bool	move_down_condition(t_shared_data *data)
-{
-	float			opposite;
-	float			ray_angle;
-	t_shared_data	back_data;
 
-	opposite = fmod(data->player.rota_angle + degree_to_raidian(180),
-			degree_to_raidian(360));
-	ray_angle = ((data->player.rota_angle + opposite)) / 2;
-	// printf ("ray angle %f\n", ray_angle);
-	back_data.game_env = data->game_env;
-	back_data.player = data->player;
-	back_data.player.rota_angle = opposite;
-	back_data.rays = NULL;
-	back_data.rays = ft_alloc(sizeof(t_rays) * (1), back_data.rays, CALLOC);
-	back_data.rays[0].angle = norm_angle(ray_angle);
-	back_data.rays[0].wall_hit_x = 0;
-	back_data.rays[0].wall_hit_y = 0;
-	back_data.rays[0].ray_p.x = 0;
-	back_data.rays[0].ray_p.y = 0;
-	back_data.rays[0].horiz_x = -1;
-	back_data.rays[0].horiz_y = -1;
-	back_data.rays[0].vert_x = -1;
-	back_data.rays[0].vert_y = -1;
-	back_data.rays[0].distance = 0;
-	if (back_data.rays[0].angle >= 0 && back_data.rays[0].angle <= PI)
-		back_data.rays[0].ray_down = true;
-	else
-		back_data.rays[0].ray_down = false;
-	back_data.rays[0].ray_up = !back_data.rays[0].ray_down;
-	if (back_data.rays[0].angle <= PI * 0.5 || back_data.rays[0].angle >= 1.5
-		* PI)
-		back_data.rays[0].ray_right = true;
-	else
-		back_data.rays[0].ray_right = false;
-	back_data.rays[0].ray_left = !back_data.rays[0].ray_right;
-	cast_rays(&back_data, 1);
-	// printf("distance %f\b", back_data.rays[0].distance);
-	DDA(data->real_pos.x * MINI_FACTOR, data->real_pos.y * MINI_FACTOR,
-		back_data.rays[0].ray_p.x * MINI_FACTOR, back_data.rays[0].ray_p.y
-		* MINI_FACTOR, data->image);
-	return (true);
-}
 bool	move_up_condition(t_shared_data *data)
 {
 	int		i;
@@ -432,13 +389,17 @@ bool	move_up_condition(t_shared_data *data)
 		index = WIDTH - 1;
 	else
 		index = 0;
-	// printf("here\n");
-	// if(move_down_condition(data))
-	// 	return (true);
 	if ((data->player.walk_dir == 1 && data->rays && data->rays[index].distance > 9))
-		return (true);
-	if (data->player.walk_dir == -1)
 	{
+		// printf("here\n");
+		return (true);
+	}
+	else if (data->player.walk_dir == 1)
+		return (false);
+	else
+	{
+
+		// printf("here %f 2\n", data->player.walk_dir);
 		i = 0;
 		real = data->real_pos;
 		while (i < 2)
@@ -461,6 +422,7 @@ bool	move_up_condition(t_shared_data *data)
 		}
 		return (true);
 	}
+	// }
 	return (false);
 }
 void	ft_hook(mlx_key_data_t key, void *param)
@@ -491,7 +453,7 @@ void	ft_hook(mlx_key_data_t key, void *param)
 
 		if ((data->game_env->map[r_y][test_x] != '1'
 			|| data->game_env->map[test_y][r_x] != '1')
-			&& data->game_env->map[r_y][r_x] != '1')
+			&& data->game_env->map[r_y][r_x] != '1' && move_up_condition(data))
 		{
 			data->real_pos.x = new_x;
 			data->real_pos.y = new_y;
@@ -514,7 +476,7 @@ void	ft_hook(mlx_key_data_t key, void *param)
 
 		if ((data->game_env->map[r_y][test_x] != '1'
 			|| data->game_env->map[test_y][r_x] != '1')
-			&& data->game_env->map[r_y][r_x] != '1')
+			&& data->game_env->map[r_y][r_x] != '1' && move_up_condition(data))
 		{
 			data->real_pos.x = new_x;
 			data->real_pos.y = new_y;
@@ -613,7 +575,7 @@ int	raycaster(t_game_env *game_env)
 	player.turn_dir = 0;
 	player.rota_angle = PI / 2;
 	player.move_speed = 8;
-	player.rotate_speed = 5 * (PI / 180);
+	player.rotate_speed = 4 * (PI / 180);
 	data.player = player;
 	data.mlx = NULL;
 	data.image = NULL;
