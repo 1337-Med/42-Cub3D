@@ -6,12 +6,11 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:05:59 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/06/30 18:54:04 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/28 12:43:19 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
 size_t	ft_strlen(const char *s)
 {
 	size_t	len;

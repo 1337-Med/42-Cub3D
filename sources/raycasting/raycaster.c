@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/26 16:47:55 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/28 17:13:05 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	render_rec(int y, int x, mlx_image_t *image, char c)
 	int		color;
 	float	i;
 	float	j;
-
+	color = 0x0000000;
 	start_y = y * 32 * MINI_FACTOR;
 	start_x = x * 32 * MINI_FACTOR;
 	if (c == 'W')
@@ -135,6 +135,7 @@ void	render_rays(t_shared_data *data)
 {
 	int	i;
 
+	// mlx_put_pixel(data->image, data->real_pos.x * MINI_FACTOR, data->real_pos.y * MINI_FACTOR, 0xFFFFFFFF);
 	i = 0;
 	while (i < NUM_RAYS)
 	{
@@ -319,6 +320,61 @@ void	cast_rays(t_shared_data *data, int num_rays)
 		i++;
 	}
 }
+
+char **minimap_parse(t_shared_data *data)
+{
+	int p_x = (int )floor((data->real_pos.x - 16) / 32);
+	int p_y = (int )floor((data->real_pos.y - 16) / 32);
+	int start = p_y;
+	int  end = p_y;
+	int i = 0;
+	while (i < 10)
+	{
+		if (!start)
+			break ;
+		start--;
+		i++;
+	}
+	data->p_pos.y = (data->real_pos.y - (start * 32));
+	int lim = 10;
+	if (i != 10)
+		lim += 10 - i;
+	i = 0;
+	while (i < lim)
+	{
+		if (end >= (int)ft_arrsize(data->game_env->map) || !data->game_env->map[end])
+			break ;
+		end++;
+		i++;
+	}
+	char **mini_map = NULL;
+	mini_map = ft_alloc(sizeof(char *) * (end - start + 1), mini_map, MALLOC);
+	i = 0;
+	int lim2 = -10;
+	while (start < end && mini_map[i])
+	{
+		lim = 20;
+		lim2 = -10;
+		if (lim + p_x + lim2 > (int )ft_strlen(data->game_env->map[i]))
+		{
+			lim2 -= (lim + p_x + lim2) - (int )ft_strlen(data->game_env->map[i]);
+		}
+		
+		int index = p_x + lim2;
+		if (index < 0)
+			index = 0;
+		mini_map[i] = ft_substr(data->game_env->map[start], index, lim);
+		if (i + start == p_y)
+		{
+			data->p_pos.x = ((data->real_pos.x - index * 32));
+		}
+		start++;
+		i++;
+	}
+	mini_map[i] = NULL;
+	i = 0;
+	return (mini_map);
+}
 void	rander_map(t_shared_data *data)
 {
 	int		i;
@@ -358,23 +414,46 @@ void	rander_map(t_shared_data *data)
 		rander_textures(data, i, wall_top, wall_bottom);
 		i++;
 	}
+	char **mini_map = minimap_parse(data);
 	x = 0;
 	y = 0;
-	while (data->game_env->map[y])
+	// while (data->game_env->map[y])
+	// {
+	// 	x = 0;
+	// 	while (data->game_env->map[y][x])
+	// 	{
+	// 		if (data->game_env->map[y][x] == '1')
+	// 			render_rec(y, x, data->image, 'W');
+	// 		if (data->game_env->map[y][x] == '0'
+	// 			|| data->game_env->map[y][x] == 'N')
+	// 			render_rec(y, x, data->image, 'F');
+	// 		x++;
+	// 	}
+	// 	y++;
+	// }
+	// if (!mini_map[y])
+	// 	printf("NULL\n");
+	while (mini_map[y])
 	{
 		x = 0;
-		while (data->game_env->map[y][x])
+		while (mini_map[y][x])
 		{
-			if (data->game_env->map[y][x] == '1')
+			if (mini_map[y][x] == '1')
 				render_rec(y, x, data->image, 'W');
-			if (data->game_env->map[y][x] == '0'
-				|| data->game_env->map[y][x] == 'N')
+			if (mini_map[y][x] == '0'
+				|| mini_map[y][x] == 'N')
 				render_rec(y, x, data->image, 'F');
+			if (mini_map[y][x] == ' ')
+				render_rec(y, x, data->image, 'S');
+
 			x++;
 		}
 		y++;
 	}
-	render_rays(data);
+	// printf ("mini x %f mini y %f\n", data->p_pos.x, data->p_pos.y);
+	// exit (0);
+	mlx_put_pixel(data->image, data->p_pos.x * MINI_FACTOR, data->p_pos.y * MINI_FACTOR, 0xFFFFFFFF);
+	// render_rays(data);
 }
 
 bool	move_up_condition(t_shared_data *data)
@@ -536,6 +615,7 @@ void	ft_hook(mlx_key_data_t key, void *param)
 		data->real_pos.x = new_x;
 		data->real_pos.y = new_y;
 	}
+	// printf("test\n");
 	rander_map(data);
 }
 void ft_loop(void *data)
@@ -600,7 +680,7 @@ int	raycaster(t_game_env *game_env)
 	texture_to_img(&data);
 	rander_map(&data);
 	mlx_key_hook(data.mlx, ft_hook, &data);
-	mlx_loop_hook(data.mlx, ft_loop, &data);
+	// mlx_loop_hook(data.mlx, ft_loop, &data);
 	mlx_loop(data.mlx);
 	mlx_terminate(data.mlx);
 	return (EXIT_SUCCESS);
