@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/28 17:13:05 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/28 21:47:58 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,8 +323,8 @@ void	cast_rays(t_shared_data *data, int num_rays)
 
 char **minimap_parse(t_shared_data *data)
 {
-	int p_x = (int )floor((data->real_pos.x - 16) / 32);
-	int p_y = (int )floor((data->real_pos.y - 16) / 32);
+	int p_x = (int )floor((data->real_pos.x) / 32);
+	int p_y = (int )floor((data->real_pos.y) / 32);
 	int start = p_y;
 	int  end = p_y;
 	int i = 0;
@@ -357,6 +357,7 @@ char **minimap_parse(t_shared_data *data)
 		lim2 = -10;
 		if (lim + p_x + lim2 > (int )ft_strlen(data->game_env->map[i]))
 		{
+			// printf("case 1 \n");
 			lim2 -= (lim + p_x + lim2) - (int )ft_strlen(data->game_env->map[i]);
 		}
 		
@@ -366,13 +367,18 @@ char **minimap_parse(t_shared_data *data)
 		mini_map[i] = ft_substr(data->game_env->map[start], index, lim);
 		if (i + start == p_y)
 		{
-			data->p_pos.x = ((data->real_pos.x - index * 32));
+			data->p_pos.x = ((data->real_pos.x - (index * 32)));
 		}
 		start++;
 		i++;
 	}
 	mini_map[i] = NULL;
 	i = 0;
+	// while (mini_map[i])
+	// {
+	// 	printf("-%s- y %d x %d\n", mini_map[i], p_y, p_x);
+	// 	i++;
+	// }
 	return (mini_map);
 }
 void	rander_map(t_shared_data *data)
@@ -478,7 +484,6 @@ bool	move_up_condition(t_shared_data *data)
 	else
 	{
 
-		// printf("here %f 2\n", data->player.walk_dir);
 		i = 0;
 		real = data->real_pos;
 		while (i < 2)
