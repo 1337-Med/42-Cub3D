@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/29 16:18:16 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:23:33 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct s_side
 	mlx_image_t* east;
 } t_side;
 
-#define MINI_FACTOR 0.2
+#define MINI_FACTOR 0.4
 #define WALL_WIDTH 1
 #define PI 3.14159265358979323846
 // #define NUM_RAYS 320
