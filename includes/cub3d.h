@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/24 16:36:31 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:23:33 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct s_side
 	mlx_image_t* east;
 } t_side;
 
-#define MINI_FACTOR 0.2
+#define MINI_FACTOR 0.4
 #define WALL_WIDTH 1
 #define PI 3.14159265358979323846
 // #define NUM_RAYS 320
@@ -123,5 +123,4 @@ t_p_pos get_player_pos(char **map);
 void texture_to_img(t_shared_data * data);
 void rander_textures(t_shared_data *data, int i, int wall_top, int wall_bottom);
 int degree_to_raidian(float dg);
-bool move_down_condition(t_shared_data *data);
 # endif

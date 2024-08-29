@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 15:25:01 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/25 12:33:07 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:13:02 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,6 @@ t_p_pos get_player_pos(char **map)
         }
         pos.y++;
     }
-    printf ("hihii\n");
+    // printf ("hihii\n");
     return pos;
 }
