@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/29 10:19:17 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:18:24 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,11 +198,7 @@ void	get_vertical_inter(t_shared_data *data, int i)
 		}
 		inter_y += step_y;
 		inter_x += step_x;
-		// printf("%d %f %f %d %d %c \n", i, inter_x, inter_y,
-			// (int)floor((inter_x / 32)), (int)floor((inter_y / 32)),
-			// data->game_env->map[5][29]);
 	}
-	// printf("here 2\n");
 }
 
 void	get_horizontal_inter(t_shared_data *data, int i)
@@ -353,6 +349,7 @@ char **minimap_parse(t_shared_data *data)
 		start--;
 		i++;
 	}
+	// printf("----b4 y %f x %f\n", data->p_pos.y, data->p_pos.x);
 	data->p_pos.y = (data->real_pos.y - (start * 32));
 	int lim = 10;
 	if (i != 10)
@@ -365,64 +362,28 @@ char **minimap_parse(t_shared_data *data)
 		end++;
 		i++;
 	}
-	int max = 0;
 	char **mini_map = NULL;
 	mini_map = ft_alloc(sizeof(char *) * (end - start + 1), mini_map, MALLOC);
 	i = 0;
 	int lim2 = -10;
-	char *tmp = NULL;
-	while (start < end && mini_map[i])
+	while (start + i < end && mini_map[i])
 	{
 		lim = 20;
 		lim2 = -10;
-		// if (lim + p_x + lim2 > (int )ft_strlen(data->game_env->map[i]))
-		// {
-		// 	// printf("case 1 \n");
-		// 	lim2 -= (lim + p_x + lim2) - (int )ft_strlen(data->game_env->map[i]);
-		// }
-		
 		int index = p_x + lim2;
 		if (index < 0)
 			index = 0;
-		mini_map[i] = ft_substr(data->game_env->map[start], index, lim);
-		// if (!i || (int )ft_strlen(mini_map[i]) > max)
-		// 	max = ft_strlen(mini_map[i]);
-		// if (i && (int )ft_strlen(mini_map[i]) < max)
-		// {
-		// 	tmp = extend_str(tmp, mini_map[i], max);
-		// 	mini_map[i] = tmp;
-		// }
+		mini_map[i] = ft_substr(data->game_env->map[start + i], index, lim);
 		if (i + start == p_y)
 		{
+			// printf("-\n");
 			data->p_pos.x = ((data->real_pos.x - (index * 32)));
 		}
-		start++;
+		// start++;
 		i++;
 	}
+	// printf("after y %f x %f------\n", data->p_pos.y, data->p_pos.x);
 	mini_map[i] = NULL;
-	
-	// i = 0;
-	// while (mini_map[i])
-	// {
-	// 	if (!i || (int )ft_strlen(mini_map[i]) > max)
-	// 		max = ft_strlen(mini_map[i]);
-	// 	i++;
-	// }
-	// i = 0;
-	// while (mini_map[i])
-	// {
-	// 	if ((int )ft_strlen(mini_map[i]) < max)
-	// 	{
-	// 		tmp = extend_str(tmp, mini_map[i], max);
-	// 		mini_map[i] = tmp;
-	// 	}
-	// 	i++;
-	// }
-	// while (mini_map[i])
-	// {
-	// 	printf("-%s- y %d x %d\n", mini_map[i], p_y, p_x);
-	// 	i++;
-	// }
 	return (mini_map);
 }
 void	rander_map(t_shared_data *data)
@@ -467,22 +428,6 @@ void	rander_map(t_shared_data *data)
 	char **mini_map = minimap_parse(data);
 	x = 0;
 	y = 0;
-	// while (data->game_env->map[y])
-	// {
-	// 	x = 0;
-	// 	while (data->game_env->map[y][x])
-	// 	{
-	// 		if (data->game_env->map[y][x] == '1')
-	// 			render_rec(y, x, data->image, 'W');
-	// 		if (data->game_env->map[y][x] == '0'
-	// 			|| data->game_env->map[y][x] == 'N')
-	// 			render_rec(y, x, data->image, 'F');
-	// 		x++;
-	// 	}
-	// 	y++;
-	// }
-	// if (!mini_map[y])
-	// 	printf("NULL\n");
 	while (y < 100)
 	{
 		x = 0;
