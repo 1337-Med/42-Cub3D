@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 21:34:36 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/24 15:54:10 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/08/29 18:58:45 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ int	*player_position(char **map)
 {
 	int	j;
 	int	i;
-	int *ij = NULL;
+	int *ij;
+
+	ij = NULL;
 	ij = ft_alloc(sizeof(int) * 2, ij, CALLOC);
 	i = 0;
 	while (map[i])
@@ -34,6 +36,24 @@ int	*player_position(char **map)
 		}
 		i++;
 	}
+	i = 0;
+	while (map[i])
+	{
+		j = 0;
+		while (map[i][j])
+		{
+			if (map[i][j] == '0')
+			{
+				ij[0] = i;
+				ij[1] = j;
+				return (ij);
+			}
+			j++;
+		}
+		i++;
+	}
+	ij[0] = -1;
+	ij[1] = -1;
 	return (ij);
 }
 
@@ -67,6 +87,7 @@ void	check_map(char **map, t_wall *wall)
 	int		len;
 
 	temp_map = NULL;
+	xy = NULL;
 	len = ft_arrsize(map) + 1;
 	temp_map = ft_alloc(sizeof(char *) * len, temp_map, CALLOC);
 	i = 0;
@@ -76,9 +97,14 @@ void	check_map(char **map, t_wall *wall)
 		i++;
 	}
 	temp_map[i] = NULL;
-	xy = player_position(map);
-	temp_map[xy[0]][xy[1]] = '0';
-	flod_fill_checker(temp_map, xy, wall);
+	while (1)
+	{
+		xy = player_position(temp_map);
+		if (xy[0] == -1)
+			break;
+		temp_map[xy[0]][xy[1]] = '0';
+		flod_fill_checker(temp_map, xy, wall);	
+	}
 	ft_alloc(0, xy, FREE_PTR);
 	ft_alloc(0, temp_map, FREE_PTR);
 }
