@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/28 21:47:58 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/08/29 10:19:17 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -321,6 +321,24 @@ void	cast_rays(t_shared_data *data, int num_rays)
 	}
 }
 
+char *extend_str(char *str, char *original, int max)
+{
+	ft_alloc(max + 1, str, MALLOC);
+	int i = 0;
+	while (original && original[i])
+	{
+		str[i] = original[i];
+		i++;
+	}
+	while (i < max)
+	{
+		str[i] = ' ';
+		i++;
+	}
+	str[i] = '\0';
+	return str;
+}
+
 char **minimap_parse(t_shared_data *data)
 {
 	int p_x = (int )floor((data->real_pos.x) / 32);
@@ -347,24 +365,33 @@ char **minimap_parse(t_shared_data *data)
 		end++;
 		i++;
 	}
+	int max = 0;
 	char **mini_map = NULL;
 	mini_map = ft_alloc(sizeof(char *) * (end - start + 1), mini_map, MALLOC);
 	i = 0;
 	int lim2 = -10;
+	char *tmp = NULL;
 	while (start < end && mini_map[i])
 	{
 		lim = 20;
 		lim2 = -10;
-		if (lim + p_x + lim2 > (int )ft_strlen(data->game_env->map[i]))
-		{
-			// printf("case 1 \n");
-			lim2 -= (lim + p_x + lim2) - (int )ft_strlen(data->game_env->map[i]);
-		}
+		// if (lim + p_x + lim2 > (int )ft_strlen(data->game_env->map[i]))
+		// {
+		// 	// printf("case 1 \n");
+		// 	lim2 -= (lim + p_x + lim2) - (int )ft_strlen(data->game_env->map[i]);
+		// }
 		
 		int index = p_x + lim2;
 		if (index < 0)
 			index = 0;
 		mini_map[i] = ft_substr(data->game_env->map[start], index, lim);
+		// if (!i || (int )ft_strlen(mini_map[i]) > max)
+		// 	max = ft_strlen(mini_map[i]);
+		// if (i && (int )ft_strlen(mini_map[i]) < max)
+		// {
+		// 	tmp = extend_str(tmp, mini_map[i], max);
+		// 	mini_map[i] = tmp;
+		// }
 		if (i + start == p_y)
 		{
 			data->p_pos.x = ((data->real_pos.x - (index * 32)));
@@ -373,7 +400,24 @@ char **minimap_parse(t_shared_data *data)
 		i++;
 	}
 	mini_map[i] = NULL;
-	i = 0;
+	
+	// i = 0;
+	// while (mini_map[i])
+	// {
+	// 	if (!i || (int )ft_strlen(mini_map[i]) > max)
+	// 		max = ft_strlen(mini_map[i]);
+	// 	i++;
+	// }
+	// i = 0;
+	// while (mini_map[i])
+	// {
+	// 	if ((int )ft_strlen(mini_map[i]) < max)
+	// 	{
+	// 		tmp = extend_str(tmp, mini_map[i], max);
+	// 		mini_map[i] = tmp;
+	// 	}
+	// 	i++;
+	// }
 	// while (mini_map[i])
 	// {
 	// 	printf("-%s- y %d x %d\n", mini_map[i], p_y, p_x);
@@ -439,6 +483,17 @@ void	rander_map(t_shared_data *data)
 	// }
 	// if (!mini_map[y])
 	// 	printf("NULL\n");
+	while (y < 100)
+	{
+		x = 0;
+		while (x < 130)
+		{
+			mlx_put_pixel(data->image, x, y, 0x00000000);
+			x++;
+		}
+		y++;
+	}
+	y = 0;
 	while (mini_map[y])
 	{
 		x = 0;
