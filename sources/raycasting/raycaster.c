@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/03 13:05:49 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/03 18:13:06 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -608,8 +608,8 @@ void	ft_hook(mlx_key_data_t key, void *param)
 	{
 		data->player.walk_dir = -1;
 	}
-	data->player.rota_angle += norm_angle((float)data->player.turn_dir
-			* data->player.rotate_speed);
+	data->player.rota_angle += (float)data->player.turn_dir
+			* data->player.rotate_speed;
 	data->player.rota_angle = norm_angle(data->player.rota_angle);
 	move_step = (float)data->player.walk_dir * data->player.move_speed;
 	new_x = (float)data->real_pos.x + cos((data->player.rota_angle))
