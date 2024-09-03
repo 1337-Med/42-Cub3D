@@ -1,6 +1,6 @@
-WE ./texture/siryakari-furnace2.png
-SO ./texture/siryakari-furnace1.png
-EA ./texture/siryakari-furnace2.png
+WE ./texture/h.png
+SO ./texture/f.png
+EA ./texture/g.png
 NO ./texture/siryakari-furnace.png
 
 F 255,229,204
