@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycaster.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/03 13:05:49 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/03 17:29:44 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -734,7 +734,7 @@ int	raycaster(t_game_env *game_env)
 	mlx_set_cursor_mode(data.mlx, MLX_MOUSE_HIDDEN);
     mlx_set_mouse_pos(data.mlx, WIDTH / 2, HEIGHT / 2);
 	mlx_key_hook(data.mlx, ft_hook, &data);
-	// mlx_loop_hook(data.mlx, ft_loop, &data);
+	mlx_loop_hook(data.mlx, ft_loop, &data);
 	// mlx_loop_hook(data.mlx, rander_map, &data);
 	mlx_loop(data.mlx);
 	mlx_terminate(data.mlx);
