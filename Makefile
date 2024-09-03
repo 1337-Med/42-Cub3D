@@ -6,10 +6,10 @@ SRC =	./sources/parser/parser.c ./sources/parser/parser_utils.c  ./sources/parse
 		./sources/rander_texture/rander_texture.c
 
 OBJ = $(SRC:.c=.o)
-GLFW = $(shell brew --prefix glfw)
+# GLFW = $(shell brew --prefix glfw)
 
-DEPS = -framework Cocoa -framework OpenGL -framework IOKit -lglfw -L"$(GLFW)/lib" $(MLX42)
-CFLAGS = -Wall -Wextra -I ./includes -I ./super_libft -O3 -fsanitize=address -g -O3
+# DEPS = -framework Cocoa -framework OpenGL -framework IOKit -lglfw -L"$(GLFW)/lib" $(MLX42)
+CFLAGS = -Wall -Wextra -I ./includes -I ./super_libft #-O3 #-fsanitize=address -g# -O3
 
 NAME = cub3d
 
