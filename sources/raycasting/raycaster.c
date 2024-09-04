@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/03 18:15:43 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/04 11:37:38 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ void	create_rays(t_shared_data *data)
 	while (i < NUM_RAYS)
 	{
 		data->rays[i].angle = norm_angle(ray_angle);
-		// printf("%f angle \n", data->rays[i].angle);
 		data->rays[i].wall_hit_x = 0;
 		data->rays[i].wall_hit_y = 0;
 		data->rays[i].ray_p.x = 0;
@@ -391,12 +390,7 @@ void	rander_map(t_shared_data *data)
 	int		x;
 	int		y;
 	char **mini_map = NULL;
-	static int i2;
 
-	// static float angle;
-	// if (angle != data->player.rota_angle)
-	// 	printf("%f\n", data->player.rota_angle);
-	// angle = data->player.rota_angle;
 	create_rays(data);
 	cast_rays(data, NUM_RAYS);
 	i = 0;
@@ -416,13 +410,11 @@ void	rander_map(t_shared_data *data)
 	i = 0;
 	while (i < NUM_RAYS)
 	{
-		if (data->rays[i].distance < 0.5)
-			data->rays[i].distance = 0.5;
 		distancepp = (WIDTH / 2) / tan(FOV / 2);
 		wall_height = (32 / data->rays[i].distance) * distancepp;
 		wall_top = (HEIGHT / 2) - (wall_height / 2);
 		wall_bottom = (HEIGHT / 2) + (wall_height / 2);
-		 rander_textures(data, i, wall_top, wall_bottom);
+		rander_textures(data, i, wall_top, wall_bottom);
 		i++;
 	}
 	mini_map = minimap_parse(data);
@@ -441,7 +433,6 @@ void	rander_map(t_shared_data *data)
 	y = 0;
 	while (mini_map[y])
 	{
-		// printf("mini_map %d\n", i2);
 		x = 0;
 		while (mini_map[y][x])
 		{
@@ -450,23 +441,16 @@ void	rander_map(t_shared_data *data)
 			if (mini_map[y][x] == '0'
 				|| mini_map[y][x] == 'N')
 				render_rec(y, x, data->image, 'F');
-			// if (mini_map[y][x] == ' ')
-			// 	render_rec(y, x, data->image, 'S');
-
 			x++;
 		}
 		y++;
 	}
-	i2++;
 	mlx_put_pixel(data->image, data->p_pos.x * MINI_FACTOR, data->p_pos.y * MINI_FACTOR, 0xFFFFFFFF);
 	DDA(data->p_pos.x * MINI_FACTOR, data->p_pos.y * MINI_FACTOR, data->p_pos.x * MINI_FACTOR + 50 * cos(data->player.rota_angle),
 	data->p_pos.y * MINI_FACTOR + 50 * sin(data->player.rota_angle), data->image);
 	i = 0;
 	while (mini_map && mini_map[i])
-	{
 		ft_alloc( 0, mini_map[i++], FREE_PTR);
-		// i++;
-	}
 	ft_alloc(0,mini_map, FREE_PTR);
 }
 
@@ -483,10 +467,7 @@ bool	move_up_condition(t_shared_data *data)
 	else
 		index = 0;
 	if ((data->player.walk_dir == 1 && data->rays && data->rays[index].distance > 9))
-	{
-		// printf("here\n");
 		return (true);
-	}
 	else if (data->player.walk_dir == 1)
 		return (false);
 	else
@@ -496,7 +477,6 @@ bool	move_up_condition(t_shared_data *data)
 		real = data->real_pos;
 		while (i < 2)
 		{
-				// printf("hehe\n");
 			move_step = (float)data->player.walk_dir * data->player.move_speed;
 			new.x = (float)real.x + cos((data->player.rota_angle))
 				* (float)move_step;
@@ -514,9 +494,9 @@ bool	move_up_condition(t_shared_data *data)
 		}
 		return (true);
 	}
-	// }
 	return (false);
 }
+
 void	ft_hook(mlx_key_data_t key, void *param)
 {
 	t_shared_data	*data;
@@ -577,37 +557,21 @@ void	ft_hook(mlx_key_data_t key, void *param)
 		return ;
 	}
 	if (key.key == MLX_KEY_RIGHT && key.action == MLX_RELEASE)
-	{
 		data->player.turn_dir = 0;
-	}
 	if (key.key == MLX_KEY_LEFT && key.action == MLX_RELEASE)
-	{
 		data->player.turn_dir = 0;
-	}
 	if (key.key == MLX_KEY_RIGHT && mlx_is_key_down(data->mlx, MLX_KEY_RIGHT))
-	{
 		data->player.turn_dir = 1;
-	}
 	if (key.key == MLX_KEY_LEFT && mlx_is_key_down(data->mlx, MLX_KEY_LEFT))
-	{
 		data->player.turn_dir = -1;
-	}
 	if (key.key == MLX_KEY_S && key.action == MLX_RELEASE)
-	{
 		data->player.walk_dir = 0;
-	}
 	if (key.key == MLX_KEY_W && key.action == MLX_RELEASE)
-	{
 		data->player.walk_dir = 0;
-	}
 	if (key.key == MLX_KEY_W && mlx_is_key_down(data->mlx, MLX_KEY_W))
-	{
 		data->player.walk_dir = 1;
-	}
 	if (key.key == MLX_KEY_S && mlx_is_key_down(data->mlx, MLX_KEY_S))
-	{
 		data->player.walk_dir = -1;
-	}
 	data->player.rota_angle += (float)data->player.turn_dir
 			* data->player.rotate_speed;
 	data->player.rota_angle = norm_angle(data->player.rota_angle);
@@ -627,12 +591,10 @@ void	ft_hook(mlx_key_data_t key, void *param)
 		data->real_pos.x = new_x;
 		data->real_pos.y = new_y;
 	}
-	// printf("test\n");
 	rander_map(data);
 }
 void ft_loop(void *data)
 {
-	// data = (t_shared_data *)data;
     static int last_x = WIDTH / 2;
 	static int i = 0;
     int current_x = WIDTH / 2, current_y = HEIGHT / 2;
@@ -653,40 +615,6 @@ void ft_loop(void *data)
     rander_map(data);
 	if (i < 2)
 		i++;
-	// int x = 0;
-	// int y = 0;
-	// // while (y < 193)
-	// // {
-	// // 	x = 0;
-	// // 	while (x < 257)
-	// // 	{
-	// // 		mlx_put_pixel(data->image, x, y, data->game_env->floor);
-	// // 		x++;
-	// // 	}
-	// // 	y++;
-	// // }
-	// y = 0;
-	// char **mini_map = minimap_parse(data);
-	// while (mini_map[y])
-	// {
-	// 	x = 0;
-	// 	while (mini_map[y][x])
-	// 	{
-	// 		if (mini_map[y][x] == '1')
-	// 			render_rec(y, x, ((t_shared_data *)data)->image, 'W');
-	// 		if (mini_map[y][x] == '0'
-	// 			|| mini_map[y][x] == 'N')
-	// 			render_rec(y, x, ((t_shared_data *)data)->image, 'F');
-	// 		// if (mini_map[y][x] == ' ')
-	// 		// 	render_rec(y, x, ((t_shared_data *)data)->image, 'S');
-
-	// 		x++;
-	// 	}
-	// 	y++;
-	// }
-	// mlx_put_pixel(((t_shared_data *)data)->image, ((t_shared_data *)data)->p_pos.x * MINI_FACTOR, ((t_shared_data *)data)->p_pos.y * MINI_FACTOR, 0xFFFFFFFF);
-	// DDA(((t_shared_data *)data)->p_pos.x * MINI_FACTOR, ((t_shared_data *)data)->p_pos.y * MINI_FACTOR, ((t_shared_data *)data)->p_pos.x * MINI_FACTOR + 5 * cos(((t_shared_data *)data)->player.rota_angle),
-	// ((t_shared_data *)data)->p_pos.y * MINI_FACTOR + 5 * sin(((t_shared_data *)data)->player.rota_angle), ((t_shared_data *)data)->image);
 }
 
 int	raycaster(t_game_env *game_env)
@@ -694,7 +622,6 @@ int	raycaster(t_game_env *game_env)
 	t_shared_data	data;
 	t_player		player;
 
-	// data = ft_alloc(sizeof(data), data, MALLOC)
 	data.rays = NULL;
 	data.game_env = game_env;
 	data.p_pos = get_player_pos(data.game_env->map);
@@ -735,9 +662,7 @@ int	raycaster(t_game_env *game_env)
     mlx_set_mouse_pos(data.mlx, WIDTH / 2, HEIGHT / 2);
 	mlx_key_hook(data.mlx, ft_hook, &data);
 	mlx_loop_hook(data.mlx, ft_loop, &data);
-	// mlx_loop_hook(data.mlx, rander_map, &data);
 	mlx_loop(data.mlx);
 	mlx_terminate(data.mlx);
-	// return (EXIT_SUCCESS);
 	return (0);
 }
