@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/09/04 17:24:44 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/04 18:52:24 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,4 +136,11 @@ void	ft_hook(mlx_key_data_t key, void *param);
 bool	move_up_condition(t_shared_data *data);
 void	rander_map(t_shared_data *data);
 float	norm_angle(float angle);
+void	create_rays(t_shared_data *data);
+void init_ray(t_shared_data *data, int i, float ray_angle);
+void	cast_rays(t_shared_data *data, int num_rays);
+// void	rander_map(t_shared_data *data);
+void smaller_distance(t_shared_data *data, int i, float horz, float vertical);
+void choose_smaller(t_shared_data *data, int i, char c, float chosen);
+float	distance_two_p(float x1, float y1, float x2, float y2);
 # endif

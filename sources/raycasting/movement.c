@@ -6,18 +6,48 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:09:58 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/04 17:44:54 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/04 19:22:39 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+bool move_condition(t_shared_data *data, float angle, t_p_pos new, t_cord old)
+{
+	int i = 0;
+    t_cord r;
+    float			move_step;
+	while (i < 3)
+	{
+		move_step = data->player.move_speed;
+		new.x = data->real_pos.x + cos(angle) * move_step;
+		new.y = data->real_pos.y + sin(angle) * move_step;
+
+			r.x = floor(new.x / 32.0);
+			r.y = floor(new.y / 32.0);
+			old.x = data->real_pos.x / 32;
+			old.y = data->real_pos.y / 32;
+
+		if ((data->game_env->map[r.y][old.x] != '1'
+			|| data->game_env->map[old.y][r.x] != '1')
+			&& data->game_env->map[r.y][r.x] != '1')
+		{
+			data->real_pos.x = new.x;
+			data->real_pos.y = new.y;
+		}
+		else
+			return false;
+		i++;
+	}
+	return true;
+}
 
 void movement_a(t_shared_data *data)
 {
     t_p_pos new;
     t_cord r;
     float			move_step;
-    t_cord test;
+    t_cord old;
 
     move_step = data->player.move_speed;
 		float left_angle = data->player.rota_angle - PI / 2; 
@@ -27,12 +57,12 @@ void movement_a(t_shared_data *data)
 
 			r.x = floor(new.x / 32.0);
 			r.y = floor(new.y / 32.0);
-			test.x = data->real_pos.x / 32;
-			test.y = data->real_pos.y / 32;
+			old.x = data->real_pos.x / 32;
+			old.y = data->real_pos.y / 32;
 
-		if ((data->game_env->map[r.y][test.x] != '1'
-			|| data->game_env->map[test.y][r.x] != '1')
-			&& data->game_env->map[r.y][r.x] != '1' && move_up_condition(data))
+		if ((data->game_env->map[r.y][old.x] != '1'
+			|| data->game_env->map[old.y][r.x] != '1')
+			&& data->game_env->map[r.y][r.x] != '1' && move_condition(data, left_angle, new, old))
 		{
 			data->real_pos.x = new.x;
 			data->real_pos.y = new.y;
@@ -45,22 +75,22 @@ void movement_d(t_shared_data *data)
     t_p_pos new;
     t_cord r;
     float			move_step;
-    t_cord test;
+    t_cord old;
 
     move_step = data->player.move_speed;
-		float left_angle = data->player.rota_angle + PI / 2; 
+		float right_angle = data->player.rota_angle + PI / 2; 
 
-		new.x = data->real_pos.x + cos(left_angle) * move_step;
-		new.y = data->real_pos.y + sin(left_angle) * move_step;
+		new.x = data->real_pos.x + cos(right_angle) * move_step;
+		new.y = data->real_pos.y + sin(right_angle) * move_step;
 
 			r.x = floor(new.x / 32.0);
 			r.y = floor(new.y / 32.0);
-			test.x = data->real_pos.x / 32;
-			test.y = data->real_pos.y / 32;
+			old.x = data->real_pos.x / 32;
+			old.y = data->real_pos.y / 32;
 
-		if ((data->game_env->map[r.y][test.x] != '1'
-			|| data->game_env->map[test.y][r.x] != '1')
-			&& data->game_env->map[r.y][r.x] != '1' && move_up_condition(data))
+		if ((data->game_env->map[r.y][old.x] != '1'
+			|| data->game_env->map[old.y][r.x] != '1')
+			&& data->game_env->map[r.y][r.x] != '1' && move_condition(data, right_angle, new, old))
 		{
 			data->real_pos.x = new.x;
 			data->real_pos.y = new.y;
@@ -113,7 +143,6 @@ void calcul_new_cord(t_shared_data *data)
 		data->real_pos.y = new.y;
 	}
 }
-
 
 void	ft_hook(mlx_key_data_t key, void *param)
 {

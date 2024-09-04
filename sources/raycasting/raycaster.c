@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/04 18:46:35 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/04 19:31:36 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,12 @@ int	create_trgb(unsigned char t, unsigned char r, unsigned char g,
 {
 	return (*(int *)(unsigned char[4]){b, g, r, t});
 }
+
 float	distance_two_p(float x1, float y1, float x2, float y2)
 {
 	return (sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
 }
+
 float	norm_angle(float angle)
 {
 	angle = fmod(angle, (2 * PI));
@@ -90,46 +92,6 @@ void	render_rec(int y, int x, mlx_image_t *image, char c)
 	}
 }
 
-void init_ray(t_shared_data *data, int i, float ray_angle)
-{
-	data->rays[i].angle = norm_angle(ray_angle);
-		data->rays[i].wall_hit_x = 0;
-		data->rays[i].wall_hit_y = 0;
-		data->rays[i].ray_p.x = 0;
-		data->rays[i].ray_p.y = 0;
-		data->rays[i].horiz_x = -1;
-		data->rays[i].horiz_y = -1;
-		data->rays[i].vert_x = -1;
-		data->rays[i].vert_y = -1;
-		data->rays[i].distance = 0;
-		if (data->rays[i].angle >= 0 && data->rays[i].angle <= PI)
-			data->rays[i].ray_down = true;
-		else
-			data->rays[i].ray_down = false;
-		data->rays[i].ray_up = !data->rays[i].ray_down;
-		if (data->rays[i].angle <= PI * 0.5 || data->rays[i].angle >= 1.5 * PI)
-			data->rays[i].ray_right = true;
-		else
-			data->rays[i].ray_right = false;
-		data->rays[i].ray_left = !data->rays[i].ray_right;
-}
-void	create_rays(t_shared_data *data)
-{
-	int		i;
-	float	ray_angle;
-
-	i = 0;
-	ray_angle = (norm_angle(data->player.rota_angle)) - (FOV / 2);
-	data->rays = NULL;
-	data->rays = ft_alloc(sizeof(t_rays) * (NUM_RAYS + 1), data->rays, CALLOC);
-	while (i < NUM_RAYS)
-	{
-		init_ray(data, i, ray_angle);
-		i++;
-		ray_angle += (float)(FOV / NUM_RAYS);
-	}
-}
-
 void	render_rays(t_shared_data *data)
 {
 	int	i;
@@ -142,92 +104,6 @@ void	render_rays(t_shared_data *data)
 			* MINI_FACTOR, data->image);
 		i++;
 	}
-}
-
-void choose_smaller(t_shared_data *data, int i, char c, float chosen)
-{
-	if (c == 'V')
-	{
-		data->rays[i].distance = chosen;
-		data->rays[i].distance = data->rays[i].distance
-		* cos(data->rays[i].angle - data->player.rota_angle);
-		data->rays[i].ray_p.x = data->rays[i].vert_x;
-		data->rays[i].ray_p.y = data->rays[i].vert_y;
-		data->rays[i].ray_down = 0;
-		data->rays[i].ray_up = 0;
-	}
-	else
-	{
-		data->rays[i].distance = chosen;
-			data->rays[i].distance = data->rays[i].distance
-				* cos(data->rays[i].angle - data->player.rota_angle);
-			data->rays[i].ray_p.x = data->rays[i].horiz_x;
-			data->rays[i].ray_p.y = data->rays[i].horiz_y;
-			data->rays[i].ray_left = 0;
-			data->rays[i].ray_right = 0;
-	}
-}
-
-void smaller_distance(t_shared_data *data, int i, float horz, float vertical)
-{
-	if ((int)data->rays[i].horiz_x == -1)
-	{
-			choose_smaller(data, i, 'V', vertical);
-	}
-	else if ((int)data->rays[i].vert_x == -1)
-	{
-		choose_smaller(data, i, 'H', horz);
-	}
-	else if ((int)data->rays[i].horiz_x != -1
-		&& (int)data->rays[i].vert_x != -1)
-	{
-		if (horz <= vertical)
-		{
-			choose_smaller(data, i, 'H', horz);
-		}
-		else
-		{
-			choose_smaller(data, i, 'V', vertical);
-		}
-	}
-}
-
-void	cast_rays(t_shared_data *data, int num_rays)
-{
-	int		i;
-	float	horz;
-	float	vertical;
-
-	i = 0;
-	while (i < num_rays)
-	{
-		get_horizontal_inter(data, i);
-		horz = distance_two_p(data->real_pos.x, data->real_pos.y,
-				data->rays[i].horiz_x, data->rays[i].horiz_y);
-		get_vertical_inter(data, i);
-		vertical = distance_two_p(data->real_pos.x, data->real_pos.y,
-				data->rays[i].vert_x, data->rays[i].vert_y);
-		smaller_distance(data, i, horz, vertical);
-		i++;
-	}
-}
-
-char *extend_str(char *str, char *original, int max)
-{
-	ft_alloc(max + 1, str, MALLOC);
-	int i = 0;
-	while (original && original[i])
-	{
-		str[i] = original[i];
-		i++;
-	}
-	while (i < max)
-	{
-		str[i] = ' ';
-		i++;
-	}
-	str[i] = '\0';
-	return str;
 }
 
 char **minimap_parse(t_shared_data *data)
@@ -307,6 +183,10 @@ void	rander_map(t_shared_data *data)
 	i = 0;
 	while (i < NUM_RAYS)
 	{
+		if (data->rays[i].distance == 0)
+		{
+			printf("test"), exit (0);
+		}
 		distancepp = (WIDTH / 2) / tan(FOV / 2);
 		wall_height = (32 / data->rays[i].distance) * distancepp;
 		wall_top = (HEIGHT / 2) - (wall_height / 2);
@@ -351,27 +231,15 @@ void	rander_map(t_shared_data *data)
 	ft_alloc(0,mini_map, FREE_PTR);
 }
 
-bool	move_up_condition(t_shared_data *data)
+bool steps_from_wall(t_shared_data *data, t_p_pos pos)
 {
-	int		i;
-	t_p_pos new;
 	float move_step;
-	t_p_pos pos;
+	int i;
 	t_p_pos	real;
-	int index;
-	if (data->rays[WIDTH - 1].distance < data->rays[0].distance)
-		index = WIDTH - 1;
-	else
-		index = 0;
-	if ((data->player.walk_dir == 1 && data->rays && data->rays[index].distance > 9))
-		return (true);
-	else if (data->player.walk_dir == 1)
-		return (false);
-	else
-	{
+	t_p_pos new;
 
-		i = 0;
-		real = data->real_pos;
+	i = 0;
+	real = data->real_pos;
 		while (i < 2)
 		{
 			move_step = (float)data->player.walk_dir * data->player.move_speed;
@@ -390,6 +258,25 @@ bool	move_up_condition(t_shared_data *data)
 			i++;
 		}
 		return (true);
+}
+
+bool	move_up_condition(t_shared_data *data)
+{
+	t_p_pos pos;
+	int index;
+
+	pos.x = 0;
+	if (data->rays[WIDTH - 1].distance < data->rays[0].distance)
+		index = WIDTH - 1;
+	else
+		index = 0;
+	if ((data->player.walk_dir == 1 && data->rays && data->rays[index].distance > 12))
+		return (true);
+	else if (data->player.walk_dir == 1)
+		return (false);
+	else
+	{
+		return steps_from_wall(data, pos);
 	}
 	return (false);
 }
