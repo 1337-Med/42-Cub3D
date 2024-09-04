@@ -5,7 +5,8 @@ SRC =	./sources/parser/parser.c ./sources/parser/parser_utils.c  ./sources/parse
 		./sources/raycasting/raycaster.c \
 		./sources/rander_texture/rander_texture.c \
 		./sources/raycasting/horiz.c \
-		./sources/raycasting/vertical.c
+		./sources/raycasting/vertical.c \
+		./sources/raycasting/movement.c
 
 OBJ = $(SRC:.c=.o)
 # GLFW = $(shell brew --prefix glfw)

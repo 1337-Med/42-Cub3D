@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/04 16:31:45 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/04 17:10:25 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -389,102 +389,102 @@ bool	move_up_condition(t_shared_data *data)
 	return (false);
 }
 
-void	ft_hook(mlx_key_data_t key, void *param)
-{
-	t_shared_data	*data;
-	float			move_step;
-	int				r_x;
-	int				r_y;
-	int				test_x;
-	int				test_y;
+// void	ft_hook(mlx_key_data_t key, void *param)
+// {
+// 	t_shared_data	*data;
+// 	float			move_step;
+// 	int				r_x;
+// 	int				r_y;
+// 	int				test_x;
+// 	int				test_y;
 
-	float new_x, new_y;
-	data = param;
-	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
-		mlx_close_window(data->mlx);
-	if (key.key == MLX_KEY_A && mlx_is_key_down(data->mlx, MLX_KEY_A))
-	{
-		move_step = data->player.move_speed;
-		float left_angle = data->player.rota_angle - PI / 2; 
+// 	float new_x, new_y;
+// 	data = param;
+// 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
+// 		mlx_close_window(data->mlx);
+// 	if (key.key == MLX_KEY_A && mlx_is_key_down(data->mlx, MLX_KEY_A))
+// 	{
+// 		move_step = data->player.move_speed;
+// 		float left_angle = data->player.rota_angle - PI / 2; 
 
-		new_x = data->real_pos.x + cos(left_angle) * move_step;
-		new_y = data->real_pos.y + sin(left_angle) * move_step;
+// 		new_x = data->real_pos.x + cos(left_angle) * move_step;
+// 		new_y = data->real_pos.y + sin(left_angle) * move_step;
 
-			r_x = floor(new_x / 32.0);
-			r_y = floor(new_y / 32.0);
-			test_x = data->real_pos.x / 32;
-			test_y = data->real_pos.y / 32;
+// 			r_x = floor(new_x / 32.0);
+// 			r_y = floor(new_y / 32.0);
+// 			test_x = data->real_pos.x / 32;
+// 			test_y = data->real_pos.y / 32;
 
-		if ((data->game_env->map[r_y][test_x] != '1'
-			|| data->game_env->map[test_y][r_x] != '1')
-			&& data->game_env->map[r_y][r_x] != '1' && move_up_condition(data))
-		{
-			data->real_pos.x = new_x;
-			data->real_pos.y = new_y;
-		}
-		rander_map(data);
-		return ;
-	}
-	if (key.key == MLX_KEY_D && mlx_is_key_down(data->mlx, MLX_KEY_D))
-	{
-		move_step = data->player.move_speed;
-		float right_angle = data->player.rota_angle + PI / 2; 
+// 		if ((data->game_env->map[r_y][test_x] != '1'
+// 			|| data->game_env->map[test_y][r_x] != '1')
+// 			&& data->game_env->map[r_y][r_x] != '1' && move_up_condition(data))
+// 		{
+// 			data->real_pos.x = new_x;
+// 			data->real_pos.y = new_y;
+// 		}
+// 		rander_map(data);
+// 		return ;
+// 	}
+// 	if (key.key == MLX_KEY_D && mlx_is_key_down(data->mlx, MLX_KEY_D))
+// 	{
+// 		move_step = data->player.move_speed;
+// 		float right_angle = data->player.rota_angle + PI / 2; 
 
-		new_x = data->real_pos.x + cos(right_angle) * move_step;
-		new_y = data->real_pos.y + sin(right_angle) * move_step;
+// 		new_x = data->real_pos.x + cos(right_angle) * move_step;
+// 		new_y = data->real_pos.y + sin(right_angle) * move_step;
 
-			r_x = floor(new_x / 32.0);
-			r_y = floor(new_y / 32.0);
-			test_x = data->real_pos.x / 32;
-			test_y = data->real_pos.y / 32;
+// 			r_x = floor(new_x / 32.0);
+// 			r_y = floor(new_y / 32.0);
+// 			test_x = data->real_pos.x / 32;
+// 			test_y = data->real_pos.y / 32;
 
-		if ((data->game_env->map[r_y][test_x] != '1'
-			|| data->game_env->map[test_y][r_x] != '1')
-			&& data->game_env->map[r_y][r_x] != '1' && move_up_condition(data))
-		{
-			data->real_pos.x = new_x;
-			data->real_pos.y = new_y;
-		}
-		rander_map(data);
-		return ;
-	}
-	if (key.key == MLX_KEY_RIGHT && key.action == MLX_RELEASE)
-		data->player.turn_dir = 0;
-	if (key.key == MLX_KEY_LEFT && key.action == MLX_RELEASE)
-		data->player.turn_dir = 0;
-	if (key.key == MLX_KEY_RIGHT && mlx_is_key_down(data->mlx, MLX_KEY_RIGHT))
-		data->player.turn_dir = 1;
-	if (key.key == MLX_KEY_LEFT && mlx_is_key_down(data->mlx, MLX_KEY_LEFT))
-		data->player.turn_dir = -1;
-	if (key.key == MLX_KEY_S && key.action == MLX_RELEASE)
-		data->player.walk_dir = 0;
-	if (key.key == MLX_KEY_W && key.action == MLX_RELEASE)
-		data->player.walk_dir = 0;
-	if (key.key == MLX_KEY_W && mlx_is_key_down(data->mlx, MLX_KEY_W))
-		data->player.walk_dir = 1;
-	if (key.key == MLX_KEY_S && mlx_is_key_down(data->mlx, MLX_KEY_S))
-		data->player.walk_dir = -1;
-	data->player.rota_angle += (float)data->player.turn_dir
-			* data->player.rotate_speed;
-	data->player.rota_angle = norm_angle(data->player.rota_angle);
-	move_step = (float)data->player.walk_dir * data->player.move_speed;
-	new_x = (float)data->real_pos.x + cos((data->player.rota_angle))
-		* (float)move_step;
-	new_y = (float)data->real_pos.y + sin((data->player.rota_angle))
-		* (float)move_step;
-	r_x = floor(new_x / 32.0);
-	r_y = floor(new_y / 32.0);
-	test_x = data->real_pos.x / 32;
-	test_y = data->real_pos.y / 32;
-	if ((data->game_env->map[r_y][test_x] != '1'
-			|| data->game_env->map[test_y][r_x] != '1')
-		&& data->game_env->map[r_y][r_x] != '1' && move_up_condition(data))
-	{
-		data->real_pos.x = new_x;
-		data->real_pos.y = new_y;
-	}
-	rander_map(data);
-}
+// 		if ((data->game_env->map[r_y][test_x] != '1'
+// 			|| data->game_env->map[test_y][r_x] != '1')
+// 			&& data->game_env->map[r_y][r_x] != '1' && move_up_condition(data))
+// 		{
+// 			data->real_pos.x = new_x;
+// 			data->real_pos.y = new_y;
+// 		}
+// 		rander_map(data);
+// 		return ;
+// 	}
+// 	if (key.key == MLX_KEY_RIGHT && key.action == MLX_RELEASE)
+// 		data->player.turn_dir = 0;
+// 	if (key.key == MLX_KEY_LEFT && key.action == MLX_RELEASE)
+// 		data->player.turn_dir = 0;
+// 	if (key.key == MLX_KEY_RIGHT && mlx_is_key_down(data->mlx, MLX_KEY_RIGHT))
+// 		data->player.turn_dir = 1;
+// 	if (key.key == MLX_KEY_LEFT && mlx_is_key_down(data->mlx, MLX_KEY_LEFT))
+// 		data->player.turn_dir = -1;
+// 	if (key.key == MLX_KEY_S && key.action == MLX_RELEASE)
+// 		data->player.walk_dir = 0;
+// 	if (key.key == MLX_KEY_W && key.action == MLX_RELEASE)
+// 		data->player.walk_dir = 0;
+// 	if (key.key == MLX_KEY_W && mlx_is_key_down(data->mlx, MLX_KEY_W))
+// 		data->player.walk_dir = 1;
+// 	if (key.key == MLX_KEY_S && mlx_is_key_down(data->mlx, MLX_KEY_S))
+// 		data->player.walk_dir = -1;
+// 	data->player.rota_angle += (float)data->player.turn_dir
+// 			* data->player.rotate_speed;
+// 	data->player.rota_angle = norm_angle(data->player.rota_angle);
+// 	move_step = (float)data->player.walk_dir * data->player.move_speed;
+// 	new_x = (float)data->real_pos.x + cos((data->player.rota_angle))
+// 		* (float)move_step;
+// 	new_y = (float)data->real_pos.y + sin((data->player.rota_angle))
+// 		* (float)move_step;
+// 	r_x = floor(new_x / 32.0);
+// 	r_y = floor(new_y / 32.0);
+// 	test_x = data->real_pos.x / 32;
+// 	test_y = data->real_pos.y / 32;
+// 	if ((data->game_env->map[r_y][test_x] != '1'
+// 			|| data->game_env->map[test_y][r_x] != '1')
+// 		&& data->game_env->map[r_y][r_x] != '1' && move_up_condition(data))
+// 	{
+// 		data->real_pos.x = new_x;
+// 		data->real_pos.y = new_y;
+// 	}
+// 	rander_map(data);
+// }
 void ft_loop(void *data)
 {
     static int last_x = WIDTH / 2;

@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/09/04 16:34:34 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/04 17:24:44 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,4 +132,8 @@ int degree_to_raidian(float dg);
 void	get_horizontal_inter(t_shared_data *data, int i);
 void	get_vertical_inter(t_shared_data *data, int i);
 bool wall_found(t_shared_data *data, t_cord map, int i, t_p_pos inter);
+void	ft_hook(mlx_key_data_t key, void *param);
+bool	move_up_condition(t_shared_data *data);
+void	rander_map(t_shared_data *data);
+float	norm_angle(float angle);
 # endif
