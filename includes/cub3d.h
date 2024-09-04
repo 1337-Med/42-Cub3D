@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/29 16:23:33 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/04 16:34:34 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,12 @@ typedef struct s_player
 	float rotate_speed;
 } t_player;
 
+typedef struct s_cord
+{
+	int x;
+	int y;
+} t_cord;
+
 typedef struct s_ray
 {
 	float horiz_x;
@@ -123,4 +129,7 @@ t_p_pos get_player_pos(char **map);
 void texture_to_img(t_shared_data * data);
 void rander_textures(t_shared_data *data, int i, int wall_top, int wall_bottom);
 int degree_to_raidian(float dg);
+void	get_horizontal_inter(t_shared_data *data, int i);
+void	get_vertical_inter(t_shared_data *data, int i);
+bool wall_found(t_shared_data *data, t_cord map, int i, t_p_pos inter);
 # endif

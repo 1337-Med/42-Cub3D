@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/04 11:37:38 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/04 16:31:45 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,6 @@ void	render_rays(t_shared_data *data)
 {
 	int	i;
 
-	// mlx_put_pixel(data->image, data->real_pos.x * MINI_FACTOR, data->real_pos.y * MINI_FACTOR, 0xFFFFFFFF);
 	i = 0;
 	while (i < NUM_RAYS)
 	{
@@ -142,114 +141,6 @@ void	render_rays(t_shared_data *data)
 			data->rays[i].ray_p.x * MINI_FACTOR, data->rays[i].ray_p.y
 			* MINI_FACTOR, data->image);
 		i++;
-	}
-}
-void	get_vertical_inter(t_shared_data *data, int i)
-{
-	float	inter_x;
-	float	inter_y;
-	float	step_x;
-	float	step_y;
-	float	touch_x;
-	int		map_y;
-	int		map_x;
-
-	inter_x = floor(data->real_pos.x / 32) * 32;
-	if (data->rays[i].ray_right)
-		inter_x += 32;
-	inter_y = data->real_pos.y + ((inter_x - data->real_pos.x)
-			* tan(data->rays[i].angle));
-	step_x = 32;
-	if (data->rays[i].ray_left)
-		step_x = -step_x;
-	step_y = 32 * tan(data->rays[i].angle);
-	if (data->rays[i].ray_up && step_y > 0)
-		step_y = -step_y;
-	if (data->rays[i].ray_down && step_y < 0)
-		step_y = -step_y;
-	// while (inter_y > 0 && inter_x > 0 && inter_y < HEIGHT && inter_x < WIDTH)
-	while (inter_y > 0 && inter_x > 0)
-	{
-		touch_x = inter_x;
-		if (data->rays[i].ray_left)
-			touch_x--;
-		map_y = (int)floor((inter_y / 32));
-		map_x = (int)floor((touch_x / 32));
-		if (map_y < 0 || map_y >= (int)ft_arrsize(data->game_env->map)
-			|| map_x < 0 || map_x >= (int)ft_strlen(data->game_env->map[map_y]))
-		{
-			inter_y += step_y;
-			inter_x += step_x;
-			data->rays[i].vert_x = -1;
-			data->rays[i].vert_y = -1;
-			// printf ("womp womp\n");
-			return ;
-		}
-		else if (data->game_env->map[map_y])
-		{
-			if (data->game_env->map[map_y][map_x] == '1')
-			{
-				// printf("here 1\n");
-				data->rays[i].vert_x = inter_x;
-				data->rays[i].vert_y = inter_y;
-				return ;
-			}
-		}
-		inter_y += step_y;
-		inter_x += step_x;
-	}
-}
-
-void	get_horizontal_inter(t_shared_data *data, int i)
-{
-	float	inter_x;
-	float	inter_y;
-	float	step_x;
-	float	step_y;
-	float	touch_y;
-	int		map_y;
-	int		map_x;
-
-	inter_y = floor(data->real_pos.y / 32) * 32;
-	inter_y += data->rays[i].ray_down ? 32 : 0;
-	inter_x = data->real_pos.x + ((inter_y - data->real_pos.y)
-			/ tan(data->rays[i].angle));
-	step_y = 32;
-	if (data->rays[i].ray_up)
-		step_y = -step_y;
-	step_x = 32 / tan(data->rays[i].angle);
-	if ((data->rays[i].ray_left && step_x > 0) || (data->rays[i].ray_right
-			&& step_x < 0))
-		step_x = -step_x;
-	// while (inter_y > 0 && inter_x > 0 && inter_y < HEIGHT && inter_x < WIDTH
-		// && data->game_env->map[(int)inter_y / 32])
-	while (inter_y > 0 && inter_x > 0 && inter_y < HEIGHT)
-	{
-		touch_y = inter_y;
-		if (data->rays[i].ray_up)
-			touch_y--;
-		map_y = floor(touch_y / 32);
-		map_x = floor(inter_x / 32);
-		if (map_y < 0 || map_y >= (int)ft_arrsize(data->game_env->map)
-			|| map_x < 0 || map_x > (int)ft_strlen(data->game_env->map[map_y]))
-		{
-			inter_y += step_y;
-			inter_x += step_x;
-			data->rays[i].horiz_x = -1;
-			data->rays[i].horiz_y = -1;
-			return ;
-		}
-		if (data->game_env->map[map_y])
-		{
-			if (data->game_env->map[map_y][map_x] == '1')
-			{
-				data->rays[i].horiz_x = inter_x;
-				data->rays[i].horiz_y = inter_y;
-				return ;
-			}
-		}
-		inter_y += step_y;
-		inter_x += step_x;
 	}
 }
 
@@ -379,6 +270,7 @@ char **minimap_parse(t_shared_data *data)
 	mini_map[i] = NULL;
 	return (mini_map);
 }
+
 void	rander_map(t_shared_data *data)
 {
 	int		i;
@@ -457,9 +349,9 @@ void	rander_map(t_shared_data *data)
 bool	move_up_condition(t_shared_data *data)
 {
 	int		i;
-		t_p_pos new;
-		float move_step;
-		t_p_pos pos;
+	t_p_pos new;
+	float move_step;
+	t_p_pos pos;
 	t_p_pos	real;
 	int index;
 	if (data->rays[WIDTH - 1].distance < data->rays[0].distance)
