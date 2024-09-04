@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/04 17:10:25 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/04 18:46:35 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,20 +90,9 @@ void	render_rec(int y, int x, mlx_image_t *image, char c)
 	}
 }
 
-void	create_rays(t_shared_data *data)
+void init_ray(t_shared_data *data, int i, float ray_angle)
 {
-	int		i;
-	int		column_id;
-	float	ray_angle;
-
-	i = 0;
-	column_id = 0;
-	ray_angle = (norm_angle(data->player.rota_angle)) - (FOV / 2);
-	data->rays = NULL;
-	data->rays = ft_alloc(sizeof(t_rays) * (NUM_RAYS + 1), data->rays, CALLOC);
-	while (i < NUM_RAYS)
-	{
-		data->rays[i].angle = norm_angle(ray_angle);
+	data->rays[i].angle = norm_angle(ray_angle);
 		data->rays[i].wall_hit_x = 0;
 		data->rays[i].wall_hit_y = 0;
 		data->rays[i].ray_p.x = 0;
@@ -113,7 +102,6 @@ void	create_rays(t_shared_data *data)
 		data->rays[i].vert_x = -1;
 		data->rays[i].vert_y = -1;
 		data->rays[i].distance = 0;
-		data->rays[i].columnd_id = column_id;
 		if (data->rays[i].angle >= 0 && data->rays[i].angle <= PI)
 			data->rays[i].ray_down = true;
 		else
@@ -124,9 +112,21 @@ void	create_rays(t_shared_data *data)
 		else
 			data->rays[i].ray_right = false;
 		data->rays[i].ray_left = !data->rays[i].ray_right;
+}
+void	create_rays(t_shared_data *data)
+{
+	int		i;
+	float	ray_angle;
+
+	i = 0;
+	ray_angle = (norm_angle(data->player.rota_angle)) - (FOV / 2);
+	data->rays = NULL;
+	data->rays = ft_alloc(sizeof(t_rays) * (NUM_RAYS + 1), data->rays, CALLOC);
+	while (i < NUM_RAYS)
+	{
+		init_ray(data, i, ray_angle);
 		i++;
 		ray_angle += (float)(FOV / NUM_RAYS);
-		column_id++;
 	}
 }
 
@@ -141,6 +141,54 @@ void	render_rays(t_shared_data *data)
 			data->rays[i].ray_p.x * MINI_FACTOR, data->rays[i].ray_p.y
 			* MINI_FACTOR, data->image);
 		i++;
+	}
+}
+
+void choose_smaller(t_shared_data *data, int i, char c, float chosen)
+{
+	if (c == 'V')
+	{
+		data->rays[i].distance = chosen;
+		data->rays[i].distance = data->rays[i].distance
+		* cos(data->rays[i].angle - data->player.rota_angle);
+		data->rays[i].ray_p.x = data->rays[i].vert_x;
+		data->rays[i].ray_p.y = data->rays[i].vert_y;
+		data->rays[i].ray_down = 0;
+		data->rays[i].ray_up = 0;
+	}
+	else
+	{
+		data->rays[i].distance = chosen;
+			data->rays[i].distance = data->rays[i].distance
+				* cos(data->rays[i].angle - data->player.rota_angle);
+			data->rays[i].ray_p.x = data->rays[i].horiz_x;
+			data->rays[i].ray_p.y = data->rays[i].horiz_y;
+			data->rays[i].ray_left = 0;
+			data->rays[i].ray_right = 0;
+	}
+}
+
+void smaller_distance(t_shared_data *data, int i, float horz, float vertical)
+{
+	if ((int)data->rays[i].horiz_x == -1)
+	{
+			choose_smaller(data, i, 'V', vertical);
+	}
+	else if ((int)data->rays[i].vert_x == -1)
+	{
+		choose_smaller(data, i, 'H', horz);
+	}
+	else if ((int)data->rays[i].horiz_x != -1
+		&& (int)data->rays[i].vert_x != -1)
+	{
+		if (horz <= vertical)
+		{
+			choose_smaller(data, i, 'H', horz);
+		}
+		else
+		{
+			choose_smaller(data, i, 'V', vertical);
+		}
 	}
 }
 
@@ -159,50 +207,7 @@ void	cast_rays(t_shared_data *data, int num_rays)
 		get_vertical_inter(data, i);
 		vertical = distance_two_p(data->real_pos.x, data->real_pos.y,
 				data->rays[i].vert_x, data->rays[i].vert_y);
-		if ((int)data->rays[i].horiz_x == -1)
-		{
-			data->rays[i].distance = vertical;
-			data->rays[i].distance = data->rays[i].distance
-				* cos(data->rays[i].angle - data->player.rota_angle);
-			data->rays[i].ray_p.x = data->rays[i].vert_x;
-			data->rays[i].ray_p.y = data->rays[i].vert_y;
-			data->rays[i].ray_down = 0;
-			data->rays[i].ray_up = 0;
-		}
-		else if ((int)data->rays[i].vert_x == -1)
-		{
-			data->rays[i].distance = horz;
-			data->rays[i].distance = data->rays[i].distance
-				* cos(data->rays[i].angle - data->player.rota_angle);
-			data->rays[i].ray_p.x = data->rays[i].horiz_x;
-			data->rays[i].ray_p.y = data->rays[i].horiz_y;
-			data->rays[i].ray_left = 0;
-			data->rays[i].ray_right = 0;
-		}
-		else if ((int)data->rays[i].horiz_x != -1
-			&& (int)data->rays[i].vert_x != -1)
-		{
-			if (horz <= vertical)
-			{
-				data->rays[i].distance = horz;
-				data->rays[i].distance = data->rays[i].distance
-					* cos(data->rays[i].angle - data->player.rota_angle);
-				data->rays[i].ray_p.x = data->rays[i].horiz_x;
-				data->rays[i].ray_p.y = data->rays[i].horiz_y;
-				data->rays[i].ray_left = 0;
-				data->rays[i].ray_right = 0;
-			}
-			else
-			{
-				data->rays[i].distance = vertical;
-				data->rays[i].distance = data->rays[i].distance
-					* cos(data->rays[i].angle - data->player.rota_angle);
-				data->rays[i].ray_p.x = data->rays[i].vert_x;
-				data->rays[i].ray_p.y = data->rays[i].vert_y;
-				data->rays[i].ray_down = 0;
-				data->rays[i].ray_up = 0;
-			}
-		}
+		smaller_distance(data, i, horz, vertical);
 		i++;
 	}
 }
@@ -389,102 +394,6 @@ bool	move_up_condition(t_shared_data *data)
 	return (false);
 }
 
-// void	ft_hook(mlx_key_data_t key, void *param)
-// {
-// 	t_shared_data	*data;
-// 	float			move_step;
-// 	int				r_x;
-// 	int				r_y;
-// 	int				test_x;
-// 	int				test_y;
-
-// 	float new_x, new_y;
-// 	data = param;
-// 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
-// 		mlx_close_window(data->mlx);
-// 	if (key.key == MLX_KEY_A && mlx_is_key_down(data->mlx, MLX_KEY_A))
-// 	{
-// 		move_step = data->player.move_speed;
-// 		float left_angle = data->player.rota_angle - PI / 2; 
-
-// 		new_x = data->real_pos.x + cos(left_angle) * move_step;
-// 		new_y = data->real_pos.y + sin(left_angle) * move_step;
-
-// 			r_x = floor(new_x / 32.0);
-// 			r_y = floor(new_y / 32.0);
-// 			test_x = data->real_pos.x / 32;
-// 			test_y = data->real_pos.y / 32;
-
-// 		if ((data->game_env->map[r_y][test_x] != '1'
-// 			|| data->game_env->map[test_y][r_x] != '1')
-// 			&& data->game_env->map[r_y][r_x] != '1' && move_up_condition(data))
-// 		{
-// 			data->real_pos.x = new_x;
-// 			data->real_pos.y = new_y;
-// 		}
-// 		rander_map(data);
-// 		return ;
-// 	}
-// 	if (key.key == MLX_KEY_D && mlx_is_key_down(data->mlx, MLX_KEY_D))
-// 	{
-// 		move_step = data->player.move_speed;
-// 		float right_angle = data->player.rota_angle + PI / 2; 
-
-// 		new_x = data->real_pos.x + cos(right_angle) * move_step;
-// 		new_y = data->real_pos.y + sin(right_angle) * move_step;
-
-// 			r_x = floor(new_x / 32.0);
-// 			r_y = floor(new_y / 32.0);
-// 			test_x = data->real_pos.x / 32;
-// 			test_y = data->real_pos.y / 32;
-
-// 		if ((data->game_env->map[r_y][test_x] != '1'
-// 			|| data->game_env->map[test_y][r_x] != '1')
-// 			&& data->game_env->map[r_y][r_x] != '1' && move_up_condition(data))
-// 		{
-// 			data->real_pos.x = new_x;
-// 			data->real_pos.y = new_y;
-// 		}
-// 		rander_map(data);
-// 		return ;
-// 	}
-// 	if (key.key == MLX_KEY_RIGHT && key.action == MLX_RELEASE)
-// 		data->player.turn_dir = 0;
-// 	if (key.key == MLX_KEY_LEFT && key.action == MLX_RELEASE)
-// 		data->player.turn_dir = 0;
-// 	if (key.key == MLX_KEY_RIGHT && mlx_is_key_down(data->mlx, MLX_KEY_RIGHT))
-// 		data->player.turn_dir = 1;
-// 	if (key.key == MLX_KEY_LEFT && mlx_is_key_down(data->mlx, MLX_KEY_LEFT))
-// 		data->player.turn_dir = -1;
-// 	if (key.key == MLX_KEY_S && key.action == MLX_RELEASE)
-// 		data->player.walk_dir = 0;
-// 	if (key.key == MLX_KEY_W && key.action == MLX_RELEASE)
-// 		data->player.walk_dir = 0;
-// 	if (key.key == MLX_KEY_W && mlx_is_key_down(data->mlx, MLX_KEY_W))
-// 		data->player.walk_dir = 1;
-// 	if (key.key == MLX_KEY_S && mlx_is_key_down(data->mlx, MLX_KEY_S))
-// 		data->player.walk_dir = -1;
-// 	data->player.rota_angle += (float)data->player.turn_dir
-// 			* data->player.rotate_speed;
-// 	data->player.rota_angle = norm_angle(data->player.rota_angle);
-// 	move_step = (float)data->player.walk_dir * data->player.move_speed;
-// 	new_x = (float)data->real_pos.x + cos((data->player.rota_angle))
-// 		* (float)move_step;
-// 	new_y = (float)data->real_pos.y + sin((data->player.rota_angle))
-// 		* (float)move_step;
-// 	r_x = floor(new_x / 32.0);
-// 	r_y = floor(new_y / 32.0);
-// 	test_x = data->real_pos.x / 32;
-// 	test_y = data->real_pos.y / 32;
-// 	if ((data->game_env->map[r_y][test_x] != '1'
-// 			|| data->game_env->map[test_y][r_x] != '1')
-// 		&& data->game_env->map[r_y][r_x] != '1' && move_up_condition(data))
-// 	{
-// 		data->real_pos.x = new_x;
-// 		data->real_pos.y = new_y;
-// 	}
-// 	rander_map(data);
-// }
 void ft_loop(void *data)
 {
     static int last_x = WIDTH / 2;
