@@ -1,5 +1,5 @@
 
-SRC =	./sources/parser/parser.c ./sources/parser/parser_utils.c  ./sources/parser/texture_parsing.c ./sources/parser/map_parsing.c\
+SRC =	./sources/parser/parser.c ./sources/parser/parser_utils.c ./sources/parser/parser_utils1.c  ./sources/parser/texture_parsing.c ./sources/parser/map_parsing.c\
 		./sources/cub3d.c \
 		./sources/raycasting/utils.c \
 		./sources/raycasting/raycaster.c \

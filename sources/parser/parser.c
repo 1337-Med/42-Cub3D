@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:07 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/24 15:43:40 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/09/06 18:53:55 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,8 @@ void	read_file(int fd, t_game_env **game_env)
 		line = get_next_line(fd);
 		if (line == NULL)
 			break ;
-		if (ft_strlen(line) == 1 && !ft_strncmp(line, "\n", ft_strlen(line)))
-		{
-			ft_alloc(0, line, FREE_PTR);
+		if (check_empty_line(line) == 1)
 			continue ;
-		}
 		temp_arr = spliter(line);
 		if ((*game_env)->ceiling == -1 || (*game_env)->floor == -1
 			|| !(*game_env)->wall->east || !(*game_env)->wall->west
@@ -117,6 +114,5 @@ t_game_env	*parser(int ac, char **av)
 	game_env->wall = ft_alloc(sizeof(t_wall), game_env->wall, CALLOC);
 	read_file(fd, &game_env);
 	check_map(game_env->map, game_env->wall);
-
 	return (game_env);
 }

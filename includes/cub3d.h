@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/29 16:23:33 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/06 18:53:45 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ typedef struct s_game_env
 }	t_game_env;
 
 // parsing functions
+void	skip_spaces(int *i, char *s);
+int	check_empty_line(char *line);
 t_game_env *parser(int ac, char **av);
 int get_rgba(int r, int g, int b, t_wall *wall);
 void save_earth_sky(char **arr, t_game_env **game_env);

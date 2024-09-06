@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 15:42:40 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/09/03 17:21:17 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/09/06 19:13:28 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,18 @@ int	get_pixel(mlx_image_t *image, int x, int y)
 	return (pixel_color);
 }
 
-void	draw_line_pixel(int wall_top, int wall_bottom, int i,
+void	draw_line_pixel(int *tb, int i,
 		t_shared_data *data, int tex_x)
 {
 	int	tex_y;
 	int	line_dis;
 	int	j;
 
-	line_dis = wall_bottom - wall_top;
-	j = wall_top;
-	while (j <= wall_bottom)
+	line_dis = tb[1] - tb[0];
+	j = tb[0];
+	while (j <= tb[1])
 	{
-		tex_y = ((j - wall_top) * data->target_img->height) / line_dis;
+		tex_y = ((j - tb[0]) * data->target_img->height) / line_dis;
 		if (j >= 0 && i >= 0 && j < HEIGHT && i <= WIDTH && tex_y >= 0
 			&& tex_y < (int)data->target_img->height)
 			mlx_put_pixel(data->image, i, j, \
@@ -72,14 +72,15 @@ void	rander_textures(t_shared_data *data, int i, int wall_top,
 	float	wall_hit;
 
 	tex_x = 0;
+	wall_hit = 0.0;
 	if (data->rays[i].ray_right || data->rays[i].ray_left)
 	{
 		if (data->rays[i].ray_right)
 			data->target_img = data->game_env->side->west;
 		else
 			data->target_img = data->game_env->side->east;
-		wall_hit = data->rays[i].ray_p.y / 32.0 - floor(data->rays[i].ray_p.y / 32.0);
-		tex_x = (int)(wall_hit * (float)data->target_img->width);
+		wall_hit = data->rays[i].ray_p.y / 32.0 \
+					- floor(data->rays[i].ray_p.y / 32.0);
 	}
 	else if (data->rays[i].ray_up || data->rays[i].ray_down)
 	{
@@ -87,9 +88,9 @@ void	rander_textures(t_shared_data *data, int i, int wall_top,
 			data->target_img = data->game_env->side->north;
 		else
 			data->target_img = data->game_env->side->south;
-		wall_hit = data->rays[i].ray_p.x / 32.0 - floor(data->rays[i].ray_p.x / 32.0);
-		tex_x = (int)(wall_hit * (float)data->target_img->width);
+		wall_hit = data->rays[i].ray_p.x / 32.0 \
+					- floor(data->rays[i].ray_p.x / 32.0);
 	}
-	draw_line_pixel(wall_top, wall_bottom, i, data, tex_x);
+	tex_x = (int)(wall_hit * (float)data->target_img->width);
+	draw_line_pixel((int [2]){wall_top, wall_bottom}, i, data, tex_x);
 }
-
