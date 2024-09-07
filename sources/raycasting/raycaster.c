@@ -6,17 +6,12 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/07 11:48:50 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/07 15:23:01 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	create_trgb(unsigned char t, unsigned char r, unsigned char g,
-		unsigned char b)
-{
-	return (*(int *)(unsigned char[4]){b, g, r, t});
-}
 
 float	distance_two_p(float x1, float y1, float x2, float y2)
 {
@@ -308,44 +303,52 @@ void ft_loop(void *data)
 		i++;
 }
 
+void init_raycaster(t_shared_data *data, t_game_env *game_env)
+{
+	data->rays = NULL;
+	data->game_env = game_env;
+	data->p_pos = get_player_pos(data->game_env->map);
+	data->real_pos = get_player_pos(data->game_env->map);
+	data->real_pos.x = (data->real_pos.x * 32) + 16;
+	data->real_pos.y = (data->real_pos.y * 32) + 16;
+	data->player.pos = data->real_pos;
+	data->player.raduis = 3;
+	data->player.walk_dir = 0;
+	data->player.turn_dir = 0;
+	data->player.rota_angle =  PI / 2;
+	data->player.move_speed = 8;
+	data->player.rotate_speed = 4 * (PI / 180);
+	data->mlx = NULL;
+	data->image = NULL;
+}
+
+void init_mlx(t_shared_data *data)
+{
+	if (!(data->mlx = mlx_init(WIDTH, HEIGHT, "Cub3d", false)))
+	{
+		puts(mlx_strerror(mlx_errno));
+		exit (EXIT_FAILURE);
+	}
+	if (!(data->image = mlx_new_image(data->mlx, WIDTH, HEIGHT)))
+	{
+		mlx_close_window(data->mlx);
+		puts(mlx_strerror(mlx_errno));
+		exit (EXIT_FAILURE);
+	}
+	if (mlx_image_to_window(data->mlx, data->image, 0, 0) == -1)
+	{
+		mlx_close_window(data->mlx);
+		puts(mlx_strerror(mlx_errno));
+		exit (EXIT_FAILURE);
+	}
+}
+
 int	raycaster(t_game_env *game_env)
 {
 	t_shared_data	data;
-	t_player		player;
 
-	data.rays = NULL;
-	data.game_env = game_env;
-	data.p_pos = get_player_pos(data.game_env->map);
-	data.real_pos = get_player_pos(data.game_env->map);
-	data.real_pos.x = (data.real_pos.x * 32) + 16;
-	data.real_pos.y = (data.real_pos.y * 32) + 16;
-	player.pos = data.real_pos;
-	player.raduis = 3;
-	player.walk_dir = 0;
-	player.turn_dir = 0;
-	player.rota_angle =  PI / 2;
-	player.move_speed = 8;
-	player.rotate_speed = 4 * (PI / 180);
-	data.player = player;
-	data.mlx = NULL;
-	data.image = NULL;
-	if (!(data.mlx = mlx_init(WIDTH, HEIGHT, "Cub3d", false)))
-	{
-		puts(mlx_strerror(mlx_errno));
-		return (EXIT_FAILURE);
-	}
-	if (!(data.image = mlx_new_image(data.mlx, WIDTH, HEIGHT)))
-	{
-		mlx_close_window(data.mlx);
-		puts(mlx_strerror(mlx_errno));
-		return (EXIT_FAILURE);
-	}
-	if (mlx_image_to_window(data.mlx, data.image, 0, 0) == -1)
-	{
-		mlx_close_window(data.mlx);
-		puts(mlx_strerror(mlx_errno));
-		return (EXIT_FAILURE);
-	}
+	init_raycaster(&data, game_env);
+	init_mlx(&data);
 	create_rays(&data);
 	texture_to_img(&data);
 	rander_map(&data);

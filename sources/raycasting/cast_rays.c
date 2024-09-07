@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 18:49:56 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/04 21:19:42 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/07 14:45:54 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,24 +39,16 @@ void choose_smaller(t_shared_data *data, int i, char c, float chosen)
 void smaller_distance(t_shared_data *data, int i, float horz, float vertical)
 {
 	if ((int)data->rays[i].horiz_x == -1)
-	{
 			choose_smaller(data, i, 'V', vertical);
-	}
 	else if ((int)data->rays[i].vert_x == -1)
-	{
 		choose_smaller(data, i, 'H', horz);
-	}
 	else if ((int)data->rays[i].horiz_x != -1
 		&& (int)data->rays[i].vert_x != -1)
 	{
 		if (horz <= vertical)
-		{
 			choose_smaller(data, i, 'H', horz);
-		}
 		else
-		{
 			choose_smaller(data, i, 'V', vertical);
-		}
 	}
 }
 

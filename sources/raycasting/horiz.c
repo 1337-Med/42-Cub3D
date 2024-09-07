@@ -6,11 +6,12 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 13:24:29 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/07 12:48:50 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/07 14:45:11 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
 void h_set_step_inter(t_shared_data *data, int i, t_p_pos *inter, t_p_pos *step)
 {
     inter->y = floor(data->real_pos.y / 32) * 32;
