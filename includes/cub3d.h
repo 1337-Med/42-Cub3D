@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/09/07 13:18:33 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/09/07 15:34:08 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,4 +134,16 @@ int degree_to_raidian(float dg);
 void	get_horizontal_inter(t_shared_data *data, int i);
 void	get_vertical_inter(t_shared_data *data, int i);
 bool wall_found(t_shared_data *data, t_cord map, int i, t_p_pos inter);
+void	ft_hook(mlx_key_data_t key, void *param);
+bool	move_up_condition(t_shared_data *data);
+void	rander_map(t_shared_data *data);
+float	norm_angle(float angle);
+void	create_rays(t_shared_data *data);
+void init_ray(t_shared_data *data, int i, float ray_angle);
+void	cast_rays(t_shared_data *data, int num_rays);
+// void	rander_map(t_shared_data *data);
+void smaller_distance(t_shared_data *data, int i, float horz, float vertical);
+void choose_smaller(t_shared_data *data, int i, char c, float chosen);
+float	distance_two_p(float x1, float y1, float x2, float y2);
+void	render_rec(int y, int x, mlx_image_t *image, char c);
 # endif

@@ -5,13 +5,18 @@ SRC =	./sources/parser/parser.c ./sources/parser/parser_utils.c ./sources/parser
 		./sources/raycasting/raycaster.c \
 		./sources/rander_texture/rander_texture.c \
 		./sources/raycasting/horiz.c \
-		./sources/raycasting/vertical.c
+		./sources/raycasting/vertical.c \
+		./sources/raycasting/movement.c \
+		./sources/raycasting/create_rays.c \
+		./sources/raycasting/cast_rays.c \
+		./sources/raycasting/move_condition.c \
+		./sources/raycasting/render_rec.c \
 
 OBJ = $(SRC:.c=.o)
 # GLFW = $(shell brew --prefix glfw)
 
 # DEPS = -framework Cocoa -framework OpenGL -framework IOKit -lglfw -L"$(GLFW)/lib" $(MLX42)
-CFLAGS = -Wall -Wextra -I ./includes -I ./super_libft #-O3 #-fsanitize=address -g# -O3
+CFLAGS = -Wall -Wextra -I ./includes -I ./super_libft -O3 #-fsanitize=address -g# -O3
 
 NAME = cub3d
 
