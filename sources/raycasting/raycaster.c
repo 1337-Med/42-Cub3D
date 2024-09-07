@@ -6,27 +6,11 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/07 15:23:01 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/07 15:31:21 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-
-float	distance_two_p(float x1, float y1, float x2, float y2)
-{
-	return (sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
-}
-
-float	norm_angle(float angle)
-{
-	angle = fmod(angle, (2 * PI));
-	if (angle < 0)
-	{
-		angle = (PI * 2) + angle;
-	}
-	return (angle);
-}
 
 void	DDA(float x1, float y1, float x2, float y2, mlx_image_t *image)
 {
@@ -52,52 +36,6 @@ void	DDA(float x1, float y1, float x2, float y2, mlx_image_t *image)
 		y += y_inc;
 		if (y < HEIGHT && y > 0 && x < WIDTH && x > 0)
 			mlx_put_pixel(image, round(x), round(y), 0xFFFFFFFF);
-	}
-}
-
-void	render_rec(int y, int x, mlx_image_t *image, char c)
-{
-	int		start_y;
-	int		start_x;
-	int		color;
-	float	i;
-	float	j;
-	color = 0x0000000;
-	start_y = y * 32 * MINI_FACTOR;
-	start_x = x * 32 * MINI_FACTOR;
-	if (c == 'W')
-	{
-		color = 0xFF0000FF;
-	}
-	else if (c == 'F')
-	{
-		color = 0x02f7b2;
-	}
-	i = 0;
-	j = 0;
-	while (i < 32 * MINI_FACTOR)
-	{
-		j = 0;
-		while (j < 32 * MINI_FACTOR)
-		{
-			mlx_put_pixel(image, start_x + j, start_y + i, color);
-			j++;
-		}
-		i++;
-	}
-}
-
-void	render_rays(t_shared_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < NUM_RAYS)
-	{
-		DDA(data->real_pos.x * MINI_FACTOR, data->real_pos.y * MINI_FACTOR,
-			data->rays[i].ray_p.x * MINI_FACTOR, data->rays[i].ray_p.y
-			* MINI_FACTOR, data->image);
-		i++;
 	}
 }
 
@@ -222,61 +160,6 @@ void	rander_map(t_shared_data *data)
 	while (mini_map && mini_map[i])
 		ft_alloc( 0, mini_map[i++], FREE_PTR);
 	ft_alloc(0,mini_map, FREE_PTR);
-}
-
-bool steps_from_wall(t_shared_data *data, t_p_pos pos)
-{
-	float move_step;
-	int i;
-	t_p_pos	real;
-	t_p_pos new;
-
-	i = 0;
-	real = data->real_pos;
-	float angle = data->player.rota_angle;
-	while (i < 3)
-		{
-			move_step = (float)data->player.walk_dir * data->player.move_speed;
-			new.x = (float)real.x + cos(angle)
-				* (float)move_step;
-			new.y = (float)real.y + sin(angle)
-				* (float)move_step;
-			pos.x = (int)floor(new.x / 32.0);
-			pos.y = (int)floor(new.y / 32.0);
-			if (data->game_env->map[(int)pos.y][(int)pos.x] == '1')
-			{
-				return (false);
-			}
-			real.x = new.x;
-			real.y = new.y;
-			i++;
-		}
-		if (i == 3)
-		{
-			return (true);
-		}
-		return false;
-}
-
-bool	move_up_condition(t_shared_data *data)
-{
-	t_p_pos pos;
-	int index;
-
-	pos.x = 0;
-	if (data->rays[WIDTH - 1].distance < data->rays[0].distance)
-		index = WIDTH - 1;
-	else
-		index = 0;
-	if ((data->player.walk_dir == 1 && data->rays && data->rays[index].distance > 12))
-		return (true);
-	else if (data->player.walk_dir == 1)
-		return (false);
-	else if (data->player.walk_dir == -1)
-	{
-		return steps_from_wall(data, pos);
-	}
-	return (false);
 }
 
 void ft_loop(void *data)

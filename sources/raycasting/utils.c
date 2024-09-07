@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 15:25:01 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/08/29 16:13:02 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/07 15:28:09 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,19 @@ t_p_pos get_player_pos(char **map)
     }
     // printf ("hihii\n");
     return pos;
+}
+
+float	distance_two_p(float x1, float y1, float x2, float y2)
+{
+	return (sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
+}
+
+float	norm_angle(float angle)
+{
+	angle = fmod(angle, (2 * PI));
+	if (angle < 0)
+	{
+		angle = (PI * 2) + angle;
+	}
+	return (angle);
 }

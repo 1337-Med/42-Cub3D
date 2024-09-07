@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/09/04 18:52:24 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/07 15:30:44 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,4 +143,5 @@ void	cast_rays(t_shared_data *data, int num_rays);
 void smaller_distance(t_shared_data *data, int i, float horz, float vertical);
 void choose_smaller(t_shared_data *data, int i, char c, float chosen);
 float	distance_two_p(float x1, float y1, float x2, float y2);
+void	render_rec(int y, int x, mlx_image_t *image, char c);
 # endif
