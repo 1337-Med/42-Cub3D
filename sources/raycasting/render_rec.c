@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:30:13 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/07 15:30:31 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/07 16:13:53 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,14 @@ void	render_rec(int y, int x, mlx_image_t *image, char c)
 	int		color;
 	float	i;
 	float	j;
+
 	color = 0x0000000;
 	start_y = y * 32 * MINI_FACTOR;
 	start_x = x * 32 * MINI_FACTOR;
 	if (c == 'W')
-	{
 		color = 0xFF0000FF;
-	}
 	else if (c == 'F')
-	{
 		color = 0x02f7b2;
-	}
 	i = 0;
 	j = 0;
 	while (i < 32 * MINI_FACTOR)
