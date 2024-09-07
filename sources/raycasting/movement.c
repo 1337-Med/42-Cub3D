@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:09:58 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/06 19:13:16 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/07 15:41:52 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void movement_a(t_shared_data *data)
 			data->real_pos.x = new.x;
 			data->real_pos.y = new.y;
 		}
-		rander_map(data);
+		render_map(data);
 }
 
 void movement_d(t_shared_data *data)
@@ -93,7 +93,7 @@ void movement_d(t_shared_data *data)
 			data->real_pos.x = new.x;
 			data->real_pos.y = new.y;
 		}
-		rander_map(data);
+		render_map(data);
 }
 
 void walkturn_dir(t_shared_data *data, mlx_key_data_t key)
@@ -162,5 +162,5 @@ void	ft_hook(mlx_key_data_t key, void *param)
 	}
 	walkturn_dir(data, key);
 	calcul_new_cord(data);
-	rander_map(data);
+	render_map(data);
 }
