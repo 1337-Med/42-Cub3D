@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 13:24:29 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/04 13:51:50 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/07 12:48:50 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void h_set_step_inter(t_shared_data *data, int i, t_p_pos *inter, t_p_pos *step)
 	step->y = 32;
 	if (data->rays[i].ray_up)
 		step->y = -step->y;
-	step->x = 32 / tan(data->rays[i].angle);
+	step->x = step->y / tan(data->rays[i].angle);
 	if ((data->rays[i].ray_left && step->x > 0) || (data->rays[i].ray_right
 			&& step->x < 0))
 		step->x = -step->x;

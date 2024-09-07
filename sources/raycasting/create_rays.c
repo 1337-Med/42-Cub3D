@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 18:48:01 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/04 18:49:01 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/06 19:13:00 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void init_ray(t_shared_data *data, int i, float ray_angle)
 			data->rays[i].ray_right = false;
 		data->rays[i].ray_left = !data->rays[i].ray_right;
 }
+
 void	create_rays(t_shared_data *data)
 {
 	int		i;

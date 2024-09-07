@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/04 19:31:36 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/07 11:48:50 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	DDA(float x1, float y1, float x2, float y2, mlx_image_t *image)
 	x = x1;
 	y = y1;
 	mlx_put_pixel(image, round(x), round(y), 0xFFFFFFFF);
-	for (int i = 0; i < steps; i++) // Loop includes the endpoint
+	for (int i = 0; i < steps; i++)
 	{
 		x += x_inc;
 		y += y_inc;
@@ -184,9 +184,7 @@ void	rander_map(t_shared_data *data)
 	while (i < NUM_RAYS)
 	{
 		if (data->rays[i].distance == 0)
-		{
-			printf("test"), exit (0);
-		}
+			data->rays[i].distance = 0.5;
 		distancepp = (WIDTH / 2) / tan(FOV / 2);
 		wall_height = (32 / data->rays[i].distance) * distancepp;
 		wall_top = (HEIGHT / 2) - (wall_height / 2);
@@ -240,12 +238,13 @@ bool steps_from_wall(t_shared_data *data, t_p_pos pos)
 
 	i = 0;
 	real = data->real_pos;
-		while (i < 2)
+	float angle = data->player.rota_angle;
+	while (i < 3)
 		{
 			move_step = (float)data->player.walk_dir * data->player.move_speed;
-			new.x = (float)real.x + cos((data->player.rota_angle))
+			new.x = (float)real.x + cos(angle)
 				* (float)move_step;
-			new.y = (float)real.y + sin((data->player.rota_angle))
+			new.y = (float)real.y + sin(angle)
 				* (float)move_step;
 			pos.x = (int)floor(new.x / 32.0);
 			pos.y = (int)floor(new.y / 32.0);
@@ -257,7 +256,11 @@ bool steps_from_wall(t_shared_data *data, t_p_pos pos)
 			real.y = new.y;
 			i++;
 		}
-		return (true);
+		if (i == 3)
+		{
+			return (true);
+		}
+		return false;
 }
 
 bool	move_up_condition(t_shared_data *data)
@@ -274,7 +277,7 @@ bool	move_up_condition(t_shared_data *data)
 		return (true);
 	else if (data->player.walk_dir == 1)
 		return (false);
-	else
+	else if (data->player.walk_dir == -1)
 	{
 		return steps_from_wall(data, pos);
 	}
@@ -320,7 +323,7 @@ int	raycaster(t_game_env *game_env)
 	player.raduis = 3;
 	player.walk_dir = 0;
 	player.turn_dir = 0;
-	player.rota_angle = PI / 2;
+	player.rota_angle =  PI / 2;
 	player.move_speed = 8;
 	player.rotate_speed = 4 * (PI / 180);
 	data.player = player;

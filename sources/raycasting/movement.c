@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:09:58 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/04 19:22:39 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/06 19:13:16 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,15 @@ bool move_condition(t_shared_data *data, float angle, t_p_pos new, t_cord old)
 	int i = 0;
     t_cord r;
     float			move_step;
-	while (i < 3)
+	while (i < 2)
 	{
 		move_step = data->player.move_speed;
 		new.x = data->real_pos.x + cos(angle) * move_step;
 		new.y = data->real_pos.y + sin(angle) * move_step;
-
-			r.x = floor(new.x / 32.0);
-			r.y = floor(new.y / 32.0);
-			old.x = data->real_pos.x / 32;
-			old.y = data->real_pos.y / 32;
-
+		r.x = floor(new.x / 32.0);
+		r.y = floor(new.y / 32.0);
+		old.x = data->real_pos.x / 32;
+		old.y = data->real_pos.y / 32;
 		if ((data->game_env->map[r.y][old.x] != '1'
 			|| data->game_env->map[old.y][r.x] != '1')
 			&& data->game_env->map[r.y][r.x] != '1')
@@ -97,6 +95,7 @@ void movement_d(t_shared_data *data)
 		}
 		rander_map(data);
 }
+
 void walkturn_dir(t_shared_data *data, mlx_key_data_t key)
 {
 	if (key.key == MLX_KEY_RIGHT && key.action == MLX_RELEASE)

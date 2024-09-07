@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 13:53:36 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/04 16:35:52 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/07 12:48:35 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void v_stepinter(t_shared_data *data, int i, t_p_pos *inter, t_p_pos *step)
 	step->x = 32;
 	if (data->rays[i].ray_left)
 		step->x = -step->x;
-	step->y = 32 * tan(data->rays[i].angle);
+	step->y = step->x * tan(data->rays[i].angle);
 	if (data->rays[i].ray_up && step->y > 0)
 		step->y = -step->y;
 	if (data->rays[i].ray_down && step->y < 0)
