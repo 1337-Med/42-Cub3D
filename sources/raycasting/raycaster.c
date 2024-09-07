@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycaster.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/04 16:31:45 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/07 13:18:22 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -498,8 +498,8 @@ void ft_loop(void *data)
     int delta_x = current_x - last_x;
     if (delta_x != 0)
     {
-        ((t_shared_data *)data)->player.rota_angle += norm_angle(delta_x * (0.5 * (PI / 180))); 
-        rander_map(data);
+        ((t_shared_data *)data)->player.rota_angle += delta_x * 0.01;
+		((t_shared_data *)data)->player.rota_angle = norm_angle(((t_shared_data *)data)->player.rota_angle);
     }
     last_x = current_x;
     mlx_set_mouse_pos(((t_shared_data *)data)->mlx, screen_center_x, screen_center_y);
@@ -525,7 +525,7 @@ int	raycaster(t_game_env *game_env)
 	player.walk_dir = 0;
 	player.turn_dir = 0;
 	player.rota_angle = PI / 2;
-	player.move_speed = 8;
+	player.move_speed = 5;
 	player.rotate_speed = 4 * (PI / 180);
 	data.player = player;
 	data.mlx = NULL;
