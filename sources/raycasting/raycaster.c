@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/06 12:40:19 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/09/06 19:41:20 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -606,8 +606,8 @@ void ft_loop(void *data)
     int delta_x = current_x - last_x;
     if (delta_x != 0)
     {
-        ((t_shared_data *)data)->player.rota_angle += norm_angle(delta_x * (0.5 * (PI / 180))); 
-        rander_map(data);
+        ((t_shared_data *)data)->player.rota_angle += delta_x * 0.01;
+		((t_shared_data *)data)->player.rota_angle = norm_angle(((t_shared_data *)data)->player.rota_angle);
     }
     last_x = current_x;
     mlx_set_mouse_pos(((t_shared_data *)data)->mlx, screen_center_x, screen_center_y);
