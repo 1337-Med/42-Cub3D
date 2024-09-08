@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 13:53:36 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/07 12:48:35 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/08 18:05:15 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void v_stepinter(t_shared_data *data, int i, t_p_pos *inter, t_p_pos *step)
 	if (data->rays[i].ray_down && step->y < 0)
 		step->y = -step->y;
 }
+
 bool v_wall_found(t_shared_data *data, t_cord map, int i, t_p_pos inter)
 {
     if (data->game_env->map[map.y])
@@ -41,6 +42,7 @@ bool v_wall_found(t_shared_data *data, t_cord map, int i, t_p_pos inter)
 	}
     return false;
 }
+
 void	get_vertical_inter(t_shared_data *data, int i)
 {
 	t_p_pos inter;
