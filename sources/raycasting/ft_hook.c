@@ -1,32 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render_player.c                                    :+:      :+:    :+:   */
+/*   ft_hook.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/08 17:22:01 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/08 19:17:00 by amejdoub         ###   ########.fr       */
+/*   Created: 2024/09/08 19:18:14 by amejdoub          #+#    #+#             */
+/*   Updated: 2024/09/08 19:19:17 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	render_player(t_shared_data *data)
+void	ft_hook(mlx_key_data_t key, void *param)
 {
-	int	x;
-	int	y;
+	t_shared_data	*data;
 
-	y = 0;
-	while (y < 15)
+	data = param;
+	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
+		mlx_close_window(data->mlx);
+	if (key.key == MLX_KEY_A && mlx_is_key_down(data->mlx, MLX_KEY_A))
 	{
-		x = 0;
-		while (x < 15)
-		{
-			mlx_put_pixel(data->image, (data->p_pos.x + x) * MINI_FACTOR,
-				(data->p_pos.y + y) * MINI_FACTOR, 0xFFFFFFFF);
-			x++;
-		}
-		y++;
+		movement_a(data);
+		return ;
 	}
+	if (key.key == MLX_KEY_D && mlx_is_key_down(data->mlx, MLX_KEY_D))
+	{
+		movement_d(data);
+		return ;
+	}
+	walkturn_dir(data, key);
+	calcul_new_cord(data);
+	render_map(data);
 }

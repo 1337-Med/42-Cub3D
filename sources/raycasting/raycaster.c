@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycaster.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/08 18:41:18 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/09/08 18:48:26 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,14 @@ void	init_raycaster(t_shared_data *data, t_game_env *game_env)
 
 void	init_mlx(t_shared_data *data)
 {
-	if (!(data->mlx = mlx_init(WIDTH, HEIGHT, "Cub3d", false)))
+	data->mlx = mlx_init(WIDTH, HEIGHT, "Cub3d", false);
+	if (!data->mlx)
 	{
 		puts(mlx_strerror(mlx_errno));
 		exit(EXIT_FAILURE);
 	}
-	if (!(data->image = mlx_new_image(data->mlx, WIDTH, HEIGHT)))
+	data->image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
+	if (!data->image)
 	{
 		mlx_close_window(data->mlx);
 		puts(mlx_strerror(mlx_errno));

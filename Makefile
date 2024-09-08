@@ -15,6 +15,7 @@ SRC =	./sources/parser/parser.c ./sources/parser/parser_utils.c ./sources/parser
 		./sources/raycasting/mini_map.c \
 		./sources/raycasting/render_map.c \
 		./sources/raycasting/render_player.c \
+		./sources/raycasting/ft_hook.c \
 
 OBJ = $(SRC:.c=.o)
 # GLFW = $(shell brew --prefix glfw)

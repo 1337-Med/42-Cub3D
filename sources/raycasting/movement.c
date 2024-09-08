@@ -3,38 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   movement.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:09:58 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/08 18:44:24 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/09/08 19:19:03 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 bool	move_condition(t_shared_data *data, float angle, t_p_pos new,
-		t_cord old)
+	t_cord old)
 {
 	int		i;
 	t_cord	r;
-	float	move_step;
 
 	i = 0;
-	while (i < 2)
+	new = data->p_pos;
+	old.x = new.x / 32;
+	old.y = new.y / 32;
+	while (i < 3)
 	{
-		move_step = data->player.move_speed;
-		new.x = data->real_pos.x + cos(angle) * move_step;
-		new.y = data->real_pos.y + sin(angle) * move_step;
 		r.x = floor(new.x / 32.0);
 		r.y = floor(new.y / 32.0);
-		old.x = data->real_pos.x / 32;
-		old.y = data->real_pos.y / 32;
 		if ((data->game_env->map[r.y][old.x] != '1' \
 				|| data->game_env->map[old.y][r.x] != '1')
 			&& data->game_env->map[r.y][r.x] != '1')
 		{
-			data->real_pos.x = new.x;
-			data->real_pos.y = new.y;
+			old.x = new.x / 32;
+			old.x = new.y / 32;
+			new.x += cos(angle) * data->player.move_speed;
+			new.y += sin(angle) * data->player.move_speed;
 		}
 		else
 			return (false);
@@ -143,26 +142,4 @@ void	calcul_new_cord(t_shared_data *data)
 		data->real_pos.x = new.x;
 		data->real_pos.y = new.y;
 	}
-}
-
-void	ft_hook(mlx_key_data_t key, void *param)
-{
-	t_shared_data	*data;
-
-	data = param;
-	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
-		mlx_close_window(data->mlx);
-	if (key.key == MLX_KEY_A && mlx_is_key_down(data->mlx, MLX_KEY_A))
-	{
-		movement_a(data);
-		return ;
-	}
-	if (key.key == MLX_KEY_D && mlx_is_key_down(data->mlx, MLX_KEY_D))
-	{
-		movement_d(data);
-		return ;
-	}
-	walkturn_dir(data, key);
-	calcul_new_cord(data);
-	render_map(data);
 }
