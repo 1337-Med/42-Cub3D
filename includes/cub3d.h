@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/09/08 16:59:56 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/09/08 17:27:02 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,4 +149,5 @@ float	distance_two_p(float x1, float y1, float x2, float y2);
 void	render_rec(int y, int x, mlx_image_t *image, char c);
 void ft_loop(void *data);
 char **minimap_parse(t_shared_data *data);
+void render_player(t_shared_data *data);
 # endif

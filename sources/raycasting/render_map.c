@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:43:22 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/08 17:09:49 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/08 17:27:35 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,10 +127,11 @@ void	render_map(t_shared_data *data)
 		rander_textures(data, i++, wall_top, wall_bottom);
 	}
 	rander_minimap(data);
-	mlx_put_pixel(data->image, data->p_pos.x * MINI_FACTOR, data->p_pos.y
-		* MINI_FACTOR, 0xFFFFFFFF);
-	dda((float [2]){data->p_pos.x * MINI_FACTOR, data->p_pos.y * MINI_FACTOR}, \
-		(float [2]){data->p_pos.x * MINI_FACTOR + 50 \
-		* cos(data->player.rota_angle), data->p_pos.y * MINI_FACTOR + 50 \
-		* sin(data->player.rota_angle)}, data->image);
+	render_player(data);
+	// mlx_put_pixel(data->image, data->p_pos.x * MINI_FACTOR, data->p_pos.y
+	// 	* MINI_FACTOR, 0xFFFFFFFF);
+	// dda((float [2]){data->p_pos.x * MINI_FACTOR, data->p_pos.y * MINI_FACTOR}, \
+	// 	(float [2]){data->p_pos.x * MINI_FACTOR + 50 \
+	// 	* cos(data->player.rota_angle), data->p_pos.y * MINI_FACTOR + 50 \
+	// 	* sin(data->player.rota_angle)}, data->image);
 }
