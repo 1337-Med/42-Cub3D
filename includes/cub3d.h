@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/09/07 15:40:20 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/08 16:59:56 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_side
 typedef struct s_game_env
 {
 	char	**map;
+	char	dir;
 	t_wall	*wall;
 	t_side	*side;
 	int		floor;
@@ -67,7 +68,7 @@ int get_rgba(int r, int g, int b, t_wall *wall);
 void save_earth_sky(char **arr, t_game_env **game_env);
 void save_walls(char **arr, t_game_env **game_env);
 void free_print(char *s, t_wall *wall);
-void check_map(char **map, t_wall *wall);
+void check_map(t_game_env *game_env);
 char **spliter(char *line);
 void save_tools(char **arr, t_game_env **game_env);
 void free_texture(t_wall *wall);

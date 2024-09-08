@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:07 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/09/06 18:53:55 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/09/08 17:00:00 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,6 @@ t_game_env	*parser(int ac, char **av)
 	game_env->floor = -1;
 	game_env->wall = ft_alloc(sizeof(t_wall), game_env->wall, CALLOC);
 	read_file(fd, &game_env);
-	check_map(game_env->map, game_env->wall);
+	check_map(game_env);
 	return (game_env);
 }

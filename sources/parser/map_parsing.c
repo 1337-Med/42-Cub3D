@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 21:34:36 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/09/06 18:54:09 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/09/08 16:59:49 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	zero_pos(int *ij, char **map)
 	ij[1] = -1;
 }
 
-int	*player_position(char **map)
+int	*player_position(char **map, t_game_env *env)
 {
 	int	j;
 	int	i;
@@ -55,6 +55,7 @@ int	*player_position(char **map)
 			{
 				ij[0] = i;
 				ij[1] = j;
+				env->dir = map[i][j];
 				return (ij);
 			}
 			j++;
@@ -87,7 +88,7 @@ void	flod_fill_checker(char **map, int *xy, t_wall *wall)
 		return ;
 }
 
-void	check_map(char **map, t_wall *wall)
+void	check_map(t_game_env *env)
 {
 	char	**temp_map;
 	int		*xy;
@@ -95,22 +96,22 @@ void	check_map(char **map, t_wall *wall)
 
 	temp_map = NULL;
 	xy = NULL;
-	temp_map = ft_alloc(sizeof(char *) * (ft_arrsize(map) + 1), \
+	temp_map = ft_alloc(sizeof(char *) * (ft_arrsize(env->map) + 1), \
 				temp_map, CALLOC);
 	i = 0;
-	while (map[i])
+	while (env->map[i])
 	{
-		temp_map[i] = ft_strdup(map[i]);
+		temp_map[i] = ft_strdup(env->map[i]);
 		i++;
 	}
 	temp_map[i] = NULL;
 	while (1)
 	{
-		xy = player_position(temp_map);
+		xy = player_position(temp_map, env);
 		if (xy[0] == -1)
 			break ;
 		temp_map[xy[0]][xy[1]] = '0';
-		flod_fill_checker(temp_map, xy, wall);
+		flod_fill_checker(temp_map, xy, env->wall);
 	}
 	ft_alloc(0, xy, FREE_PTR);
 	ft_alloc(0, temp_map, FREE_PTR);
