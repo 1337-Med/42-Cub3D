@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_map.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:43:22 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/08 15:37:18 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/09/08 17:09:49 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	rander_minimap(t_shared_data *data)
 		{
 			if (mini_map[i][j] == '1')
 				render_rec(i, j, data->image, 'W');
-			if (mini_map[i][j] == '0' || mini_map[i][j] == 'N')
+			if (ft_strchr("0NSWE", mini_map[i][j]))
 				render_rec(i, j, data->image, 'F');
 			j++;
 		}
