@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   vertical.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 13:53:36 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/08 18:05:15 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/08 18:41:43 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void v_stepinter(t_shared_data *data, int i, t_p_pos *inter, t_p_pos *step)
+void	v_stepinter(t_shared_data *data, int i, t_p_pos *inter, t_p_pos *step)
 {
 	inter->x = floor(data->real_pos.x / 32) * 32;
 	if (data->rays[i].ray_right)
@@ -29,26 +29,26 @@ void v_stepinter(t_shared_data *data, int i, t_p_pos *inter, t_p_pos *step)
 		step->y = -step->y;
 }
 
-bool v_wall_found(t_shared_data *data, t_cord map, int i, t_p_pos inter)
+bool	v_wall_found(t_shared_data *data, t_cord map, int i, t_p_pos inter)
 {
-    if (data->game_env->map[map.y])
+	if (data->game_env->map[map.y])
 	{
-			if (data->game_env->map[map.y][map.x] == '1')
-			{
-				data->rays[i].vert_x = inter.x;
-				data->rays[i].vert_y = inter.y;
-				return true;
-			}
+		if (data->game_env->map[map.y][map.x] == '1')
+		{
+			data->rays[i].vert_x = inter.x;
+			data->rays[i].vert_y = inter.y;
+			return (true);
+		}
 	}
-    return false;
+	return (false);
 }
 
 void	get_vertical_inter(t_shared_data *data, int i)
 {
-	t_p_pos inter;
-	t_p_pos step;
+	t_p_pos	inter;
+	t_p_pos	step;
 	float	touch_x;
-	t_cord map;
+	t_cord	map;
 
 	v_stepinter(data, i, &inter, &step);
 	while (inter.y > 0 && inter.x > 0)

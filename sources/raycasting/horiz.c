@@ -3,20 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   horiz.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 13:24:29 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/07 14:45:11 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/08 18:43:12 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void h_set_step_inter(t_shared_data *data, int i, t_p_pos *inter, t_p_pos *step)
+void	h_set_step_inter(t_shared_data *data, int i, t_p_pos *inter,
+		t_p_pos *step)
 {
-    inter->y = floor(data->real_pos.y / 32) * 32;
-    if (data->rays[i].ray_down)
-        inter->y += 32;
+	inter->y = floor(data->real_pos.y / 32) * 32;
+	if (data->rays[i].ray_down)
+		inter->y += 32;
 	inter->x = data->real_pos.x + ((inter->y - data->real_pos.y)
 			/ tan(data->rays[i].angle));
 	step->y = 32;
@@ -28,27 +29,28 @@ void h_set_step_inter(t_shared_data *data, int i, t_p_pos *inter, t_p_pos *step)
 		step->x = -step->x;
 }
 
-bool wall_found(t_shared_data *data, t_cord map, int i, t_p_pos inter)
+bool	wall_found(t_shared_data *data, t_cord map, int i, t_p_pos inter)
 {
-    if (data->game_env->map[map.y])
+	if (data->game_env->map[map.y])
 	{
-			if (data->game_env->map[map.y][map.x] == '1')
-			{
-				data->rays[i].horiz_x = inter.x;
-				data->rays[i].horiz_y = inter.y;
-				return true;
-			}
+		if (data->game_env->map[map.y][map.x] == '1')
+		{
+			data->rays[i].horiz_x = inter.x;
+			data->rays[i].horiz_y = inter.y;
+			return (true);
+		}
 	}
-    return false;
+	return (false);
 }
+
 void	get_horizontal_inter(t_shared_data *data, int i)
 {
-    t_p_pos inter;
-    t_p_pos step;
+	t_p_pos	inter;
+	t_p_pos	step;
 	float	touch_y;
-    t_cord map;
+	t_cord	map;
 
-    h_set_step_inter(data, i, &inter, &step);
+	h_set_step_inter(data, i, &inter, &step);
 	while (inter.y > 0 && inter.x > 0 && inter.y < HEIGHT)
 	{
 		touch_y = inter.y;
@@ -63,8 +65,8 @@ void	get_horizontal_inter(t_shared_data *data, int i)
 			data->rays[i].horiz_y = -1;
 			return ;
 		}
-        if (wall_found(data, map, i , inter))
-            return ;
+		if (wall_found(data, map, i, inter))
+			return ;
 		inter.y += step.y;
 		inter.x += step.x;
 	}
