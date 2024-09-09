@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/09/08 17:27:02 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/08 19:20:18 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,4 +150,8 @@ void	render_rec(int y, int x, mlx_image_t *image, char c);
 void ft_loop(void *data);
 char **minimap_parse(t_shared_data *data);
 void render_player(t_shared_data *data);
+void	movement_d(t_shared_data *data);
+void	movement_a(t_shared_data *data);
+void	walkturn_dir(t_shared_data *data, mlx_key_data_t key);
+void	calcul_new_cord(t_shared_data *data);
 # endif
