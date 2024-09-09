@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rander_texture.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 15:42:40 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/09/09 10:06:34 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/09/09 10:24:20 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,9 @@ void	rander_textures(t_shared_data *data, int i, int wall_top,
 	if (data->rays[i].ray_right || data->rays[i].ray_left)
 	{
 		if (data->rays[i].ray_right)
-			data->target_img = data->game_env->side->east;
-		else
 			data->target_img = data->game_env->side->west;
+		else
+			data->target_img = data->game_env->side->east;
 		wall_hit = data->rays[i].ray_p.y / 32.0 \
 					- floor(data->rays[i].ray_p.y / 32.0);
 	}
