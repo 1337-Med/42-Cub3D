@@ -6,19 +6,19 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 12:41:28 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/11 15:08:22 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/09/09 11:39:23 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
+# include "colors.h"
 # include <limits.h>
 # include <stdarg.h>
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-# include "colors.h"
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
@@ -120,10 +120,10 @@ void					*ft_alloc(size_t size, void *ptr, char c);
 
 // additinal function
 
-char	*ft_freed_join(char *s1, char *s2);
-void	print_err(int count, ...);
-void	ft_arrclean(char **str);
-char	**ft_arradd_back(char **arr, char *new_str);
-size_t	ft_arrsize(char **arr);
+char					*ft_freed_join(char *s1, char *s2);
+void					print_err(int count, ...);
+void					ft_arrclean(char **str);
+char					**ft_arradd_back(char **arr, char *new_str);
+size_t					ft_arrsize(char **arr);
 
 #endif

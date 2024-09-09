@@ -6,18 +6,18 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 15:06:34 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/08/11 15:08:08 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/09/09 11:39:03 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t ft_arrsize(char **arr)
+size_t	ft_arrsize(char **arr)
 {
-    size_t i;
+	size_t	i;
 
-    i = 0;
-    while (arr && arr[i])
-        i++;
-    return (i);
+	i = 0;
+	while (arr && arr[i])
+		i++;
+	return (i);
 }
