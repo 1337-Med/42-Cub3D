@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 15:42:40 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/09/07 12:17:32 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/09/09 10:06:34 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,18 +76,18 @@ void	rander_textures(t_shared_data *data, int i, int wall_top,
 	if (data->rays[i].ray_right || data->rays[i].ray_left)
 	{
 		if (data->rays[i].ray_right)
-			data->target_img = data->game_env->side->west;
-		else
 			data->target_img = data->game_env->side->east;
+		else
+			data->target_img = data->game_env->side->west;
 		wall_hit = data->rays[i].ray_p.y / 32.0 \
 					- floor(data->rays[i].ray_p.y / 32.0);
 	}
 	else if (data->rays[i].ray_up || data->rays[i].ray_down)
 	{
 		if (data->rays[i].ray_up)
-			data->target_img = data->game_env->side->north;
-		else
 			data->target_img = data->game_env->side->south;
+		else
+			data->target_img = data->game_env->side->north;
 		wall_hit = data->rays[i].ray_p.x / 32.0 \
 					- floor(data->rays[i].ray_p.x / 32.0);
 	}
