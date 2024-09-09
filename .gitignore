@@ -1,8 +1,0 @@
-MLX42/*/*
-.vscode
-.DS_Store
-*.o
-*/*.o
-*/*/*.o
-*/*/*/*.o
-test_map.cub

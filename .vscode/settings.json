@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "cub3d.h": "c",
+        "stdio.h": "c",
+        "libft.h": "c"
+    }
+}

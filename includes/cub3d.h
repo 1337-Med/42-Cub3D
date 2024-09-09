@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/09/09 11:05:33 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/09 11:27:06 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,9 @@
 # define CUB3D_H
 
 # include "../MLX42/include/MLX42/MLX42.h"
-# include "fcntl.h"
+# include <fcntl.h>
 # include "libft.h"
-# include "math.h"
-# include "stdio.h"
+# include <math.h>
 
 typedef struct s_wall
 {

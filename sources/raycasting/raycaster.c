@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/09 11:03:17 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/09 11:25:02 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,21 +43,18 @@ void	init_mlx(t_shared_data *data)
 	data->mlx = mlx_init(WIDTH, HEIGHT, "Cub3d", false);
 	if (!data->mlx)
 	{
-		puts(mlx_strerror(mlx_errno));
-		exit(EXIT_FAILURE);
+		free_print("mlx error\n", data->game_env->wall);
 	}
 	data->image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	if (!data->image)
 	{
 		mlx_close_window(data->mlx);
-		puts(mlx_strerror(mlx_errno));
-		exit(EXIT_FAILURE);
+		free_print("mlx error\n", data->game_env->wall);
 	}
 	if (mlx_image_to_window(data->mlx, data->image, 0, 0) == -1)
 	{
 		mlx_close_window(data->mlx);
-		puts(mlx_strerror(mlx_errno));
-		exit(EXIT_FAILURE);
+		free_print("mlx error\n", data->game_env->wall);
 	}
 }
 
