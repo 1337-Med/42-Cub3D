@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:07 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/09/08 17:00:00 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/09/17 11:32:29 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ void	read_file(int fd, t_game_env **game_env)
 		}
 		ft_alloc(0, temp_arr, FREE_PTR);
 	}
+	if (!(*game_env)->map)
+		free_print("ivalid map\n", (*game_env)->wall);
 }
 
 t_game_env	*parser(int ac, char **av)

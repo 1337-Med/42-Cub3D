@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_alloc_util.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 11:12:19 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/07/28 16:38:53 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/09/17 11:40:50 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,11 @@ t_address	*ft_alloc_new_node(void *ptr, size_t size)
 
 	node = malloc(sizeof(t_address));
 	if (!node)
+	{
+		ft_putendl_fd("malloc error", 2);
+		exit(1);
 		return (NULL);
+	}
 	node->address = ptr;
 	node->size = size;
 	node->next = NULL;

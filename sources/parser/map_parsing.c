@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_parsing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 21:34:36 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/09/08 16:59:49 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/09/17 11:34:59 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,9 @@ int	*player_position(char **map, t_game_env *env)
 
 void	flod_fill_checker(char **map, int *xy, t_wall *wall)
 {
+	if (xy[0] >= (int)ft_arrsize(map) || xy[1] >= (int)ft_strlen(map[xy[0]]))
+		free_print("invalid map. The map must be closed/surrounded by walls\n",
+			wall);
 	if ((xy[0] <= 0 || xy[1] <= 0 || xy[0] >= (int)ft_arrsize(map) - 1
 			|| xy[1] >= (int)ft_strlen(map[xy[0]]) - 1)
 		&& map[xy[0]][xy[1]] != '1')

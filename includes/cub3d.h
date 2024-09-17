@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/09/09 11:27:06 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/17 12:14:33 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ typedef struct s_side
 // NUM_RAYS = WIDTH
 
 # define MINI_FACTOR 0.4
-# define WALL_WIDTH 1
 # define PI 3.14159265358979323846
 # define FOV 1.04719755
 # define WIDTH 920

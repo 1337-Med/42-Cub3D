@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture_parsing.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 21:35:30 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/09/06 18:09:47 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/09/17 11:09:26 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,10 @@ int	calculate_colors(char *s, t_wall *wall)
 	rgba = ft_split(s, ',');
 	color = 0;
 	if (ft_arrsize(rgba) != 3 && ft_arrsize(rgba) != 4)
+		free_print("invalid rgba colors\n", wall);
+	if (ft_strlen(ft_strtrim(rgba[0], " \t\n")) > 4 || \
+		ft_strlen(ft_strtrim(rgba[1], " \t\n")) > 4 || \
+		ft_strlen(ft_strtrim(rgba[2], " \t\n")) > 4)
 		free_print("invalid rgba colors\n", wall);
 	if (ft_arrsize(rgba) == 3)
 		color = get_rgba(ft_atoi(rgba[0]), ft_atoi(rgba[1]), ft_atoi(rgba[2]),

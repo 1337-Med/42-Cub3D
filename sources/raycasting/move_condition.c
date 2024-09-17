@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_condition.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:28:51 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/08 18:40:37 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/09/17 12:12:06 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,8 @@ bool	move_up_condition(t_shared_data *data)
 		index = WIDTH - 1;
 	else
 		index = 0;
-	index = NUM_RAYS / 2;
 	if ((data->player.walk_dir == 1 && data->rays
-			&& data->rays[index].distance > 20))
+			&& data->rays[index].distance > 7))
 		return (true);
 	else if (data->player.walk_dir == 1)
 		return (false);
