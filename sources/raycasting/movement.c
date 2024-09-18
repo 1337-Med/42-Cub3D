@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:09:58 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/08 19:19:03 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/18 11:00:17 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ bool	move_condition(t_shared_data *data, float angle, t_p_pos new,
 	t_cord	r;
 
 	i = 0;
-	new = data->p_pos;
+	new = data->real_pos;
 	old.x = new.x / 32;
 	old.y = new.y / 32;
 	while (i < 3)
