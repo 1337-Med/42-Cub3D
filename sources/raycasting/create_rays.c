@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_rays.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 18:48:01 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/08 18:40:21 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/09/21 12:56:56 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,12 @@ void	create_rays(t_shared_data *data)
 
 	i = 0;
 	ray_angle = (norm_angle(data->player.rota_angle)) - (FOV / 2);
-	data->rays = NULL;
+	if (!data->rays)
+	{
+		ft_alloc(0, data->rays, FREE_PTR);
+		data->rays = NULL;
+	}
+	// data->rays = NULL;
 	data->rays = ft_alloc(sizeof(t_rays) * (NUM_RAYS + 1), data->rays, CALLOC);
 	while (i < NUM_RAYS)
 	{

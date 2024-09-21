@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:09:58 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/18 11:00:17 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/21 13:54:17 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	movement_a(t_shared_data *data)
 		&& data->game_env->map[r.y][r.x] != '1' && move_condition(data, \
 			left_angle, new, old))
 	{
+		// data->player.rotate_speed =4 * (PI / 180);
 		data->real_pos.x = new.x;
 		data->real_pos.y = new.y;
 	}
@@ -96,23 +97,31 @@ void	movement_d(t_shared_data *data)
 	render_map(data);
 }
 
-void	walkturn_dir(t_shared_data *data, mlx_key_data_t key)
+void	walkturn_dir(t_shared_data *data)
 {
-	if (key.key == MLX_KEY_RIGHT && key.action == MLX_RELEASE)
+	// if (key.key == MLX_KEY_RIGHT && key.action == MLX_RELEASE)
+	// 	data->player.turn_dir = 0;
+	if ( mlx_is_key_down(data->mlx, MLX_KEY_RIGHT) == false)
 		data->player.turn_dir = 0;
-	if (key.key == MLX_KEY_LEFT && key.action == MLX_RELEASE)
+	// if (key.key == MLX_KEY_LEFT && key.action == MLX_RELEASE)
+	// 	data->player.turn_dir = 0;
+	if (!mlx_is_key_down(data->mlx, MLX_KEY_LEFT))
 		data->player.turn_dir = 0;
-	if (key.key == MLX_KEY_RIGHT && mlx_is_key_down(data->mlx, MLX_KEY_RIGHT))
+	if (mlx_is_key_down(data->mlx, MLX_KEY_RIGHT))
 		data->player.turn_dir = 1;
-	if (key.key == MLX_KEY_LEFT && mlx_is_key_down(data->mlx, MLX_KEY_LEFT))
+	if ( mlx_is_key_down(data->mlx, MLX_KEY_LEFT))
 		data->player.turn_dir = -1;
-	if (key.key == MLX_KEY_S && key.action == MLX_RELEASE)
+	if (!mlx_is_key_down(data->mlx, MLX_KEY_W))
 		data->player.walk_dir = 0;
-	if (key.key == MLX_KEY_W && key.action == MLX_RELEASE)
+	if (!mlx_is_key_down(data->mlx, MLX_KEY_S))
 		data->player.walk_dir = 0;
-	if (key.key == MLX_KEY_W && mlx_is_key_down(data->mlx, MLX_KEY_W))
+	// if (key.key == MLX_KEY_S && key.action == MLX_RELEASE)
+	// 	data->player.walk_dir = 0;
+	// if (key.key == MLX_KEY_W && key.action == MLX_RELEASE)
+	// 	data->player.walk_dir = 0;
+	if (mlx_is_key_down(data->mlx, MLX_KEY_W))
 		data->player.walk_dir = 1;
-	if (key.key == MLX_KEY_S && mlx_is_key_down(data->mlx, MLX_KEY_S))
+	if (mlx_is_key_down(data->mlx, MLX_KEY_S))
 		data->player.walk_dir = -1;
 }
 
