@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mouse_rotation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:36:55 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/08 18:43:23 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/09/22 16:47:41 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	ft_loop(void *data)
 
 	current_x = WIDTH / 2;
 	current_y = HEIGHT / 2;
+	ft_hook(data);
 	if (i > 1)
 		mlx_get_mouse_pos(((t_shared_data *)data)->mlx, &current_x, &current_y);
 	delta_x = current_x - WIDTH / 2;
