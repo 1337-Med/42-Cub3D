@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:28:51 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/21 13:56:30 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/22 12:20:13 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,26 @@ bool	steps_from_wall(t_shared_data *data, t_p_pos pos)
 	i = 0;
 	real = data->real_pos;
 	angle = data->player.rota_angle;
-	while (i < 3)
+	while (i < 10)
 	{
 		move_step = (float)data->player.walk_dir * data->player.move_speed;
 		new.x = (float)real.x + cos(angle) * (float)move_step;
 		new.y = (float)real.y + sin(angle) * (float)move_step;
 		pos.x = (int)floor(new.x / 32.0);
 		pos.y = (int)floor(new.y / 32.0);
-		if (data->game_env->map[(int)pos.y][(int )real.x / 32] == '1' || data->game_env->map[(int )real.y / 32][(int )pos.x] == '1')
+		if (data->game_env->map[(int)pos.y][(int )floor(real.x / 32)] == '1' || data->game_env->map[(int )floor(real.y / 32)][(int )pos.x] == '1' || data->game_env->map[(int)pos.y][(int)pos.x] == '1')
 		{
 			// data->player.rotate_speed = 12 * (PI / 180);
+			
+	// printf("FALSE\n");
 			return (false);
 		}
 		real.x = new.x;
 		real.y = new.y;
 		i++;
 	}
+	// printf("TRUE\n");
+
 	// data->player.rotate_speed =4 * (PI / 180);
 	return (true);
 }

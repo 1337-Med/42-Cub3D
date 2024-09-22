@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/21 13:50:29 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/22 12:20:03 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	init_raycaster(t_shared_data *data, t_game_env *game_env)
 		data->player.rota_angle = PI;
 	if (game_env->dir == 'E')
 		data->player.rota_angle = 0;
-	data->player.move_speed = 4;
+	data->player.move_speed = 2;
 	data->player.rotate_speed = 4 * (PI / 180);
 	data->mlx = NULL;
 	data->image = NULL;
