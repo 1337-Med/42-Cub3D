@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:39:13 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/27 15:17:05 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/27 15:50:26 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	calculate_start(t_shared_data *data, int *start)
 		(*start)--;
 		i++;
 	}
-	data->p_pos.y = (data->real_pos.y - (*start * 32));
+	data->p_pos.y = (data->real_pos.y - (*start * 32)) - 10;
 	return (i);
 }
 
@@ -68,7 +68,7 @@ char	**fill_map(t_shared_data *data, int start, int end, t_cord p)
 			index = 0;
 		mini_map[i] = ft_substr(data->game_env->map[start + i], index, lim);
 		if (i + start == p.y)
-			data->p_pos.x = ((data->real_pos.x - (index * 32)));
+			data->p_pos.x = ((data->real_pos.x - (index * 32))) - 10;
 		i++;
 	}
 	mini_map[i] = NULL;
