@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 17:22:01 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/22 16:30:33 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/27 15:08:02 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	render_player(t_shared_data *data)
 					(data->p_pos.y + y) * MINI_FACTOR, 0);
 			else
 				mlx_put_pixel(data->image, (data->p_pos.x + x) * MINI_FACTOR,
-					(data->p_pos.y + y) * MINI_FACTOR, 0xFFFFFFFF);
+					(data->p_pos.y + y) * MINI_FACTOR, 0x820303FF);
 			x++;
 		}
 		y++;
