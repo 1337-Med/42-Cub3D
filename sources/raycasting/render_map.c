@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:43:22 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/25 19:37:51 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/27 15:07:13 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	minimap_backgrand(t_shared_data *data)
 	{
 		j = 0;
 		while (j < 257)
-			mlx_put_pixel(data->image, j++, i, data->game_env->floor);
+			mlx_put_pixel(data->image, j++, i, 0x420202FF);
 		i++;
 	}
 }
