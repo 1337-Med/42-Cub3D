@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 18:48:01 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/21 12:56:56 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/27 11:41:18 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	create_rays(t_shared_data *data)
 		ft_alloc(0, data->rays, FREE_PTR);
 		data->rays = NULL;
 	}
-	// data->rays = NULL;
 	data->rays = ft_alloc(sizeof(t_rays) * (NUM_RAYS + 1), data->rays, CALLOC);
 	while (i < NUM_RAYS)
 	{

@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/22 17:19:03 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/27 11:44:26 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	init_raycaster(t_shared_data *data, t_game_env *game_env)
 	if (game_env->dir == 'E')
 		data->player.rota_angle = 0;
 	data->player.move_speed = 2;
-	data->player.rotate_speed = 4 * (PI / 180);
+	data->player.rotate_speed = 3 * (PI / 180);
 	data->mlx = NULL;
 	data->image = NULL;
 }
@@ -69,7 +69,6 @@ int	raycaster(t_game_env *game_env)
 	render_map(&data);
 	mlx_set_cursor_mode(data.mlx, MLX_MOUSE_HIDDEN);
 	mlx_set_mouse_pos(data.mlx, WIDTH / 2, HEIGHT / 2);
-	// mlx_loop_hook(data.mlx, ft_hook, &data);
 	mlx_loop_hook(data.mlx, ft_loop, &data);
 	mlx_loop(data.mlx);
 	mlx_terminate(data.mlx);

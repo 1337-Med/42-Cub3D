@@ -1,5 +1,6 @@
 {
     "files.associations": {
         "__node_handle": "c"
-    }
+    },
+    "cmake.sourceDirectory": "/Users/amejdoub/projects/cub3D/MLX42"
 }
