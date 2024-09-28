@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 15:42:40 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/09/28 11:25:55 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/28 19:44:54 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	get_pixel(mlx_image_t *image, int x, int y)
 					| pixel_data[2] << 8 | pixel_data[3];
 	return (pixel_color);
 }
-
+#include <stdio.h>
 void	draw_line_pixel(int *tb, int i,
 		t_shared_data *data, int tex_x)
 {
@@ -57,7 +57,7 @@ void	draw_line_pixel(int *tb, int i,
 	while (j <= tb[1])
 	{
 		tex_y = ((j - tb[0]) * data->target_img->height) / line_dis;
-		if (j >= 0 && i >= 0 && j < HEIGHT && i <= WIDTH && tex_y >= 0
+		if (j >= 0 && j < HEIGHT && tex_y >= 0
 			&& tex_y < (int)data->target_img->height)
 			mlx_put_pixel(data->image, i, j, \
 							get_pixel(data->target_img, tex_x, tex_y));
@@ -92,5 +92,15 @@ void	rander_textures(t_shared_data *data, int i, int wall_top,
 					- floor(data->rays[i].ray_p.x / 32.0);
 	}
 	tex_x = (int)(wall_hit * (float)data->target_img->width);
+	// while (wall_top < wall_bottom)
+	// 	{
+	// 		if (wall_top < HEIGHT && wall_top > 0)
+	// 		{
+
+	// 		// write(1, "test\n", 6);
+	// 			mlx_put_pixel(data->image, i, wall_top, 0);
+	// 		}
+	// 		wall_top++;
+	// 	}
 	draw_line_pixel((int [2]){wall_top, wall_bottom}, i, data, tex_x);
 }
