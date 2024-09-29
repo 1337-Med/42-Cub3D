@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:28:51 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/27 11:45:00 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/29 15:08:18 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ bool	steps_from_wall(t_shared_data *data, t_p_pos pos)
 	i = 0;
 	real = data->real_pos;
 	angle = data->player.rota_angle;
-	while (i < 10)
+	while (i < 5)
 	{
 		move_step = (float)data->player.walk_dir * data->player.move_speed;
 		new.x = (float)real.x + cos(angle) * (float)move_step;
