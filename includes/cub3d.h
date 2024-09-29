@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/09/29 10:53:51 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/29 12:50:26 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ typedef struct s_side
 # define TAIL_SIZE 32
 # define PI 3.14159265358979323846
 # define FOV 1.04719755
-#define MAX(a, b) ((a) > (b) ? (a) : (b))
-#define MIN(a, b) ((a) < (b) ? (a) : (b))
 # define WIDTH 920
 # define HEIGHT 800
 # define NUM_RAYS WIDTH
