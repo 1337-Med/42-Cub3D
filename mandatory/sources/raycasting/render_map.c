@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:43:22 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/29 13:21:39 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/29 15:12:30 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,6 @@ void	render_map(t_shared_data *data)
 		wall_hgt = (32 / data->rays[i].distance) * ((WIDTH / 2) / tan(FOV / 2));
 		wall_top = (HEIGHT / 2) - (wall_hgt / 2);
 		wall_bottom = (HEIGHT / 2) + (wall_hgt / 2);
-		// while (wall_top < wall_bottom)
-		// {
-		// 	if (wall_top < HEIGHT && wall_top > 0)
-		// 	{
-
-		// 	// write(1, "test\n", 6);
-		// 		mlx_put_pixel(data->image, i, wall_top, 0);
-		// 	}
-		// 	wall_top++;
-		// }
-		// i++;
 		rander_textures(data, i++, wall_top, wall_bottom);
 	}
-	// render_player(data);
 }

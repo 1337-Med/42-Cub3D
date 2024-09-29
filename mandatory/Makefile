@@ -12,7 +12,6 @@ SRC =	./sources/parser/parser.c ./sources/parser/parser_utils.c ./sources/parser
 		./sources/raycasting/move_condition.c \
 		./sources/raycasting/render_rec.c \
 		./sources/raycasting/render_map.c \
-		./sources/raycasting/render_player.c \
 		./sources/raycasting/ft_hook.c \
 
 OBJ = $(SRC:.c=.o)
