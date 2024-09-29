@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   horiz_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 13:24:29 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/29 13:04:42 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/09/29 17:36:25 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	get_horizontal_inter(t_shared_data *data, int i)
 	t_cord	map;
 
 	h_set_step_inter(data, i, &inter, &step);
-	while (inter.y > 0 && inter.x > 0 && inter.y < HEIGHT)
+	while (inter.y > 0 && inter.x > 0)
 	{
 		touch_y = inter.y;
 		if (data->rays[i].ray_up)
