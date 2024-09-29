@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 15:42:40 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/09/28 19:44:54 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/29 12:32:45 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,15 @@ void	draw_line_pixel(int *tb, int i,
 
 	line_dis = tb[1] - tb[0];
 	j = tb[0];
-	while (j <= tb[1])
+	int start = MAX(0, tb[0]);
+	int end = MIN(HEIGHT, tb[1]);
+	j = start;
+	while (j < end)
 	{
 		tex_y = ((j - tb[0]) * data->target_img->height) / line_dis;
-		if (j >= 0 && j < HEIGHT && tex_y >= 0
-			&& tex_y < (int)data->target_img->height)
 			mlx_put_pixel(data->image, i, j, \
 							get_pixel(data->target_img, tex_x, tex_y));
+		
 		j++;
 	}
 }

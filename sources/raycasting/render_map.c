@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:43:22 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/28 12:19:15 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/29 11:47:16 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,18 @@ void	minimap_backgrand(t_shared_data *data)
 	int	j;
 
 	i = 0;
-	while (i < 193)
+	while (i < 183)
 	{
 		j = 0;
 		while (j < 257)
-			mlx_put_pixel(data->image, j++, i, 0x420202FF);
+		{
+			if (j == 0 || j == 256 || i == 0 || i == 182)
+				mlx_put_pixel(data->image, j, i, 0x910910FF);
+			else
+				mlx_put_pixel(data->image, j, i, 0x6991e0FF);
+			
+			j++;
+		}
 		i++;
 	}
 }
