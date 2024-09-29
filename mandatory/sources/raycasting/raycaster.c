@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycaster.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 12:19:40 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/29 13:08:56 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/09/29 13:30:42 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	init_raycaster(t_shared_data *data, t_game_env *game_env)
 	data->game_env = game_env;
 	data->p_pos = get_player_pos(data->game_env->map);
 	data->real_pos = get_player_pos(data->game_env->map);
-	data->real_pos.x = (data->real_pos.x * 32);
-	data->real_pos.y = (data->real_pos.y * 32) - 16;
+	data->real_pos.x = (data->real_pos.x * 32) + 16;
+	data->real_pos.y = (data->real_pos.y * 32) + 16;
 	data->player.pos = data->real_pos;
 	data->player.raduis = 3;
 	data->player.walk_dir = 0;

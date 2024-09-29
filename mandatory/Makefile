@@ -11,8 +11,6 @@ SRC =	./sources/parser/parser.c ./sources/parser/parser_utils.c ./sources/parser
 		./sources/raycasting/cast_rays.c \
 		./sources/raycasting/move_condition.c \
 		./sources/raycasting/render_rec.c \
-		./sources/raycasting/mouse_rotation.c \
-		./sources/raycasting/mini_map.c \
 		./sources/raycasting/render_map.c \
 		./sources/raycasting/render_player.c \
 		./sources/raycasting/ft_hook.c \

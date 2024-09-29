@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movement_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:09:58 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/29 13:04:49 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/09/29 13:52:57 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ bool	move_condition(t_shared_data *data, float angle, t_p_pos new,
 	new = data->real_pos;
 	old.x = new.x / 32;
 	old.y = new.y / 32;
-	while (i < 5)
+	while (i < 6)
 	{
 		r.x = floor(new.x / 32.0);
 		r.y = floor(new.y / 32.0);

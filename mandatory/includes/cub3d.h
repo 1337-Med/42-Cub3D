@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/09/29 12:50:26 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/29 13:22:08 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,6 @@ float				norm_angle(float angle);
 void				create_rays(t_shared_data *data);
 void				init_ray(t_shared_data *data, int i, float ray_angle);
 void				cast_rays(t_shared_data *data, int num_rays);
-// void	rander_map(t_shared_data *data);
 void				smaller_distance(t_shared_data *data, int i, float horz,
 						float vertical);
 void				choose_smaller(t_shared_data *data, int i, char c,
@@ -146,7 +145,6 @@ void				choose_smaller(t_shared_data *data, int i, char c,
 float				distance_two_p(float x1, float y1, float x2, float y2);
 void				render_rec(int y, int x, mlx_image_t *image, char c);
 void				ft_loop(void *data);
-char				**minimap_parse(t_shared_data *data);
 void				render_player(t_shared_data *data);
 void				movement_d(t_shared_data *data);
 void				movement_a(t_shared_data *data);

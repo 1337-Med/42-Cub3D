@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_map.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:43:22 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/29 13:11:02 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/09/29 13:21:39 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,28 +27,6 @@ void	rander_sky_floor(t_shared_data *data)
 				mlx_put_pixel(data->image, j, i, data->game_env->ceiling);
 			else
 				mlx_put_pixel(data->image, j, i, data->game_env->floor);
-			j++;
-		}
-		i++;
-	}
-}
-
-void	minimap_backgrand(t_shared_data *data)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < 183)
-	{
-		j = 0;
-		while (j < 257)
-		{
-			if (j == 0 || j == 256 || i == 0 || i == 182)
-				mlx_put_pixel(data->image, j, i, 0x910910FF);
-			else
-				mlx_put_pixel(data->image, j, i, 0x6991e0FF);
-			
 			j++;
 		}
 		i++;

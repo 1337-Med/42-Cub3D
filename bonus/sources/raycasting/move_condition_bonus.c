@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_condition_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:28:51 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/29 13:04:47 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/09/29 13:58:04 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ bool	steps_from_wall(t_shared_data *data, t_p_pos pos)
 	i = 0;
 	real = data->real_pos;
 	angle = data->player.rota_angle;
-	while (i < 10)
+	while (i < 5)
 	{
 		move_step = (float)data->player.walk_dir * data->player.move_speed;
 		new.x = (float)real.x + cos(angle) * (float)move_step;
@@ -31,11 +31,16 @@ bool	steps_from_wall(t_shared_data *data, t_p_pos pos)
 		pos.x = (int)floor(new.x / 32.0);
 		pos.y = (int)floor(new.y / 32.0);
 		if (data->game_env->map[(int)pos.y][(int )floor(real.x / 32)] == '1' || data->game_env->map[(int )floor(real.y / 32)][(int )pos.x] == '1' || data->game_env->map[(int)pos.y][(int)pos.x] == '1')
+		{
+
+	// write(1, "false\n", 7);
 			return (false);
+		}
 		real.x = new.x;
 		real.y = new.y;
 		i++;
 	}
+	// write(1, "true\n", 5);
 	return (true);
 }
 
