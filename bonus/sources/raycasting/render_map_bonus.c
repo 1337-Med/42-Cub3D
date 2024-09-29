@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_map_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:43:22 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/29 15:14:57 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/09/29 15:46:18 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	minimap_backgrand(t_shared_data *data)
 				mlx_put_pixel(data->image, j, i, 0x910910FF);
 			else
 				mlx_put_pixel(data->image, j, i, 0x6991e0FF);
-			
 			j++;
 		}
 		i++;
