@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:39:13 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/29 13:31:40 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/10/12 12:05:53 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	calculate_start(t_shared_data *data, int *start)
 	int	i;
 
 	i = 0;
-	while (i < 10)
+	while (i < 7)
 	{
 		if (!*start)
 			break ;
@@ -33,10 +33,8 @@ int	calculate_end(t_shared_data *data, int *end, int i)
 	int	lim;
 
 	i = 0;
-	lim = 10;
-	if (i != 10)
-		lim += 10 - i;
-	i = 0;
+	lim = 7;
+	// i = 0;
 	while (i < lim)
 	{
 		if (*end >= (int)ft_arrsize(data->game_env->map)
@@ -82,8 +80,8 @@ char	**minimap_parse(t_shared_data *data)
 	int		end;
 	int		i;
 
-	p.x = (int)floor((data->real_pos.x) / 32);
-	p.y = (int)floor((data->real_pos.y) / 32);
+	p.x = (int)floor((data->p_pos.x) / 32);
+	p.y = (int)floor((data->p_pos.y) / 32);
 	start = p.y;
 	end = p.y;
 	i = 0;

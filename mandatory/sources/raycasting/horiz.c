@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 13:24:29 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/09/29 16:42:56 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/10/12 11:52:20 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void	get_horizontal_inter(t_shared_data *data, int i)
 		if (map.y < 0 || map.y >= (int)ft_arrsize(data->game_env->map)
 			|| map.x < 0 || map.x > (int)ft_strlen(data->game_env->map[map.y]))
 		{
-		 write(1, "err\n", 5);
 			data->rays[i].horiz_x = -1;
 			data->rays[i].horiz_y = -1;
 			return ;
