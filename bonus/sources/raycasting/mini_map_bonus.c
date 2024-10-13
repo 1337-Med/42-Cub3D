@@ -6,7 +6,7 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:39:13 by amejdoub          #+#    #+#             */
-/*   Updated: 2024/10/12 12:05:53 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/10/13 12:45:44 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ int	calculate_end(t_shared_data *data, int *end, int i)
 {
 	int	lim;
 
-	i = 0;
+	// i = 0;
 	lim = 7;
 	// i = 0;
-	while (i < lim)
+	while (i < lim + i && i < 14)
 	{
 		if (*end >= (int)ft_arrsize(data->game_env->map)
 			|| !data->game_env->map[*end])
