@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture_parsing.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 21:35:30 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/09/17 11:09:26 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/10/29 11:30:05 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	calculate_colors(char *s, t_wall *wall)
 	ft_alloc(0, rgba, FREE_PTR);
 	return (color);
 }
-
+#include <stdio.h>
 void	save_earth_sky(char **arr, t_game_env **game_env)
 {
 	char	*trimed;
@@ -101,6 +101,7 @@ void	save_earth_sky(char **arr, t_game_env **game_env)
 			free_print("invalid rgb format. soulde be like 255,255,255 \n",
 				(*game_env)->wall);
 		(*game_env)->ceiling = calculate_colors(trimed, (*game_env)->wall);
+		printf("%u\n", (unsigned int)(*game_env)->ceiling);
 	}
 }
 

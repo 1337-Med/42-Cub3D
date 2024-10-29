@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 21:35:30 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/09/29 13:03:43 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/10/29 12:08:17 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	save_earth_sky(char **arr, t_game_env **game_env)
 
 	if (ft_strlen(arr[0]) == 1 && !ft_strncmp(arr[0], "F", ft_strlen(arr[0])))
 	{
-		if ((*game_env)->floor != -1)
+		if ((*game_env)->floor_status != -1)
 			free_print("invalid data. symbol is duplicated\n",
 				(*game_env)->wall);
 		trimed = ft_strtrim(arr[1], " \n\t\v");
@@ -90,10 +90,11 @@ void	save_earth_sky(char **arr, t_game_env **game_env)
 			free_print("invalid rgb format. soulde be like 255,255,255 \n",
 				(*game_env)->wall);
 		(*game_env)->floor = calculate_colors(trimed, (*game_env)->wall);
+		(*game_env)->floor_status = 0;
 	}
 	if (ft_strlen(arr[0]) == 1 && !ft_strncmp(arr[0], "C", ft_strlen(arr[0])))
 	{
-		if ((*game_env)->ceiling != -1)
+		if ((*game_env)->ceiling_status != -1)
 			free_print("invalid data. symbol is duplicated\n",
 				(*game_env)->wall);
 		trimed = ft_strtrim(arr[1], " \n\t\v");
@@ -101,6 +102,7 @@ void	save_earth_sky(char **arr, t_game_env **game_env)
 			free_print("invalid rgb format. soulde be like 255,255,255 \n",
 				(*game_env)->wall);
 		(*game_env)->ceiling = calculate_colors(trimed, (*game_env)->wall);
+		(*game_env)->ceiling_status = 0;
 	}
 }
 
