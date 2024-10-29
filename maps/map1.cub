@@ -3,7 +3,7 @@ SO ./texture/siryakari-furnace.png
 EA ./texture/siryakari-furnace2.png
 NO ./texture/siryakari-furnace1.png
 F 255,229,204
-C 204,255,255
+C 255,255,255
 
         1111111111111111111111111
         1000000000001000000000001

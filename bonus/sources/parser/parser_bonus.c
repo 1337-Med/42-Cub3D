@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:07 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/10/29 12:04:21 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/10/29 21:12:31 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,6 @@ t_game_env	*parser(int ac, char **av)
 	game_env = ft_alloc(sizeof(t_game_env), game_env, CALLOC);
 	if (!game_env)
 		print_err(1, "malloc failed\n");
-	// game_env->ceiling = -1;
-	// game_env->floor = -1;
 	game_env->ceiling_status = -1;
 	game_env->floor_status = -1;
 	game_env->wall = ft_alloc(sizeof(t_wall), game_env->wall, CALLOC);
