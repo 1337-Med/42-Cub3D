@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 15:42:40 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/09/29 15:44:30 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/10/30 10:30:59 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	draw_line_pixel(int *tb, int i, t_shared_data *data, int tex_x)
 	j = start;
 	while (j < end)
 	{
-		tex_y = ((j - tb[0]) * data->target_img->height) / line_dis;
+		tex_y = ((j - tb[0]) / line_dis) * data->target_img->height;
 		mlx_put_pixel(data->image, i, j, get_pixel(data->target_img, tex_x,
 				tex_y));
 		j++;
