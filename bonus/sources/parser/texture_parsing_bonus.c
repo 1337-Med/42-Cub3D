@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 21:35:30 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/10/29 21:32:19 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/10/30 11:04:17 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	setup_wall(mlx_texture_t **wall, t_wall *wall_holder, char *s)
 	ft_alloc(0, trimed, FREE_PTR);
 }
 
+#include <stdio.h>
+
 bool	check_rgb_format(char *s)
 {
 	int	ij[2];
@@ -35,7 +37,7 @@ bool	check_rgb_format(char *s)
 	ij[1] = 0;
 	while (ij[1] < 2)
 	{
-		if (s[ij[0]] == '+')
+		if (s[ij[0]] == '+' && s[ij[0]] && ft_isdigit(s[ij[0] + 1]))
 			ij[0]++;
 		while (s[ij[0]] && ft_isdigit(s[ij[0]]))
 			ij[0]++;
@@ -87,8 +89,7 @@ void	save_earth_sky(char **arr, t_game_env **game_env)
 				(*game_env)->wall);
 		trimed = ft_strtrim(arr[1], " \n\t\v");
 		if (!check_rgb_format(trimed))
-			free_print("invalid rgb format. soulde be like 255,255,255 \n",
-				(*game_env)->wall);
+			free_print("invalid rgb format. \n", (*game_env)->wall);
 		(*game_env)->floor = calculate_colors(trimed, (*game_env)->wall);
 		(*game_env)->floor_status = 0;
 	}

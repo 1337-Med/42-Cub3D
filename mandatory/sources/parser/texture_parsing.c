@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 21:35:30 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/10/29 21:17:57 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/10/30 11:04:41 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ bool	check_rgb_format(char *s)
 	ij[1] = 0;
 	while (ij[1] < 2)
 	{
-		if (s[ij[0]] == '+')
+		if (s[ij[0]] == '+' && s[ij[0]] && ft_isdigit(s[ij[0] + 1]))
 			ij[0]++;
 		while (s[ij[0]] && ft_isdigit(s[ij[0]]))
 			ij[0]++;
