@@ -1,0 +1,12 @@
+WE ./texture/siryakari-furnace2.png    	    	   		
+SO ./texture/siryakari-furnace.png
+EA ./texture/siryakari-furnace2.png
+NO ./texture/siryakari-furnace1.png
+F 0,+0,0
+C 255,+255,255
+
+
+11111111
+11111111
+10N11111
+11111111
