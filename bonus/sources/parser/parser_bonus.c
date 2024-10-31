@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:07 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/09/29 13:03:37 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/10/29 21:12:31 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	read_file(int fd, t_game_env **game_env)
 		if (check_empty_line(line) == 1)
 			continue ;
 		temp_arr = spliter(line);
-		if ((*game_env)->ceiling == -1 || (*game_env)->floor == -1
+		if ((*game_env)->ceiling_status == -1 || (*game_env)->floor_status == -1
 			|| !(*game_env)->wall->east || !(*game_env)->wall->west
 			|| !(*game_env)->wall->north || !(*game_env)->wall->south)
 			save_tools(temp_arr, game_env);
@@ -111,8 +111,8 @@ t_game_env	*parser(int ac, char **av)
 	game_env = ft_alloc(sizeof(t_game_env), game_env, CALLOC);
 	if (!game_env)
 		print_err(1, "malloc failed\n");
-	game_env->ceiling = -1;
-	game_env->floor = -1;
+	game_env->ceiling_status = -1;
+	game_env->floor_status = -1;
 	game_env->wall = ft_alloc(sizeof(t_wall), game_env->wall, CALLOC);
 	read_file(fd, &game_env);
 	check_map(game_env);

@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 21:35:30 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/09/29 13:03:43 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/10/30 11:04:17 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	setup_wall(mlx_texture_t **wall, t_wall *wall_holder, char *s)
 	ft_alloc(0, trimed, FREE_PTR);
 }
 
+#include <stdio.h>
+
 bool	check_rgb_format(char *s)
 {
 	int	ij[2];
@@ -35,7 +37,7 @@ bool	check_rgb_format(char *s)
 	ij[1] = 0;
 	while (ij[1] < 2)
 	{
-		if (s[ij[0]] == '+')
+		if (s[ij[0]] == '+' && s[ij[0]] && ft_isdigit(s[ij[0] + 1]))
 			ij[0]++;
 		while (s[ij[0]] && ft_isdigit(s[ij[0]]))
 			ij[0]++;
@@ -82,25 +84,24 @@ void	save_earth_sky(char **arr, t_game_env **game_env)
 
 	if (ft_strlen(arr[0]) == 1 && !ft_strncmp(arr[0], "F", ft_strlen(arr[0])))
 	{
-		if ((*game_env)->floor != -1)
+		if ((*game_env)->floor_status != -1)
 			free_print("invalid data. symbol is duplicated\n",
 				(*game_env)->wall);
 		trimed = ft_strtrim(arr[1], " \n\t\v");
 		if (!check_rgb_format(trimed))
-			free_print("invalid rgb format. soulde be like 255,255,255 \n",
-				(*game_env)->wall);
+			free_print("invalid rgb format. \n", (*game_env)->wall);
 		(*game_env)->floor = calculate_colors(trimed, (*game_env)->wall);
+		(*game_env)->floor_status = 0;
 	}
 	if (ft_strlen(arr[0]) == 1 && !ft_strncmp(arr[0], "C", ft_strlen(arr[0])))
 	{
-		if ((*game_env)->ceiling != -1)
-			free_print("invalid data. symbol is duplicated\n",
-				(*game_env)->wall);
+		if ((*game_env)->ceiling_status != -1)
+			free_print("invalid data.\n", (*game_env)->wall);
 		trimed = ft_strtrim(arr[1], " \n\t\v");
 		if (!check_rgb_format(trimed))
-			free_print("invalid rgb format. soulde be like 255,255,255 \n",
-				(*game_env)->wall);
+			free_print("invalid rgb format \n", (*game_env)->wall);
 		(*game_env)->ceiling = calculate_colors(trimed, (*game_env)->wall);
+		(*game_env)->ceiling_status = 0;
 	}
 }
 
