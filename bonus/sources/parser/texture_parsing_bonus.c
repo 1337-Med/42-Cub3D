@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture_parsing_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 21:35:30 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/10/30 11:04:17 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/11/01 10:53:39 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ void	setup_wall(mlx_texture_t **wall, t_wall *wall_holder, char *s)
 		free_print("error while loading.\n", wall_holder);
 	ft_alloc(0, trimed, FREE_PTR);
 }
-
-#include <stdio.h>
 
 bool	check_rgb_format(char *s)
 {
