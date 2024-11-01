@@ -18,7 +18,7 @@ SRC =	./sources/parser/parser_bonus.c ./sources/parser/parser_utils_bonus.c ./so
 		./sources/raycasting/ft_hook_bonus.c \
 
 OBJ = $(SRC:.c=.o)
-CFLAGS = -Wall -Wextra -Werror  -I ./includes -I ../super_libft -O3
+CFLAGS = -Wall -Wextra -Werror  -I ./includes -I ../super_libft -O3 -fsanitize=address
 
 NAME = ../cub3D_bonus
 
