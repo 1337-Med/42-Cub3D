@@ -15,7 +15,7 @@ SRC =	./sources/parser/parser.c ./sources/parser/parser_utils.c ./sources/parser
 		./sources/raycasting/ft_hook.c \
 
 OBJ = $(SRC:.c=.o)
-CFLAGS = -Wall -Wextra -Werror  -I ./includes -I ../super_libft -O3 -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror  -I ./includes -I ../super_libft -O3 -g -fsanitize=address
 
 NAME = ../cub3D
 

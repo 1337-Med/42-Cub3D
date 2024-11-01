@@ -6,7 +6,7 @@
 /*   By: nbenyahy <nbenyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:07 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/10/29 19:52:02 by nbenyahy         ###   ########.fr       */
+/*   Updated: 2024/11/01 11:21:42 by nbenyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ void	read_file(int fd, t_game_env **game_env)
 	if (!(*game_env)->map)
 		free_print("ivalid map\n", (*game_env)->wall);
 }
-
 t_game_env	*parser(int ac, char **av)
 {
 	t_game_env	*game_env;
