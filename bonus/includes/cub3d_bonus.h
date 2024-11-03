@@ -6,11 +6,10 @@
 /*   By: amejdoub <amejdoub@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:05:54 by nbenyahy          #+#    #+#             */
-/*   Updated: 2024/11/01 11:54:27 by amejdoub         ###   ########.fr       */
+/*   Updated: 2024/11/03 15:39:06 by amejdoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_BONUS_H
 # define CUB3D_BONUS_H
 
 # include "../../MLX42/include/MLX42/MLX42.h"
